@@ -32,6 +32,14 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Hoop uses the camera to record your practice reps so they can be checked.",
+          "microphonePermission": "Hoop records audio with your practice video. Only the video is analyzed.",
+          "photosPermission": "Hoop lets you pick a practice video from your library to check your form."
+        }
       ]
     ],
     "experiments": {
