@@ -9,7 +9,7 @@ import {
   Section,
 } from "@/components/hoop-ui";
 import { LessonShell } from "@/components/lesson-shell";
-import { categories, categoryFor } from "@/lib/learning-service";
+import { categoryFor } from "@/lib/learning-service";
 import { usePlayer } from "@/lib/player-store";
 export default function Settings() {
   const { player, setDraft, reset, busy, error } = usePlayer();
@@ -25,23 +25,19 @@ export default function Settings() {
             ? "Learn the basics"
             : categoryFor(player.profile?.goal ?? "handling").label}
         </Copy>
-        {categories.map((c) => (
-          <View
-            key={c.id}
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              gap: 12,
-            }}
-          >
-            <Copy kind="caption" muted>
-              {c.label}
-            </Copy>
-            <Copy kind="caption">
-              {player.profile?.familiarity[c.id] ?? "new"}
-            </Copy>
-          </View>
-        ))}
+        <Copy kind="caption" muted>
+          {player.profile?.experience === "experienced"
+            ? "Plays regularly"
+            : player.profile?.experience === "some"
+              ? "Knows some basics"
+              : "Starting with foundations"}
+          {" / "}
+          {player.profile?.sessionMinutes ?? 10}-minute sessions
+        </Copy>
+        <Copy kind="caption" muted>
+          {Object.keys(player.progress.placedOut ?? {}).length} foundations
+          placed from experience. Placement is separate from earned completion.
+        </Copy>
       </Panel>
       <View style={{ gap: 12, marginTop: 24 }}>
         <Action
@@ -53,7 +49,8 @@ export default function Settings() {
           }}
         />
         <Copy kind="caption" muted>
-          Your answers guide recommendations. Completed demo skills stay
+          Your experience sets foundation placement; your focus guides the next
+          lesson and your time sets practice length. Completed demo skills stay
           completed when you edit your preferences.
         </Copy>
       </View>

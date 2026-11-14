@@ -13,6 +13,7 @@ import {
   completeSkillDemo,
   catalog,
   categories,
+  placementFor,
   type Profile,
   type Progress,
 } from "./learning-service";
@@ -61,6 +62,13 @@ export function PlayerProvider({ children }: PropsWithChildren) {
           !data.progress.completed ||
           Array.isArray(data.progress.completed) ||
           typeof data.progress.completed !== "object" ||
+          (data.progress.placedOut !== undefined &&
+            (!data.progress.placedOut ||
+              Array.isArray(data.progress.placedOut) ||
+              typeof data.progress.placedOut !== "object" ||
+              !Object.values(data.progress.placedOut).every(
+                (v) => v === true,
+              ))) ||
           !data.progress.lessonSteps ||
           !Number.isFinite(data.progress.practiceCount) ||
           data.progress.practiceCount < 0 ||
@@ -83,6 +91,14 @@ export function PlayerProvider({ children }: PropsWithChildren) {
         if (data.profile) {
           const previous = data.profile;
           data.profile = {
+            experience: ["new", "some", "experienced"].includes(
+              previous.experience ?? "",
+            )
+              ? previous.experience
+              : "new",
+            sessionMinutes: [5, 10, 20].includes(previous.sessionMinutes ?? 0)
+              ? previous.sessionMinutes
+              : 10,
             goal:
               previous.goal === "basics" ||
               categories.some((c) => c.id === previous.goal)
@@ -152,7 +168,15 @@ export function PlayerProvider({ children }: PropsWithChildren) {
         busy,
         draft,
         setDraft,
-        saveProfile: (p) => commit({ ...current.current, profile: p }),
+        saveProfile: (p) =>
+          commit({
+            ...current.current,
+            profile: p,
+            progress: {
+              ...current.current.progress,
+              placedOut: placementFor(p),
+            },
+          }),
         completeDemo: (id) => {
           try {
             return commit({

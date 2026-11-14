@@ -22,7 +22,7 @@ import {
 } from "@/lib/learning-service";
 import { usePlayer } from "@/lib/player-store";
 export function Warmup({
-  initialMinutes = 5,
+  initialMinutes,
   daily = false,
 }: {
   initialMinutes?: number;
@@ -31,7 +31,7 @@ export function Warmup({
   const { player, logPractice, error, busy } = usePlayer();
   const router = useRouter();
   const [minutes, setMinutes] = useState(
-    [5, 10, 20].includes(initialMinutes) ? initialMinutes : 5,
+    initialMinutes ?? player.profile?.sessionMinutes ?? 10,
   );
   const [stage, setStage] = useState<"plan" | "active" | "summary" | "saved">(
     "plan",
@@ -92,16 +92,14 @@ export function Warmup({
             ]
           : []),
       ]
-    : eligible
-        .slice(0, skillCount)
-        .map((n) => ({
-          id: n.id,
-          name: n.name,
-          instructions: lessonSections(n).find((s) => s.type === "practice")!
-            .instructions,
-          seconds: Math.round((minutes * 60) / Math.max(1, skillCount)),
-          lessonId: n.id,
-        }));
+    : eligible.slice(0, skillCount).map((n) => ({
+        id: n.id,
+        name: n.name,
+        instructions: lessonSections(n).find((s) => s.type === "practice")!
+          .instructions,
+        seconds: Math.round((minutes * 60) / Math.max(1, skillCount)),
+        lessonId: n.id,
+      }));
   useEffect(() => {
     if (!end) return;
     const update = () => {

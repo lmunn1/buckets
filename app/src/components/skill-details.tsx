@@ -22,7 +22,10 @@ export function SkillDetails({
   const router = useRouter();
   const state = skillState(node, progress);
   const category = categoryFor(node.category);
-  const closest = closestAvailable(catalog.nodes, node.id, progress.completed);
+  const closest = closestAvailable(catalog.nodes, node.id, {
+    ...progress.placedOut,
+    ...progress.completed,
+  });
   return (
     <View style={{ gap: 12 }}>
       <View style={[ui.row, { justifyContent: "space-between" }]}>
@@ -43,7 +46,9 @@ export function SkillDetails({
             {state === "available"
               ? "Ready to learn"
               : state === "completed"
-                ? "Demo completed"
+                ? progress.placedOut?.[node.id] && !progress.completed[node.id]
+                  ? "Placed from experience"
+                  : "Demo completed"
                 : "Locked"}
           </Copy>
         </View>
@@ -75,10 +80,14 @@ export function SkillDetails({
                 ]}
               >
                 <Icon
-                  name={progress.completed[id] ? "check" : "lock"}
+                  name={
+                    progress.completed[id] || progress.placedOut?.[id]
+                      ? "check"
+                      : "lock"
+                  }
                   size={17}
                   color={
-                    progress.completed[id]
+                    progress.completed[id] || progress.placedOut?.[id]
                       ? palette.success
                       : palette.textSecondary
                   }
@@ -112,7 +121,7 @@ export function SkillDetails({
         }}
       />
       <Copy kind="caption" muted>
-        Assessment preview · completion is simulated.
+        Camera practice · vision assessment coming soon.
       </Copy>
     </View>
   );

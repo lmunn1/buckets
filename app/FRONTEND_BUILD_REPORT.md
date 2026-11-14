@@ -1,50 +1,45 @@
-# Hoop frontend implementation
+﻿# Hoop frontend build report
 
-Updated November 14, 2026. Work stays on `frontend`; local commits were requested after implementation. Nothing pushed or merged. Existing unrelated work and teammate-owned curriculum/vision modules were preserved.
+Updated November 14, 2026. The latest revision implements the requested tree, onboarding, lesson, and camera changes on `frontend`. No backend, computer-vision implementation, author graph data, or author prerequisite/placement functions were changed. Earlier frontend commits were already pushed; this revision's final Git status is reported in the chat.
 
-## Active curriculum and lesson experience
+## Implemented experience
 
-The app now uses the latest supplied `basketball_skill_tree_with_videos (1).json` and `hooptree-handoff (2).zip`, rather than the earlier 30-skill fixture. The frontend copy of the JSON and author helper is unchanged in [src/lib/hooptree](src/lib/hooptree). [hooptree-adapter.ts](src/lib/hooptree-adapter.ts) translates the author export into the existing UI contract. [learning-service.ts](src/lib/learning-service.ts) remains the single source used by screens.
+- **Tree first:** one persistent canvas replaces selection-driven remounts and layout-driven resets. A single transform moves the scene; nodes no longer resize separately during zoom. Button zoom preserves the viewport anchor, browser wheel preserves the cursor anchor, and pinch preserves the finger midpoint. Resizing the detail sheet preserves the world center and scale. Bounds and explicit overview/recenter controls prevent losing the graph.
+- **Browser gestures:** pointer capture avoids the gesture library's large web activation threshold. Pinch responds immediately, supports moving focal points, and rebases when a finger lifts so one-finger panning can continue. Wheel uses a non-passive handler and does not scroll the page. Native continues using Gesture Handler/Reanimated worklets. The scene is memoized and has no per-frame React state updates.
+- **Clearer categories:** stronger but restrained track colors, matching node rings/edges/regions, native icon chips, and tappable category badges in overview. Choosing a category frames it and chooses a category entry skill. All 107 skills and 158 links remain in one scene; cross-track bridges are preserved. Ready badges, checks, locks, labels, and experience-placement labels distinguish state from category color. Search ignores punctuation, so stepback finds Step-Back. Screen-space nearest-node selection helps small nodes.
+- **Short onboarding:** experience, one focus, and usual practice time. Large selectable cards replace the per-category familiarity questionnaire. A real next-lesson preview shows the result before saving. Experience calls the supplied placement helper with scores 1 / 3 / 5; focus follows actual available skills or their cross-category prerequisites; session time defaults Practice. An unfinished available lesson is resumed first. Setup remains editable.
+- **Honest placement:** `placedOut` is distinct from earned/demo `completed`. Placed foundations satisfy author prerequisites but do not count as earned mastery. Settings and tree details identify placement. Editing experience recalculates placement while preserving existing completions. Older profiles migrate safely.
+- **Lesson parts:** Understand it, See the technique, Your turn. Readable steps, cues, and common mistakes; then the official video; then practical drill instructions and camera entry. Parts are selectable and resume locally. Opening the video part loads the player without autoplay. Photos and schematic movement guides no longer render in lessons. Their original source resources remain intact.
+- **Actual capture:** contextual permission, live preview, front/back camera, Start, a real ten-second positioning countdown, automatic recording for up to twenty seconds, manual finish/discard, replay, and retake. Backgrounding or leaving interrupts active capture and releases the preview. Recordings are temporary and local; audio is disabled. Nothing uploads automatically or grants skill mastery.
+- **Vision architecture:** a typed, abortable `VisionService.assess` receives skill ID, the author's CV template/checks/pass rule, and local clip metadata. Its current adapter explicitly returns analysis unavailable. An assessed result can display feedback; verified persistence still needs the teammate's authoritative result validation. Development-only simulated completion remains a clearly labeled secondary preview, separate from recording.
+- All fifteen quizzes remain blank and blocked from completion. Daily warmup behavior and the full interconnected curriculum are preserved.
 
-- All **107 skills / 8 tracks / 158 prerequisite links** are connected. There are 46 cross-track links and 53 multi-parent skills. Author positions are uniformly normalized for rendering, not replaced with independent paths. The author status helper supplies access rules; the frontend guards unknown, locked, repeated, and unfinished quiz completion.
-- Each lesson is one continuous reading/practice surface: explanation and steps, coaching cues and expandable mistakes, visual explanation, video, then inline practice. No five-page lesson wizard.
-- The 48 explicitly open-license photo slots retain author, license, source, and license links. Failed images advance through supplied URLs and show a useful unavailable state. The 273 YouTube-frame slots have no explicit open reuse license and are excluded from the photo gallery. Original interactive schematic guides and the official video fill those lessons. Schematics are template/category guides, not 107 bespoke anatomical illustrations.
-- Each supplied pinned video and alternate is available. Players load only after a tap, do not autoplay, preserve YouTube controls, and provide alternate/external watch actions. Native uses the official IFrame API inside WebView and identifies the installed app through `expo-application`. Web uses an official iframe. Native errors advance through backups; web offers manual backups because an iframe load cannot verify cross-origin playback. Loading timeout and link failure states are present.
-- **All 15 QUIZ activities remain intentionally blank.** They have no invented questions, answers, pass, or simulated-completion action; the service also rejects completion.
-- Camera assessment is still an explicit simulation, with consent, retry, completion, and local persistence. Nothing records video or claims real pose analysis. Practice logging never completes a skill.
-- Daily warmup uses the supplied eight-minute grip/body/nervous-system routine (three timed groups), plus a two-minute completed beginner review when available. A stable daily selection avoids rerender reshuffles. Separate practice sessions retain 5/10/20-minute durations and use available/completed non-quiz lesson drills.
+## Teammate handoff
 
-## UI actually implemented
+See [camera and placement handoff](design/CAMERA_AND_PLACEMENT_HANDOFF.md) for exact interfaces, platform ownership, URI lifetime, cancellation, and placement mapping. See [curriculum integration](design/CURRICULUM_INTEGRATION.md) for source boundaries.
 
-Near-black surfaces, basketball orange, restrained green for access/completion, Inter typography, consistent borders and rounded native controls. The existing theme is extended rather than replaced with another styling stack.
+Native capture uses [capture-surface.tsx](src/components/capture-surface.tsx); browser capture uses [capture-surface.web.tsx](src/components/capture-surface.web.tsx). The shared [practice-recorder.tsx](src/components/practice-recorder.tsx) owns the session. [vision-service.ts](src/lib/vision-service.ts) is the model/transport seam. The existing shared `/analyze` backend contract was not changed or called. A browser Blob URL must be read into a Blob before upload; a native cache URI must be sent as a local file, not treated as a public URL.
 
-- Home now has a prominent lesson hero, a concise coaching cue, a tactile warmup row, honest four-root foundation progress, and a miniature of the actual 107-node network linking into the map.
-- The tree uses actual native Lucide icons, compact icon controls, searchable categories, full dependency focus, a selectable detail sheet, and reduced-detail overview rendering. A label collision pass keeps related labels apart. Filters dim context rather than deleting cross-track prerequisites.
-- Pan and pinch use Gesture Handler 3 hooks and Reanimated shared values; React receives the camera after a gesture ends instead of rerendering 107 nodes on every movement. Focus/zoom controls transition transforms. Overview selection follows the same small-node level of detail as the rest of the map.
-- Lessons use a single typographic rail with inline disclosures, highlighted coaching cues, a tappable setup/focus schematic, real credited photo galleries where licensed, a lazy video player, and inline practice.
-- beUI buttons provide spring press feedback; the adapted beUI measured selector glides between duration/technique options. Occasional disclosure, selected-detail, practice, and success reveals use short Reanimated transitions. Reduced-motion preferences remove spatial reveals and shorten feedback. Tab switches do not slide.
-- Inactive screens are hidden from accessibility so screen readers do not find duplicate buttons from another tab. Selectors expose checked states; icon buttons have labels. Tabs have adequate bottom spacing, and detail sheets use less vertical space on short phones.
+Local profile/progress remain AsyncStorage. The frontend does not implement account sync, server validation, computer vision, actual quiz scoring, or fabricated XP/streaks. Temporary native files stay in OS-managed cache; browser object URLs are revoked on discard/unmount. Do not treat these as durable saved videos.
 
-## Free components, tools, and sources
+## Free components and research
 
-No paid UI kits, APIs, subscriptions, or animation-only dependencies were added.
+No paid components, APIs, subscriptions, UI kits, or animation-only dependencies were added.
 
-| Used | License / purpose |
+| Component/tool | License and purpose |
 |---|---|
-| [Lucide React Native](https://lucide.dev/guide/react-native) 1.73.0 | ISC, native SVG icons. Package includes its license. Hoop basketball mark remains an original SVG. |
-| [beUI Native](https://github.com/starc007/beui-native/tree/ab3e58aa751bffccb725208db2c3740eb2bf643b/src/components) | Public MIT button and TabsList/TabsTrigger indicator architecture adapted to Hoop StyleSheets; full MIT notice retained in [component license](src/components/ui/beui/LICENSE). No Pro components or Uniwind installation. |
-| [react-native-webview](https://github.com/react-native-webview/react-native-webview) 14.0.1 | MIT; native official YouTube player container. |
-| [expo-application](https://docs.expo.dev/versions/v58.0.0/sdk/application/) | MIT; reads installed app ID for YouTube referrer, no device tracking IDs used. |
-| [Inter](https://github.com/rsms/inter) via @expo-google-fonts/inter | OFL 1.1 font, MIT package; local four-weight assets, full font notice in [assets/fonts/Inter-OFL.txt](assets/fonts/Inter-OFL.txt). |
-| Existing Reanimated / Gesture Handler / SVG / Expo / AsyncStorage | Existing free open-source runtime, no additional animation stack. |
-| Wikimedia images | Only supplied explicit Public domain, CC0, CC BY, and CC BY-SA licenses accepted. Per-photo credits/links displayed. Images are remote; upstream availability remains external. |
-| Playwright / TypeScript / ESLint / Prettier | Free local testing/development tools. Playwright stays in the temporary QA environment, outside app dependencies. |
+| Expo Camera 58.0.14 | MIT; native permission, preview and video capture, installed with Expo's SDK-compatible installer. |
+| Expo Video 58.0.14 | MIT; native playback of the recorded clip. |
+| Browser MediaRecorder / pointer capture / video | Standard browser APIs; recording and interaction have no paid service. |
+| Existing Lucide React Native | ISC; the same native SVG icon family, now also camera/flip controls. |
+| Existing beUI Native adaptations | MIT notices retained; tactile buttons and measured segmented controls. The button now preserves caller-provided accessibility roles. No Pro source. |
+| Existing Reanimated / Gesture Handler / SVG / Expo / AsyncStorage | Free open-source runtime. No new visual style or animation stack. |
+| Existing Inter fonts | OFL 1.1; local assets and notice retained. |
+| TypeScript / ESLint / Playwright / Prettier | Free development tools. Playwright stays in the temporary QA environment; Prettier was used as a pinned one-off formatter. |
 
-Online skills were actually read and applied: Expo [design system](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-design-system/SKILL.md), [animation](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-animation/SKILL.md), and its [recipes](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-animation/RECIPES.md) (MIT). Discovery used Skill Issue. Applied guidance includes extending existing tokens, measurable control state, purposeful short motion, shared-value gestures, reduced motion, and screenshot critique. These are development instructions, not a paid runtime service.
+The short setup, immediate recommendation preview, and contextual camera permission are informed by [NN/g's mobile onboarding guidance](https://www.nngroup.com/articles/mobile-app-onboarding/) and [Apple onboarding guidance](https://developer.apple.com/design/human-interface-guidelines/onboarding). These are design decisions, not claims from user studies of Hoop. API work follows [Expo Camera SDK 58](https://docs.expo.dev/versions/v58.0.0/sdk/camera/) and [Expo Video SDK 58](https://docs.expo.dev/versions/v58.0.0/sdk/video/).
 
-The supplied component brief was reviewed: Rare UI's framework-porting restrictions exclude copying its code; shadcn/Beautiful UI are web-oriented; transitions.dev paid MCP and beUI Pro are not used. Selective native beUI adaptation avoids a new styling system.
-
-[YouTube player requirements](https://developers.google.com/youtube/terms/required-minimum-functionality) inform the app ID referrer, minimum player dimensions, original controls, user-initiated loading, and external fallback. No videos are downloaded/rehosted, no YouTube Data API key is required, and playback has no paid API integration. YouTube is a third-party hosted service, not an open-source asset library.
+The original references remain the visual direction. Existing Expo design/animation skill research and free beUI/Lucide work are retained. No web UI library was installed into native. Rare UI code, paid beUI Pro resources, and paid transitions MCP were not used. Supplied image metadata remains in source, but galleries/schematics are absent from the current lesson UI. Official YouTube embeds retain original controls, alternate/external actions, and creator ownership; no video is downloaded or rehosted.
 
 ## Validation
 
@@ -56,28 +51,27 @@ npm run lint
 npx expo install --check
 node scripts/verify-frontend.cjs
 node scripts/verify-learning.cjs
-node scripts/smoke-curriculum.cjs
 npx expo export --platform all --output-dir dist-frontend-all
+node scripts/preview-export.cjs
+node scripts/smoke-experience.cjs
 ```
 
-The browser smoke defaults to an Expo web server on port 8083 (override `HOOP_PREVIEW_URL`) and the temporary Playwright installation at `%TEMP%/hoop-frontend-qa/node_modules/playwright` (override `HOOP_PLAYWRIGHT_PATH`). For the production build without development overlays, run `node scripts/preview-export.cjs`, open `http://127.0.0.1:8085`, and set `HOOP_PREVIEW_URL` to that address before the smoke. `scripts/smoke-browser.cjs` delegates to the current curriculum smoke; the legacy 30-node fixture remains separately tested and inactive.
+The preview is `http://127.0.0.1:8085`. Browser smoke accepts `HOOP_PREVIEW_URL` and `HOOP_PLAYWRIGHT_PATH`; by default it uses the temporary Playwright installation under `%TEMP%/hoop-frontend-qa`. Existing smoke entry points delegate to the revised experience smoke.
 
-Pure curriculum tests cover all 107 lessons, every AND prerequisite, exact source layout, connectedness, empty quiz rejection, repeated/locked/unknown completion, preserved author placement contract, and licensed image filtering. Browser tests cover onboarding, pan/pinch/zoom/search, cross-category prerequisites, continuous lesson content, cue selection, disclosure state, video option selection, inline practice/retry/consent, persistence, daily warmup pause/resume/logging, duration selection, blank quiz, photo attribution/error fallback, profile, and 320px layout. QA screenshots are in [design/qa](design/qa).
+Pure checks cover all 107 lessons, 158 links, 46 cross-track links, 53 multi-parent nodes, every AND prerequisite, exact source positions, all blank quizzes, safe repeat/locked/unknown completion, distinct experience placement, recommendations, 500 inverse zoom cycles with a preserved anchor, overview fit, camera bounds, and countdown boundaries.
 
-TypeScript, lint, Expo dependency compatibility, pure curriculum tests, final web/iOS/Android exports, and the full production-preview browser smoke pass. The production smoke finished with no uncaught runtime errors, including photo attribution/fallback and the 320px compact tree. Separate browser checks confirm all eight profile categories, the Home miniature-to-full-tree entry, no runtime errors, and a reduced-motion preference that preserves button scale during press. Direct per-icon imports reduce the web module graph from roughly 3,500 modules to 1,450 and native Hermes bundles from about 7 MB to 4.5-4.7 MB.
+Browser checks cover the short onboarding and saved preferences, placement changes, all nodes, category selection, persistent canvas on selection, repeated centered zoom, cursor-centered wheel, pan/pinch/finger transitions, punctuation-tolerant search, separate lesson parts without images, video container, actual ten-second timing, cancellation, actual MediaRecorder encoding and replay from a deterministic synthetic camera stream, automatic recording limit, retake, unavailable vision result, denied permission, navigation cleanup, and small-phone layout. No physical webcam is used. Windows Edge's built-in fake camera ended tracks inconsistently, so the deterministic fixture is an animated canvas stream; the browser's real encoder and playback still run. A disconnected camera is handled as an error and never as successful assessment.
 
-Video UI tests substitute a local iframe response. They verify metadata/selection/container behavior, **not live playback**. Native exports verify bundle compatibility, **not physical device execution**. Real iOS/Android player permissions/referrer behavior and gesture feel need on-device checks. Publication also needs final app/store identities and privacy/terms content.
+Browser video tests stub the external YouTube iframe response. They verify UI integration, not actual external playback. QA captures are in [design/qa](design/qa), with `curriculum-revision` in the current filenames.
 
-## Integration remaining
+## Remaining verification and limits
 
-- **Vision teammate:** replace `DemoAssessment` with a typed assessment adapter keyed by the supplied ten `cvActivity.template` names; receive full source node checks/passRule through `sourceNodeFor(id)`. Return a verified result with node ID, attempt ID, outcome, and timestamp. The current persistence only records `source: demo`; verified results must get their own provenance and validation. Do not wire a raw camera event straight into demo completion.
-- **Curriculum teammate:** replace/version the author export at the integration seam. All categories, hierarchy, supplied lesson content, links, cues and practice data now flow from it. New activity types need an explicit renderer/capability contract; content changes inside the current format do not require screen rewrites.
-- **Quizzes:** supply actual question/scenario/answer data and scoring before enabling assessment. Passing quizzes will unlock dependent IQ/passing/defense nodes; no workaround grants those completions now.
-- **Placement:** supplied helper is preserved and tested. Onboarding still uses familiarity only to prioritize lessons; it does not turn self-report into mastery. Wiring the new 1-10 tier-skip placement requires a distinct `placedOut` persisted field and UI state, never fake completion or XP.
-- **Services:** profiles/progress are local AsyncStorage. Account sync, server assessment validation, authoritative reward/badge tracking, and actual camera analysis are not connected. Source XP/badge definitions remain intact but no invented streak/XP is displayed.
+- Physical iOS/Android camera permissions, recording/replay, interruptions and gesture feel require device testing. Exports check bundle compatibility, not device execution or measured native frame rate. Custom development builds need rebuilding for the added camera/video modules and permission configuration.
+- Vision analysis, upload, authentic feedback/scoring, and verified progress writes need the teammate adapter. Blank quizzes can still block later prerequisites until their content/scoring are supplied.
+- Placement is a conservative global experience estimate across tracks. Per-track assessment can replace that mapping through the existing seam without changing the source rules.
+- Live YouTube availability/playback, app/store identity, and publication privacy/terms remain external/device checks.
+- `npm audit --omit=dev` still reports the existing three moderate findings through Expo/fingerprint/minimatch. No newly added camera/video package is named; the suggested Expo downgrade is incompatible and was not applied.
 
-## Known limits
+### Current validation status at commit
 
-The diagrams are shared instructional schematics; 273 unlicensed video-frame image slots are deliberately not reused as photos. All videos are supplied picks, not independently certified to remain available or correct. A web iframe may show YouTube's own blocked/removed state; manual alternate and external controls remain available. Gesture performance and motion feel need a release build on a real, slower device. Small-screen tree labels reduce at overview scale and search/list view remain available for precise access.
-
-`npm audit --omit=dev` reports three moderate transitive findings through the existing Expo/fingerprint/minimatch chain. Its suggested change is an incompatible Expo downgrade; no forced downgrade or unrelated dependency migration was applied. No newly added icon/player package was named in that report.
+TypeScript, lint, Expo dependency compatibility, pure learning/frontend checks, and web/iOS/Android exports passed before the local dependency repair. The initial revised browser flow passed with a deterministic synthetic camera, including recording/replay/retake and denied permission. The subsequently expanded final regression run did not complete successfully; its additional gesture-transition, automatic-stop and navigation-cleanup assertions still need investigation. Native device testing remains outstanding. Do not read the coverage list above as a claim that the expanded final run passed.

@@ -40,6 +40,8 @@ import Pause from "lucide-react-native/icons/pause";
 import CircleCheck from "lucide-react-native/icons/circle-check";
 import Trophy from "lucide-react-native/icons/trophy";
 import BookOpen from "lucide-react-native/icons/book-open";
+import Camera from "lucide-react-native/icons/camera";
+import FlipHorizontal2 from "lucide-react-native/icons/flip-horizontal-2";
 import Flame from "lucide-react-native/icons/flame";
 import Svg, { Circle, Path } from "react-native-svg";
 import type { PropsWithChildren } from "react";
@@ -139,6 +141,8 @@ const iconSet = {
   trophy: Trophy,
   book: BookOpen,
   flame: Flame,
+  camera: Camera,
+  flip: FlipHorizontal2,
 } as const;
 export type IconName = keyof typeof iconSet;
 /** One open-source native SVG icon family throughout the app. */
