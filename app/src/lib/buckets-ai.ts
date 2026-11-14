@@ -7,7 +7,13 @@ import type { SkillNode } from "@/lib/hooptree/skillTree";
 
 export type ChatMessage = { role: "user" | "buckets"; text: string };
 
-const API_URL = (process.env.EXPO_PUBLIC_BUCKETS_API_URL ?? "").replace(/\/+$/, "");
+// The deployed proxy URL is public (the Gemini key is NOT here — it lives in
+// Cloudflare). Set EXPO_PUBLIC_BUCKETS_API_URL in app/.env.local to point at a
+// local proxy (http://<your-ip>:8787) while working on it.
+const DEFAULT_API_URL = "https://buckets-proxy.bucketsapp-dev.workers.dev";
+const API_URL = (
+  process.env.EXPO_PUBLIC_BUCKETS_API_URL || DEFAULT_API_URL
+).replace(/\/+$/, "");
 const HISTORY_LIMIT = 10;
 
 export const isBucketsConfigured = API_URL.length > 0;
@@ -21,7 +27,7 @@ export async function askBuckets(
 ): Promise<string> {
   if (!isBucketsConfigured)
     throw new BucketsError(
-      "Coach is offline — set EXPO_PUBLIC_BUCKETS_API_URL in app/.env.local.",
+      "Coach is offline — no Buckets server URL is configured.",
     );
 
   let res: Response;
