@@ -1,5 +1,21 @@
 # Vision handoff for the app
 
+## Update: practice camera is connected (branch vision/replay-overlay)
+The practice recorder now grades with the vision server and shows the annotated replay.
+
+| File | Change |
+|---|---|
+| `src/app/practice/[id].tsx` | Passes `service={serverVisionService}` to `PracticeRecorder` (your existing seam). |
+| `src/components/practice-recorder.tsx` | **Review phase only; recording is unchanged.** The player is edge to edge and about 70% of the screen height. While analyzing, an "Analyzing your shot…" overlay sits over the video. With a server report the player switches to the annotated replay (autoplay, loop, falling back to the clip if the replay fails), then shows `VisionReportView` with **Continue** (passed, goes back) and **Try again** (retake). Without a report (no server, or skill not gradable) the UI is exactly as before, with "Analysis not connected" and "Record again". The footer says clips are uploaded only when the server is in use. |
+| `src/components/recording-review.tsx` + `.web.tsx` | Fill their parent instead of 350 px. New optional `autoPlay`, `loop`, `onError` and `label` props. |
+| `src/lib/vision-service.ts` | Type only: optional `report?: VisionReport` on the `assessed` result. The default `visionService` is unchanged (still "unavailable"). |
+| `src/lib/vision.ts` | `serverVisionService` (implements `VisionService`), `replayUri`, `formatTarget`, abort support, web uploads. |
+| `src/components/vision-assessment.tsx` | `VisionReportView` (verdict, one row per check with value / target / ✓✗, coaching tips). |
+
+**Nothing is saved:** passing does not complete the skill yet; see section 5 for the change needed to save "vision" completions.
+
+**Server:** `/analyze` now also returns `replay_url` (`/replays/<attempt_id>.mp4`, H.264, 960 px, about 1 MB for a 5 s clip), or `null` if the replay couldn't be rendered. A 5 s 720p clip takes about 8.5 s in total (5.7 s grading + 2.8 s replay).
+
 The vision server can grade 4 skills now. This branch adds **two new files and changes nothing else in app/**. Wiring them into screens, recording, and saving progress are yours to decide; below is everything you need.
 
 | File | What it is |
@@ -28,7 +44,7 @@ Each entry has `{ spec, name, setup: { stand, camera, camera_tip }, criteria, mi
 import { analyzeSkill, VisionError } from "@/lib/vision";
 
 try {
-  const result = await analyzeSkill(node.id, uri);                 // iPhone .mov
+  const report = await analyzeSkill(node.id, uri);                 // iPhone .mov
   // await analyzeSkill(node.id, uri, { mimeType: "video/mp4" });  // other formats
 } catch (e) {
   if (e instanceof VisionError) e.kind; // "not_configured" | "offline" | "timeout" | "bad_video" | "server"
@@ -50,6 +66,7 @@ try {
   analyzed_at: string,        // ISO 8601 UTC
   metrics: [{ name, label, value: number | null, unit: "deg" | "s" | "bool", target: [lo, hi], ok }],
   feedback: string[],         // coaching lines, one per failed check (or one success line)
+  replay_url: string | null,  // "/replays/<attempt_id>.mp4"; full URL via replayUri(report)
   debug: {...}                // for the vision side; ignore it
 }
 ```

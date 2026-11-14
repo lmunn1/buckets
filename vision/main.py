@@ -2,8 +2,10 @@
 
 Run from vision/:  uvicorn main:app --host 0.0.0.0 --port 8000
 """
+import glob
 import json
 import os
+import re
 import tempfile
 import time
 import uuid
@@ -11,7 +13,9 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
+import debug_video
 import engine
 from pose import extract
 
@@ -21,6 +25,8 @@ ALIASES_PATH = os.path.join(HERE, "skill_ids.json")
 MODEL_PATH = os.path.join(HERE, "models", "pose_landmarker_full.task")
 SPEC_ALIASES = {"jump_shot": "shoot_form"}
 NO_CHECK = "No vision check for this skill yet."
+REPLAY_DIR = os.path.join(HERE, "replays")  # annotated replays, gitignored
+KEEP_REPLAYS = 50
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -118,7 +124,7 @@ def analyze(video: UploadFile = File(...), skill_id: str = Form(...), hand: str 
     spec_name, _ = resolve(skill_id)
     if spec_name is None:
         return {"graded": False, "spec": None, "passed": False, "score": 0.0,
-                "metrics": [], "feedback": [NO_CHECK], "debug": {}, **meta}
+                "metrics": [], "feedback": [NO_CHECK], "replay_url": None, "debug": {}, **meta}
     try:
         spec = get_spec(spec_name)
     except engine.SpecError as e:
@@ -136,8 +142,44 @@ def analyze(video: UploadFile = File(...), skill_id: str = Form(...), hand: str 
             raise HTTPException(400, f"Couldn't read the video: {e}")
         extracted = time.monotonic()
         result = engine.analyze(spec, frames, fps=fps, hand=hand)
+        graded = time.monotonic()
+        replay_url = make_replay(path, frames, fps, spec, result, hand, meta["attempt_id"])
     finally:
         os.remove(path)
     result["debug"]["timing_s"] = {"extract": round(extracted - started, 2),
+                                   "replay": round(time.monotonic() - graded, 2),
                                    "total": round(time.monotonic() - started, 2)}
-    return {"graded": True, "spec": spec_name, **result, **meta}
+    return {"graded": True, "spec": spec_name, **result, "replay_url": replay_url, **meta}
+
+
+def make_replay(path, frames, fps, spec, result, hand, attempt_id):
+    """Render the annotated replay; returns its URL path, or None if rendering failed.
+    A failed replay never fails the grade."""
+    os.makedirs(REPLAY_DIR, exist_ok=True)
+    out = os.path.join(REPLAY_DIR, f"{attempt_id}.mp4")
+    try:
+        codec = debug_video.render(path, frames, fps, spec, result, hand, out)
+        result["debug"]["replay_codec"] = codec
+    except Exception as e:  # noqa: BLE001 - report any render failure, keep the grade
+        result["debug"]["replay_error"] = f"{type(e).__name__}: {e}"
+        if os.path.exists(out):
+            os.remove(out)
+        return None
+    prune_replays()
+    return f"/replays/{attempt_id}.mp4"
+
+
+def prune_replays():
+    files = sorted(glob.glob(os.path.join(REPLAY_DIR, "*.mp4")), key=os.path.getmtime, reverse=True)
+    for old in files[KEEP_REPLAYS:]:
+        os.remove(old)
+
+
+@app.get("/replays/{attempt_id}.mp4")
+def replay(attempt_id: str):
+    if not re.fullmatch(r"[0-9a-f]{32}", attempt_id):
+        raise HTTPException(404, "No such replay")
+    path = os.path.join(REPLAY_DIR, f"{attempt_id}.mp4")
+    if not os.path.exists(path):
+        raise HTTPException(404, "No such replay")
+    return FileResponse(path, media_type="video/mp4")

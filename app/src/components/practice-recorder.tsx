@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AppState, Platform, View } from "react-native";
-import { useFocusEffect, useIsFocused } from "expo-router";
+import {
+  ActivityIndicator,
+  AppState,
+  Platform,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { useFocusEffect, useIsFocused, useRouter } from "expo-router";
 import { Action, Copy, ErrorNotice, Icon, palette, ui } from "./hoop-ui";
 import { CaptureSurface } from "./capture-surface";
 import { RecordingReview } from "./recording-review";
+import { VisionReportView } from "./vision-assessment";
+import { Spacing } from "@/constants/theme";
+import { replayUri, VisionError, type VisionReport } from "@/lib/vision";
 import type { CaptureHandle } from "./capture-types";
 import {
   countdownRemaining,
@@ -44,6 +53,12 @@ export function PracticeRecorder({
   const [message, setMessage] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [assessed, setAssessed] = useState(false);
+  // Vision server result: shown as UI, and its annotated replay replaces the clip.
+  const [report, setReport] = useState<VisionReport | null>(null);
+  const [replayFailed, setReplayFailed] = useState(false);
+  const onReplayError = useCallback(() => setReplayFailed(true), []);
+  const router = useRouter();
+  const { height: screenHeight } = useWindowDimensions();
   const session = useRef(0);
   const clock = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const abort = useRef<AbortController | null>(null);
@@ -167,6 +182,8 @@ export function PracticeRecorder({
     setError(null);
     setReady(false);
     setAssessed(false);
+    setReport(null);
+    setReplayFailed(false);
   };
   const assess = async () => {
     if (!clip || analyzing) return;
@@ -189,6 +206,8 @@ export function PracticeRecorder({
       );
       if (!controller.signal.aborted) {
         setAssessed(result.status === "assessed");
+        setReport(result.status === "assessed" ? (result.report ?? null) : null);
+        setReplayFailed(false);
         setMessage(
           result.status === "unavailable"
             ? result.message
@@ -196,15 +215,20 @@ export function PracticeRecorder({
         );
       }
       // Persist verified completion only after the teammate's result validation is connected.
-    } catch {
+    } catch (e) {
       if (!controller.signal.aborted)
         setError(
-          "Analysis could not finish. Your recording is still here; try again.",
+          e instanceof VisionError
+            ? `${e.message} Your recording is still here; try again.`
+            : "Analysis could not finish. Your recording is still here; try again.",
         );
     } finally {
       if (!controller.signal.aborted) setAnalyzing(false);
     }
   };
+  const reviewing = phase === "review" && !!clip;
+  const replay = report ? replayUri(report) : null;
+  const showingReplay = !!replay && !replayFailed;
   return (
     <View style={{ gap: 16 }}>
       <View style={[ui.row, { justifyContent: "space-between" }]}>
@@ -220,21 +244,45 @@ export function PracticeRecorder({
       </View>
       <Copy muted>
         {phase === "review"
-          ? "Replay your attempt or record another. Technique analysis will connect here."
+          ? showingReplay
+            ? "Your annotated replay: green checks passed, red ones need work."
+            : "Replay your attempt or record another. Technique analysis will connect here."
           : "Prop your phone up so your whole body and the ball are in frame. Press Start, then take 10 seconds to get into position."}
       </Copy>
       <View
-        style={{
-          height: 350,
-          borderRadius: 20,
-          overflow: "hidden",
-          backgroundColor: palette.backgroundElement,
-          borderWidth: 1,
-          borderColor: phase === "recording" ? palette.accent : palette.border,
-        }}
+        style={
+          reviewing
+            ? {
+                // Review takes over the screen: edge to edge, most of the height.
+                height: Math.max(350, Math.round(screenHeight * 0.7)),
+                marginHorizontal: -Spacing.four,
+                overflow: "hidden",
+                backgroundColor: "#08090B",
+              }
+            : {
+                height: 350,
+                borderRadius: 20,
+                overflow: "hidden",
+                backgroundColor: palette.backgroundElement,
+                borderWidth: 1,
+                borderColor:
+                  phase === "recording" ? palette.accent : palette.border,
+              }
+        }
       >
-        {phase === "review" && clip ? (
-          <RecordingReview uri={clip.uri} />
+        {reviewing ? (
+          replay && !replayFailed ? (
+            <RecordingReview
+              key={replay}
+              uri={replay}
+              autoPlay
+              loop
+              onError={onReplayError}
+              label="Annotated replay of your practice"
+            />
+          ) : (
+            <RecordingReview key={clip.uri} uri={clip.uri} />
+          )
         ) : (
           focused &&
           appActive && (
@@ -246,6 +294,45 @@ export function PracticeRecorder({
               onError={onError}
             />
           )
+        )}
+        {reviewing && analyzing && (
+          <View
+            pointerEvents="none"
+            accessibilityLiveRegion="polite"
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "#000B",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 14,
+              padding: 24,
+            }}
+          >
+            <ActivityIndicator size="large" color={palette.accent} />
+            <Copy kind="heading">Analyzing your shot…</Copy>
+            <Copy muted style={{ textAlign: "center" }}>
+              Checking your form and building your replay. About 10 seconds.
+            </Copy>
+          </View>
+        )}
+        {showingReplay && (
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              top: 16,
+              left: 16,
+              paddingVertical: 6,
+              paddingHorizontal: 10,
+              borderRadius: 8,
+              backgroundColor: "#000B",
+            }}
+          >
+            <Copy kind="eyebrow" style={{ color: palette.accent }}>
+              REPLAY
+            </Copy>
+          </View>
         )}
         {phase === "countdown" && (
           <View
@@ -296,6 +383,13 @@ export function PracticeRecorder({
         )}
       </View>
       <ErrorNotice message={error} />
+      {report && replay && replayFailed && (
+        <Copy kind="caption" muted>
+          The annotated replay could not load, so this is your original clip.
+          Your grade below is unaffected.
+        </Copy>
+      )}
+      {report && <VisionReportView report={report} />}
       {phase === "prepare" && (
         <>
           <Action
@@ -329,7 +423,20 @@ export function PracticeRecorder({
           <Action label="Discard recording" variant="quiet" onPress={cancel} />
         </>
       )}
-      {phase === "review" && (
+      {phase === "review" && report && (
+        <>
+          {report.passed && (
+            <Action label="Continue" icon="check" onPress={() => router.back()} />
+          )}
+          <Action
+            label="Try again"
+            icon="refresh"
+            variant={report.passed ? "secondary" : "primary"}
+            onPress={retake}
+          />
+        </>
+      )}
+      {phase === "review" && !report && (
         <>
           <Action
             label={
@@ -356,14 +463,15 @@ export function PracticeRecorder({
           </Copy>
         </>
       )}
-      {message && (
+      {message && !report && (
         <View style={[ui.panel, { padding: 18 }]}>
           <Copy>{message}</Copy>
         </View>
       )}
       <Copy kind="caption" muted>
-        Recording does not unlock skills. Video is temporary and is not
-        uploaded. Vision assessment will be added by the team.
+        {service === visionService
+          ? "Recording does not unlock skills. Video is temporary and is not uploaded. Vision assessment will be added by the team."
+          : "Recording does not unlock skills. Check my technique uploads this clip to the Buckets vision server for grading; it is not saved to your progress."}
       </Copy>
     </View>
   );

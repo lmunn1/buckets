@@ -11,15 +11,21 @@ What it draws:
 - A label at each rule's judged frame (green = passed, red = failed) and at each moment
 - Slow motion around the spec's first moment, a freeze at each judged frame
 - Scorecard at the end
+
+Output is H.264 (playable on iPhones) at the resolution the grader used
+(pose.MAX_SIDE on the long side), with the index moved to the front of the
+file (faststart) when ffmpeg is installed so phones can stream it.
 """
 import argparse
 import math
 import os
+import shutil
+import subprocess
 
 import cv2
 
 import engine
-from pose import extract
+from pose import MAX_SIDE, extract
 
 GREEN = (90, 220, 120)
 RED = (80, 80, 240)
@@ -126,10 +132,10 @@ def render(path, frames, fps, spec, result, hand, out_path):
         slow_lo = slow_hi = -1
 
     cap = cv2.VideoCapture(path)
-    w, h = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    w, h = output_size(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
     aspect = w / h
     scale = max(0.6, min(w, h) / 1080 * 1.4)
-    out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+    out, codec = open_writer(out_path, fps, (w, h))
     side_ids = {S[k] for k in ("shoulder", "elbow", "wrist", "hip", "knee", "ankle")}
     trail, last, i = [], None, 0
 
@@ -137,6 +143,8 @@ def render(path, frames, fps, spec, result, hand, out_path):
         ok, img = cap.read()
         if not ok:
             break
+        if img.shape[1] != w or img.shape[0] != h:
+            img = cv2.resize(img, (w, h), interpolation=cv2.INTER_AREA)
         f = frames[i] if i < len(frames) else None
         if f is not None:
             px = lambda idx: (int(f[idx].x / aspect * w), int(f[idx].y * h))
@@ -178,6 +186,39 @@ def render(path, frames, fps, spec, result, hand, out_path):
     if last is not None:
         write_scorecard(out, last, w, h, scale, fps, result)
     out.release()
+    faststart(out_path)
+    return codec
+
+
+def output_size(w, h, max_side=MAX_SIDE):
+    """Same scale as pose.downscale, rounded down to even numbers (H.264 needs them)."""
+    s = min(1.0, max_side / max(w, h))
+    return int(w * s) // 2 * 2, int(h * s) // 2 * 2
+
+
+def open_writer(out_path, fps, size):
+    """H.264 (avc1) when this OpenCV build supports it, else MPEG-4 (not playable on iPhones)."""
+    for code in ("avc1", "mp4v"):
+        out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*code), fps, size)
+        if out.isOpened():
+            return out, code
+        out.release()
+    raise RuntimeError(f"Could not open a video writer for {out_path}")
+
+
+def faststart(path):
+    """Move the MP4 index to the front so players can start before the download ends.
+    Needs ffmpeg; without it the file is left as is (it still plays once downloaded)."""
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        return
+    tmp = path + ".faststart.mp4"
+    done = subprocess.run([ffmpeg, "-loglevel", "error", "-y", "-i", path, "-c", "copy",
+                           "-movflags", "+faststart", tmp], capture_output=True)
+    if done.returncode == 0:
+        os.replace(tmp, path)
+    elif os.path.exists(tmp):
+        os.remove(tmp)
 
 
 def write_scorecard(out, last, w, h, scale, fps, result):
@@ -227,8 +268,8 @@ def main():
     frames, fps = extract(args.path)
     result = engine.analyze(spec, frames, fps=fps, hand=args.hand)
     out_path = f"{os.path.splitext(args.path)[0]}_{args.spec}_debug.mp4"
-    render(args.path, frames, fps, spec, result, args.hand, out_path)
-    print(f"Wrote {out_path}")
+    codec = render(args.path, frames, fps, spec, result, args.hand, out_path)
+    print(f"Wrote {out_path} ({codec})")
 
 
 if __name__ == "__main__":

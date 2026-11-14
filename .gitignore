@@ -20,3 +20,4 @@ vision/models/
 vision/clips/
 __pycache__/
 .pytest_cache/
+vision/replays/

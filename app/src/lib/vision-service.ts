@@ -1,3 +1,4 @@
+import type { VisionReport } from "./vision";
 /** Local capture contract. Never put video bytes or temporary URIs in player progress. */
 export type PracticeRecording = {
   uri: string;
@@ -21,6 +22,8 @@ export type VisionResult =
       passed: boolean;
       feedback: string[];
       assessmentId: string;
+      /** Full server report (checks, targets, replay) when graded by lib/vision.ts. */
+      report?: VisionReport;
     };
 export interface VisionService {
   assess(request: VisionRequest, signal: AbortSignal): Promise<VisionResult>;

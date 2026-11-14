@@ -6,6 +6,7 @@ import { PracticeRecorder } from "@/components/practice-recorder";
 import { DemoAssessment } from "@/components/demo-assessment";
 import { isQuiz, skillState } from "@/lib/learning-service";
 import { usePlayer } from "@/lib/player-store";
+import { serverVisionService } from "@/lib/vision";
 export default function PracticeCapture() {
   const node = useSkill();
   const { player } = usePlayer();
@@ -23,7 +24,7 @@ export default function PracticeCapture() {
     );
   return (
     <LessonShell title={node.name}>
-      {demo ? <DemoAssessment node={node} /> : <PracticeRecorder node={node} />}
+      {demo ? <DemoAssessment node={node} /> : <PracticeRecorder node={node} service={serverVisionService} />}
       <View style={{ marginTop: 28 }}>
         <Action
           label={

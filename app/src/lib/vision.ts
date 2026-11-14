@@ -4,10 +4,11 @@
  * Set EXPO_PUBLIC_VISION_URL in app/.env, e.g. http://192.168.1.20:8000
  * (your laptop's LAN IP, not localhost: the phone has to reach it).
  * Nothing here fakes a result: if the server can't be reached, callers get a
- * VisionError and decide what to show.
+ * VisionError (or an "unavailable" result from serverVisionService).
  */
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
+import { visionService, type VisionService } from "./vision-service";
 
 const BASE = (process.env.EXPO_PUBLIC_VISION_URL ?? "").trim().replace(/\/+$/, "");
 const LIST_TIMEOUT_MS = 5_000;
@@ -22,7 +23,8 @@ export type VisionMetric = {
   ok: boolean;
 };
 
-export type VisionResult = {
+/** The server's grade for one upload (POST /analyze). */
+export type VisionReport = {
   graded: boolean;
   passed: boolean;
   score: number;
@@ -32,6 +34,8 @@ export type VisionResult = {
   analyzed_at: string;
   metrics: VisionMetric[];
   feedback: string[];
+  /** Server path of the annotated replay ("/replays/<id>.mp4"), null if it couldn't be rendered. */
+  replay_url: string | null;
 };
 
 export type GradableSkill = {
@@ -46,6 +50,7 @@ export type VisionErrorKind =
   | "not_configured"
   | "offline"
   | "timeout"
+  | "cancelled"
   | "bad_video"
   | "server";
 
@@ -60,19 +65,31 @@ export class VisionError extends Error {
 
 export const visionConfigured = () => BASE.length > 0;
 
-async function request(path: string, init: RequestInit, timeoutMs: number) {
+/** Full URL of a report's annotated replay, or null. */
+export const replayUri = (report: VisionReport) =>
+  report.replay_url && BASE ? `${BASE}${report.replay_url}` : null;
+
+async function request(
+  path: string,
+  init: RequestInit,
+  timeoutMs: number,
+  signal?: AbortSignal,
+) {
   if (!BASE)
     throw new VisionError(
       "not_configured",
       "The vision server address isn't set (EXPO_PUBLIC_VISION_URL).",
     );
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  const forward = () => controller.abort();
+  signal?.addEventListener("abort", forward);
   try {
-    const res = await fetch(`${BASE}${path}`, {
-      ...init,
-      signal: controller.signal,
-    });
+    const res = await fetch(`${BASE}${path}`, { ...init, signal: controller.signal });
     if (!res.ok) {
       const body = await res.json().catch(() => null);
       const detail = typeof body?.detail === "string" ? body.detail : "";
@@ -84,11 +101,16 @@ async function request(path: string, init: RequestInit, timeoutMs: number) {
     return await res.json();
   } catch (e) {
     if (e instanceof VisionError) throw e;
-    if (controller.signal.aborted)
+    if (timedOut)
       throw new VisionError("timeout", "The vision server took too long to answer.");
-    throw new VisionError("offline", "Can't reach the vision server.");
+    if (signal?.aborted) throw new VisionError("cancelled", "Analysis was cancelled.");
+    throw new VisionError(
+      "offline",
+      "Can't reach the vision server. Check that it's running and on the same Wi-Fi.",
+    );
   } finally {
     clearTimeout(timer);
+    signal?.removeEventListener("abort", forward);
   }
 }
 
@@ -108,29 +130,31 @@ export type AnalyzeOptions = {
   /** e.g. "video/mp4"; defaults to video/quicktime (iPhone .mov). */
   mimeType?: string | null;
   fileName?: string | null;
-  /** Web only: the File from an <input> or picker, used instead of the uri. */
+  /** Web only: the File to upload instead of reading the uri. */
   file?: File;
   /** Shooting hand. "auto" picks the arm facing the camera. */
   hand?: "auto" | "left" | "right";
+  /** Abort the upload / analysis. */
+  signal?: AbortSignal;
 };
 
 /**
  * Upload a clip for one skill and get the graded result.
  * skillId is the app's skill id (e.g. "sh-beef"); uri is a local video file uri
- * (e.g. from expo-image-picker or expo-camera).
+ * (expo-camera, expo-image-picker) or, on web, a blob: URL.
  */
 export async function analyzeSkill(
   skillId: string,
   uri: string,
   options: AnalyzeOptions = {},
-): Promise<VisionResult> {
-  const { mimeType, fileName, file, hand = "auto" } = options;
+): Promise<VisionReport> {
+  const { mimeType, fileName, file, hand = "auto", signal } = options;
+  const type = mimeType ?? "video/quicktime";
+  const name = fileName ?? (type.includes("mp4") ? "clip.mp4" : type.includes("webm") ? "clip.webm" : "clip.mov");
   const form = new FormData();
-  if (Platform.OS === "web" && file) {
-    form.append("video", file);
+  if (Platform.OS === "web") {
+    form.append("video", file ?? (await (await fetch(uri)).blob()), name);
   } else {
-    const type = mimeType ?? "video/quicktime";
-    const name = fileName ?? (type.includes("mp4") ? "clip.mp4" : "clip.mov");
     // React Native's FormData takes a { uri, name, type } object for files.
     form.append("video", { uri, name, type } as unknown as Blob);
   }
@@ -140,8 +164,40 @@ export async function analyzeSkill(
     "/analyze",
     { method: "POST", body: form },
     ANALYZE_TIMEOUT_MS,
-  )) as VisionResult;
+    signal,
+  )) as VisionReport;
 }
+
+/**
+ * VisionService (lib/vision-service.ts) backed by this server. Skills without a
+ * camera check, or no server configured, get the same "unavailable" result as
+ * the default adapter. Graded results carry the full report.
+ */
+export const serverVisionService: VisionService = {
+  async assess(request, signal) {
+    if (!visionConfigured()) return visionService.assess(request, signal);
+    const gradable = await getGradableSkills();
+    if (!gradable[request.skillId])
+      return {
+        status: "unavailable",
+        message:
+          "Your video is recorded. This skill doesn't have a camera check yet; no skill has been marked complete.",
+      };
+    const report = await analyzeSkill(request.skillId, request.recording.uri, {
+      mimeType: request.recording.mimeType,
+      signal,
+    });
+    if (!report.graded)
+      return { status: "unavailable", message: report.feedback.join("\n") };
+    return {
+      status: "assessed",
+      passed: report.passed,
+      feedback: report.feedback,
+      assessmentId: report.attempt_id,
+      report,
+    };
+  },
+};
 
 export type GradableState =
   | { status: "loading" }
@@ -187,4 +243,15 @@ export function formatMetric(m: VisionMetric) {
   if (m.unit === "s") return `${m.value.toFixed(2)} s`;
   if (m.unit === "bool") return m.value ? "yes" : "no";
   return `${Math.round(m.value)}°`;
+}
+
+/** Human-readable target range, e.g. "90–140°", "at least 0.30 s", "yes". */
+export function formatTarget(m: VisionMetric) {
+  const [lo, hi] = m.target;
+  if (m.unit === "bool") return hi >= 1 && lo >= 1 ? "yes" : "no";
+  const unit = m.unit === "s" ? " s" : "°";
+  const fmt = (v: number) => (m.unit === "s" ? v.toFixed(2) : String(Math.round(v)));
+  if (m.unit === "s" && hi >= 60) return `at least ${fmt(lo)}${unit}`;
+  if (lo <= 0) return `at most ${fmt(hi)}${unit}`;
+  return `${fmt(lo)}–${fmt(hi)}${unit}`;
 }
