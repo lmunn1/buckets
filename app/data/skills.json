@@ -1,0 +1,14 @@
+[
+  { "id": "shoot_form", "name": "Shooting form", "category": "shooting", "level": "beginner",
+    "prerequisites": [],
+    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
+    "completion": { "type": "vision", "spec": "jump_shot", "criteria": "" } },
+  { "id": "dribble_stationary", "name": "Stationary dribbling", "category": "dribbling", "level": "beginner",
+    "prerequisites": [],
+    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
+    "completion": { "type": "tally", "spec": null, "criteria": "" } },
+  { "id": "step_back", "name": "Step-back", "category": "moves", "level": "intermediate",
+    "prerequisites": ["shoot_form", "dribble_stationary"],
+    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
+    "completion": { "type": "vision", "spec": "step_back", "criteria": "" } }
+]
