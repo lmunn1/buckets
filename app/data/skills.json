@@ -1,14 +1,4185 @@
 [
-  { "id": "shoot_form", "name": "Shooting form", "category": "shooting", "level": "beginner",
+  {
+    "id": "foot_triple_threat",
+    "name": "Triple Threat",
+    "category": "footwork",
+    "level": 1,
     "prerequisites": [],
-    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
-    "completion": { "type": "vision", "spec": "jump_shot", "criteria": "" } },
-  { "id": "dribble_stationary", "name": "Stationary dribbling", "category": "dribbling", "level": "beginner",
+    "lesson": {
+      "summary": "A balanced, low stance with the ball at your hip so you can shoot, pass or drive.",
+      "steps": [
+        "Feet a bit wider than your shoulders, toes pointing forward.",
+        "Bend your knees and sit your hips back like you're about to sit in a chair. Chest up.",
+        "Hold the ball at your hip on your shooting side, both hands on it, elbows out a little to protect it.",
+        "Weight on the balls of your feet, not your heels."
+      ],
+      "practice": "Hold triple threat for 10 seconds, stand up, repeat 10 times. Then 10 self-toss catches landing in triple threat.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Feet a bit wider than shoulders, knees bent with hips sat back, chest up, ball held at the shooting-side hip with both hands, weight on the balls of the feet. Held still for 10 seconds.",
+      "mistakes": [
+        "Standing straight with locked knees",
+        "Ball held out in front of the body",
+        "Weight back on the heels"
+      ]
+    }
+  },
+  {
+    "id": "foot_jump_stop",
+    "name": "Jump Stop",
+    "category": "footwork",
+    "level": 1,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Stop under control on both feet at once so either foot can be your pivot.",
+      "steps": [
+        "Jog forward a few steps.",
+        "Take a small, low hop off one foot.",
+        "Land on BOTH feet at the same time, shoulder-width apart, knees bent.",
+        "Freeze in balance for one second."
+      ],
+      "practice": "10 jump stops jogging, 10 at half speed, 10 off a self-pass.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a few steps of room. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone facing you about 15 ft away and jog toward it, so both feet are in frame when you land."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Small, low hop; both feet land at the same time about shoulder-width apart; knees bent on landing; body holds still for one second without stepping or tipping forward.",
+      "mistakes": [
+        "One foot lands before the other",
+        "Stiff legs on landing",
+        "Stepping or falling forward after the stop"
+      ]
+    }
+  },
+  {
+    "id": "foot_pivots",
+    "name": "Front & Reverse Pivots",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_jump_stop"
+    ],
+    "lesson": {
+      "summary": "Turn on one planted foot to face the rim, escape pressure or open a pass, without traveling.",
+      "steps": [
+        "Start from a jump stop with the ball in triple threat.",
+        "Front pivot: keep the ball of your left foot down and step forward with your right, turning chest-first.",
+        "Reverse pivot: keep the left foot down and swing the right foot backward, turning back-first.",
+        "Switch pivot feet and repeat."
+      ],
+      "practice": "10 front and 10 reverse pivots on each foot (40 total), then 10 pivot-and-pass to a wall.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball of the pivot foot stays on the same spot with the heel up; the free foot swings at least a quarter turn forward (front) or backward (reverse); hips stay low through the turn; ball stays tight to the chest or hip.",
+      "mistakes": [
+        "Pivot foot slides or lifts",
+        "Standing up tall during the turn",
+        "Waving the ball away from the body"
+      ]
+    }
+  },
+  {
+    "id": "foot_jab_step",
+    "name": "Jab Step",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "A short, sharp step at the defender to make them react.",
+      "steps": [
+        "From triple threat, pick your pivot foot (usually the foot opposite your shooting hand).",
+        "Take a quick 6 to 8 inch step straight at the defender with your other foot.",
+        "Keep your head and shoulders level and the ball protected at your hip.",
+        "Bring the foot back to triple threat, or explode past if the defender doesn't move."
+      ],
+      "practice": "3 x 10 jab steps on each side: straight jab, jab-and-go, jab-and-shoot motion.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "From triple threat, the free foot steps 6-8 inches straight ahead and comes back; pivot foot stays planted; knees stay bent and head stays level; ball stays at the hip.",
+      "mistakes": [
+        "Huge jab that leaves you off balance",
+        "Pivot foot moves",
+        "Ball swings away from the body",
+        "Standing up on the jab"
+      ]
+    }
+  },
+  {
+    "id": "foot_agility_hops",
+    "name": "Agility Footwork",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Quick hops over a line to build fast, light, coordinated feet.",
+      "steps": [
+        "Find a line on the floor.",
+        "Forward-back 1-2 hops over the line for 10 seconds, left foot leading, then right.",
+        "Side-to-side 1-2 hops for 10 seconds.",
+        "Combo hops: two on the left foot, two on both feet, two on the right foot, two on both feet."
+      ],
+      "practice": "3 rounds of each hop pattern for 20 seconds, resting 30 seconds between.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a line on the floor (tape works). No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hops land on the balls of the feet with knees slightly bent and soft, quiet landings; follows the called pattern over the line for the full 20 seconds without stopping.",
+      "mistakes": [
+        "Landing flat-footed and loud",
+        "Stiff knees on landing",
+        "Losing the pattern or stopping"
+      ]
+    }
+  },
+  {
+    "id": "foot_core_mobility",
+    "name": "Core & Mobility",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "A no-hoop circuit for a strong, mobile core that keeps you balanced.",
+      "steps": [
+        "Plank holds with alternating leg extensions.",
+        "Russian twists while holding the ball.",
+        "Split squats with the ball passing between your legs.",
+        "Finish with yoga poses: downward dog, warrior 1, pigeon lunge."
+      ],
+      "practice": "One circuit: 30 s plank, 20 Russian twists, 10 split squats each leg, 20-30 s per yoga pose. Beginners 1 round, intermediate 2, advanced 3.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with floor space for a plank. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Plank with shoulders, hips and ankles in one straight line for 30 seconds; Russian twists touch the ball to each side; split squats drop the back knee close to the floor with the front knee over the ankle.",
+      "mistakes": [
+        "Hips sagging or piked up in the plank",
+        "Front knee caving in on split squats",
+        "Rushing the reps"
+      ]
+    }
+  },
+  {
+    "id": "foot_shot_footwork",
+    "name": "Shot Footwork: Hop vs 1-2",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_jump_stop",
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "Land balanced and square to the rim before every shot, using the hop or the 1-2 step.",
+      "steps": [
+        "Hop: toss the ball out ahead of you, hop into the catch, land on both feet squared to the rim.",
+        "1-2 step: toss, catch while planting your inside foot (closest to the rim) first, then your outside foot.",
+        "Rise straight up into your shooting motion. Do both from the left and the right wing."
+      ],
+      "practice": "10 hop catches and 10 1-2 catches from each wing; finish each with a shooting motion.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Either wing of a hoop.",
+      "camera": "front",
+      "camera_tip": "Put the phone under the hoop facing out toward you so your whole body is in frame as you come in."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hop: both feet land together. 1-2: inside foot lands first, then outside foot. Either way, toes and hips face the rim, knees are bent on the catch, and you rise straight up without drifting sideways.",
+      "mistakes": [
+        "Catching flat-footed, then stepping into the shot",
+        "Hips not square to the rim",
+        "Drifting sideways after landing"
+      ]
+    }
+  },
+  {
+    "id": "foot_change_of_pace",
+    "name": "Change of Pace",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_agility_hops"
+    ],
+    "lesson": {
+      "summary": "Go slow, then explode. Speed changes beat defenders more than raw speed.",
+      "steps": [
+        "Jog at 50% speed.",
+        "Plant and explode for 3 hard steps, staying low.",
+        "Throttle back down to 50%.",
+        "Repeat down the court, then add a ball."
+      ],
+      "practice": "4 lengths of the court slow-fast-slow without a ball, then 4 with a dribble.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "On each burst, hips drop and the first step is long and low, then you ease back to a jog. At least 6 clear speed changes per court length.",
+      "mistakes": [
+        "Standing up tall to speed up",
+        "Same speed the whole way"
+      ]
+    }
+  },
+  {
+    "id": "foot_vertical_jump",
+    "name": "Vertical Jump",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_agility_hops",
+      "foot_core_mobility"
+    ],
+    "lesson": {
+      "summary": "A higher, quicker jump for finishing, rebounding and contesting, with safe landings.",
+      "steps": [
+        "Arm-swing jumps: swing both arms back, then up as you jump.",
+        "Lunge then drive up: from a lunge, drive up into a jump.",
+        "Plank kicks and lunging leg switches.",
+        "Always land softly with knees over toes."
+      ],
+      "practice": "2 sets: 20 plank kicks, 10 lunge drive-ups each leg, 20 arm-swing jumps, 20 lunging leg switches, 20 tuck jumps.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with room to jump. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Arms swing back then up on every jump; lands softly on both feet with knees bent and pointing over the toes (not caving inward) on 9 of 10 landings.",
+      "mistakes": [
+        "Knees caving in on landing",
+        "Stiff-legged landings",
+        "No arm swing"
+      ]
+    }
+  },
+  {
+    "id": "drib_ball_feel",
+    "name": "Ball Feel & Grip",
+    "category": "ball_handling",
+    "level": 1,
     "prerequisites": [],
-    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
-    "completion": { "type": "tally", "spec": null, "criteria": "" } },
-  { "id": "step_back", "name": "Step-back", "category": "moves", "level": "intermediate",
-    "prerequisites": ["shoot_form", "dribble_stationary"],
-    "lesson": { "summary": "", "steps": [], "practice": "", "video_long": null, "video_short": null },
-    "completion": { "type": "vision", "spec": "step_back", "criteria": "" } }
+    "lesson": {
+      "summary": "Fingertip control drills that make the ball feel like it's on a string.",
+      "steps": [
+        "Squeeze your fists for 5 seconds (3 times), then spread your fingers wide for 20 seconds.",
+        "Tip the ball back and forth between your fingertips, arms extended.",
+        "Ball slaps: slap the ball hard from hand to hand.",
+        "Squeeze the banana: squeeze the ball from top to bottom as you move it around you.",
+        "Piano: dribble the ball off each finger, thumb to pinky."
+      ],
+      "practice": "30 s fingertip tips, 20 slaps, 10 banana squeezes, piano 10 times per hand.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball controlled with spread fingertips, not the palm, on tips, slaps, banana squeezes and pianos; both hands used; fewer than 3 drops.",
+      "mistakes": [
+        "Palm slapping the ball",
+        "Fingers squeezed together",
+        "Only using the strong hand"
+      ]
+    }
+  },
+  {
+    "id": "drib_pound",
+    "name": "Pound Dribble",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "drib_ball_feel"
+    ],
+    "lesson": {
+      "summary": "Hard, waist-high dribbles with your strong hand: the base of every move.",
+      "steps": [
+        "Get into your athletic stance.",
+        "Dribble with your strong hand at waist height, pushing the ball down hard.",
+        "Use your fingertips and let your wrist snap.",
+        "Keep your eyes up and your off arm out as a shield."
+      ],
+      "practice": "3 x 30 s pound dribbles, strong hand. Count how many you get each round.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Knees bent in stance; strong hand pounds the ball with the fingertips, never higher than the waist; head up looking forward; off arm up as a shield. 40+ dribbles in 30 seconds.",
+      "mistakes": [
+        "Looking down at the ball",
+        "Standing up straight",
+        "Soft palm pats",
+        "Ball bouncing above the waist"
+      ]
+    }
+  },
+  {
+    "id": "drib_weak_hand",
+    "name": "Weak-Hand Dribble",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "drib_pound"
+    ],
+    "lesson": {
+      "summary": "The pound dribble with your weak hand, so you can go anywhere on the court.",
+      "steps": [
+        "Do everything from the pound-dribble lesson with your weak hand.",
+        "Start slower and focus on control before speed.",
+        "Add walking forward and backward while dribbling with your weak hand only."
+      ],
+      "practice": "3 x 30 s weak-hand pounds, then 2 trips up and down the court weak hand only.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Weak hand only: ball at or below the waist, knees bent, head up. 35+ dribbles in 30 seconds without switching hands.",
+      "mistakes": [
+        "Switching to the strong hand",
+        "Ball bouncing too high",
+        "Watching the ball"
+      ]
+    }
+  },
+  {
+    "id": "drib_heights",
+    "name": "Dribble Heights",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_weak_hand"
+    ],
+    "lesson": {
+      "summary": "Dribble low for control in traffic and high for speed, with both hands.",
+      "steps": [
+        "Low dribbles: ball below your knees, quick and tight.",
+        "Knee-high dribbles.",
+        "High dribbles: up to the waist, pounding hard.",
+        "Do 10 of each per hand, then mix them in a pattern."
+      ],
+      "practice": "10 low, 10 knee-high, 10 high per hand (60 total), 2 rounds.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Low dribbles stay below the knee, knee dribbles at the knee, high dribbles at the waist, in the called order with each hand. Hips drop for low dribbles (bend at the knees, not the waist).",
+      "mistakes": [
+        "Bending at the waist instead of the knees",
+        "Every dribble the same height",
+        "Slow hands on low dribbles"
+      ]
+    }
+  },
+  {
+    "id": "drib_eyes_up",
+    "name": "Eyes-Up Dribbling",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_heights"
+    ],
+    "lesson": {
+      "summary": "Dribble without looking at the ball so you can see the floor.",
+      "steps": [
+        "Dribble with one hand while tossing and catching a tennis ball with the other.",
+        "Throw the basketball up, then switch hands and keep dribbling.",
+        "Call out the numbers that flash on your phone screen while dribbling."
+      ],
+      "practice": "1 minute per hand of each tennis-ball drill (from easy underhand toss to off-the-wall).",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. A tennis ball helps.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Head up and chin level, eyes forward (calling out the numbers on screen) while the dribble keeps going for 45 seconds without losing the ball.",
+      "mistakes": [
+        "Peeking down at the ball",
+        "Dribble dies while catching the tennis ball",
+        "Head tilting down"
+      ]
+    }
+  },
+  {
+    "id": "drib_crossover",
+    "name": "Stationary Crossover",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_heights"
+    ],
+    "lesson": {
+      "summary": "Switch the ball hand to hand in front of you, low and quick.",
+      "steps": [
+        "In stance, dribble with your right hand.",
+        "Push the ball low and across in a V shape to your left hand.",
+        "Catch it low with your fingertips, then cross back.",
+        "Keep the bounce below your knees so a defender can't reach it."
+      ],
+      "practice": "20 regular crossovers, 20 high crosses, 20 low crosses. Then 20 ground-touch crossovers.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball crosses hand to hand in a V, bouncing between the feet below knee height; knees stay bent through the switch. 30 clean crossovers in 30 seconds.",
+      "mistakes": [
+        "Wide, high crossover",
+        "Standing up during the switch",
+        "Ball bouncing outside the feet"
+      ]
+    }
+  },
+  {
+    "id": "drib_v_dribbles",
+    "name": "V-Dribbles",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_heights"
+    ],
+    "lesson": {
+      "summary": "Move the ball side-to-side and front-to-back with one hand.",
+      "steps": [
+        "Side-to-side: dribble across your body and back with one hand, ball staying in front of you.",
+        "Front-to-back: dribble beside your foot from front to back.",
+        "Do high Vs and low Vs with each hand."
+      ],
+      "practice": "10 side-to-side, 10 front-to-back, 10 high V, 10 low V per hand.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "One hand moves the ball side-to-side in front of the body or front-to-back beside the foot, hand on the side of the ball, ball staying close; no hand switch. 30 per hand.",
+      "mistakes": [
+        "Ball drifting wide",
+        "Switching hands",
+        "Arm swinging instead of the wrist working"
+      ]
+    }
+  },
+  {
+    "id": "drib_ball_wraps",
+    "name": "Ball Wraps",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "drib_ball_feel"
+    ],
+    "lesson": {
+      "summary": "No-dribble wraps around your body for fast hands. Works indoors.",
+      "steps": [
+        "Circle the ball around your waist, then your head, then your knees.",
+        "Around one leg, then the other.",
+        "Figure 8 through your legs (no dribble).",
+        "Switch directions every 10."
+      ],
+      "practice": "10 each direction: waist, legs, single leg each, figure 8, figure 8 rip-throughs.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball circles the waist, head, knees, each leg and through the legs in a figure 8 without touching the body; head up; direction switches every 10; fewer than 3 drops in 50 loops.",
+      "mistakes": [
+        "Looking down",
+        "Ball bumping the body",
+        "Slow, choppy hands"
+      ]
+    }
+  },
+  {
+    "id": "drib_speed_dribble",
+    "name": "Speed Dribble",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_heights",
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Push the ball ahead and run to it to cover the court fast.",
+      "steps": [
+        "Push the ball out in front of you at waist height.",
+        "Take long strides and dribble fewer times.",
+        "Keep your eyes up the court.",
+        "Do it with both hands."
+      ],
+      "practice": "4 full-court trips each hand: count how few dribbles you need.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball pushed out ahead at waist height, long strides, eyes up the court. Full court in 8 dribbles or fewer with each hand.",
+      "mistakes": [
+        "Dribbling straight down next to the foot",
+        "Looking at the ball",
+        "Too many short dribbles"
+      ]
+    }
+  },
+  {
+    "id": "drib_control_dribble",
+    "name": "Control Dribble",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_speed_dribble"
+    ],
+    "lesson": {
+      "summary": "Shield the ball with your body and off arm when a defender is close.",
+      "steps": [
+        "Turn your body slightly sideways to the defender.",
+        "Dribble low on your back side, away from the defender.",
+        "Use your off arm (arm bar) to keep space without pushing.",
+        "Keep your eyes up."
+      ],
+      "practice": "Control-dribble zig-zags down the court, then 30 s each side against a chair 'defender'.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. Use a chair or bag as a pretend defender.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Body turned sideways to the 'defender'; ball dribbled low on the back hip away from them; off arm up between hip and shoulder as a bar (not pushing); head up. Held 30 seconds each side.",
+      "mistakes": [
+        "Dribbling in front, toward the defender",
+        "Off arm straight out and shoving",
+        "Standing up tall"
+      ]
+    }
+  },
+  {
+    "id": "drib_hesitation",
+    "name": "Hesitation Dribble",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_speed_dribble",
+      "foot_change_of_pace"
+    ],
+    "lesson": {
+      "summary": "Fake a stop so the defender relaxes, then explode past.",
+      "steps": [
+        "Attack with a speed dribble.",
+        "Briefly slow down and lift your eyes and shoulders like you're about to stop or shoot.",
+        "Keep your hand on top of the ball.",
+        "Explode past with a long first step."
+      ],
+      "practice": "10 hesis each side at half speed, 10 at full speed.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor, about half a court.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Attack at speed, slow for a beat with eyes and shoulders rising as if to stop, hand stays on top of the ball and the dribble never stops, then a long, low first step to speed back up.",
+      "mistakes": [
+        "Picking up the dribble",
+        "Barely changing speed",
+        "Hand under the ball (carry)"
+      ]
+    }
+  },
+  {
+    "id": "drib_snatchback",
+    "name": "Retreat & Snatchback",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_control_dribble"
+    ],
+    "lesson": {
+      "summary": "Back out of trouble with retreat dribbles and a snatchback hop to create space.",
+      "steps": [
+        "Retreat: take two quick backward slides while dribbling low on your strong side.",
+        "Snatchback: from a hard drive, plant your front foot and pull the ball back as you hop backward on both feet.",
+        "Land balanced, ready to shoot, pass or attack again."
+      ],
+      "practice": "10 retreat dribbles each side, 10 cross-snatchbacks each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with 15-20 ft of open floor. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "From a hard dribble, the front foot plants, then a two-foot hop backward of at least half a body-width with the ball pulled back; lands squared and balanced with the dribble still alive.",
+      "mistakes": [
+        "Turning your back to the court",
+        "Landing off balance",
+        "Dribble dies on the hop"
+      ]
+    }
+  },
+  {
+    "id": "drib_between_legs",
+    "name": "Between the Legs",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_crossover",
+      "drib_ball_wraps"
+    ],
+    "lesson": {
+      "summary": "Switch hands under your body while it shields the ball.",
+      "steps": [
+        "Stand with one foot forward (a split stance).",
+        "Bounce the ball between your legs from your front-foot-side hand to the other hand.",
+        "Keep it low and fast.",
+        "Switch your feet and go the other way. Then add the scissors (switch feet each dribble)."
+      ],
+      "practice": "10 each foot forward, 10 back-and-forth (set stance) high and low, 10 scissors.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Split stance with feet wide; ball bounces under the hips between the feet, below knee height, and switches hands; head up. 30 clean reps including scissors.",
+      "mistakes": [
+        "Narrow stance so the ball hits a leg",
+        "Looking down",
+        "Bouncing too high"
+      ]
+    }
+  },
+  {
+    "id": "drib_behind_back",
+    "name": "Behind the Back",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_crossover",
+      "drib_ball_wraps"
+    ],
+    "lesson": {
+      "summary": "Switch hands behind your back with your whole body shielding the ball.",
+      "steps": [
+        "Dribble with your right hand slightly behind your right hip.",
+        "Wrap the ball behind your back with your wrist and fingertips so it bounces near your left heel.",
+        "Catch it with your left hand and keep going.",
+        "Start slow and stationary."
+      ],
+      "practice": "10 behind-back handoffs, 10 ground-skid handoffs, 20 behind-back crossovers.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Wrist and fingertips push the ball behind the hips so it bounces near the opposite heel and the other hand catches it; shoulders stay square and the arm doesn't swing wide. 20 clean reps each way.",
+      "mistakes": [
+        "Swinging the whole arm",
+        "Bouncing too far behind",
+        "Twisting the whole body around"
+      ]
+    }
+  },
+  {
+    "id": "drib_in_and_out",
+    "name": "In-and-Out Dribble",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_v_dribbles"
+    ],
+    "lesson": {
+      "summary": "Fake a crossover with one hand, then pull the ball back out.",
+      "steps": [
+        "Dribble with your right hand.",
+        "Turn your hand to the inside of the ball and push it toward your middle as you lean that way.",
+        "Before it crosses, rotate your hand to the outside and pull it back out.",
+        "Sell it with your head and shoulders."
+      ],
+      "practice": "20 per hand stationary, then 10 per hand on the move.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hand rides the inside of the ball toward the middle, then rotates to the outside and pulls it back out with the same hand before it crosses; head and shoulders lean with the fake. 15 per hand.",
+      "mistakes": [
+        "Palm under the ball (carry)",
+        "Fake too small to see",
+        "No head and shoulder lean"
+      ]
+    }
+  },
+  {
+    "id": "drib_stepback",
+    "name": "Step-Back Dribble",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_snatchback"
+    ],
+    "lesson": {
+      "summary": "Plant and push backward to create shooting space (footwork only, no shot yet).",
+      "steps": [
+        "Attack 2 or 3 dribbles to your right.",
+        "Plant your right foot hard and push backward.",
+        "Pull the ball back with you and land on both feet, shoulder width, squared to the rim.",
+        "Pick up the ball in your shot pocket (don't shoot yet)."
+      ],
+      "practice": "10 step-backs each direction, then 10 crossover-into-step-back.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with 15-20 ft of open floor. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "After 2-3 dribbles, the lead foot plants hard and pushes back; both feet land shoulder-width and square to the rim with the ball pulled back into the shot pocket; no sideways drift.",
+      "mistakes": [
+        "Hopping back without a plant",
+        "Landing sideways",
+        "Ball left out in front"
+      ]
+    }
+  },
+  {
+    "id": "drib_two_ball",
+    "name": "Two-Ball Dribbling",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_eyes_up",
+      "drib_v_dribbles"
+    ],
+    "lesson": {
+      "summary": "Dribble two balls at once to make both hands work on their own.",
+      "steps": [
+        "Pound both balls at the same time (high, medium, low).",
+        "Alternate: one up while the other goes down.",
+        "Two-ball crossovers, in-and-outs and front-to-backs.",
+        "Challenge: do all of them in two minutes."
+      ],
+      "practice": "Two-ball circuit: 10 pounds at each height, 5 ball exchanges, 10 crossovers, 10 in-and-outs, 10 front-to-backs. Finish in under 3 minutes.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. Two balls.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Both balls pound at the same height, together or alternating as called, with the weak hand keeping the same rhythm; head up. Circuit done in under 3 minutes with fewer than 4 lost balls.",
+      "mistakes": [
+        "Weak-hand ball falling out of rhythm",
+        "Watching the balls",
+        "Bouncing too high"
+      ]
+    }
+  },
+  {
+    "id": "drib_combos",
+    "name": "Combo Dribbles",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_between_legs",
+      "drib_behind_back",
+      "drib_in_and_out"
+    ],
+    "lesson": {
+      "summary": "Chain dribble moves together without stopping.",
+      "steps": [
+        "Between the legs into a crossover.",
+        "In-and-out into a crossover.",
+        "Between the legs into behind the back.",
+        "Every day, combine 2 moves and drill that combo."
+      ],
+      "practice": "1 min each: in-and-out then cross, between-legs then cross, double between-legs, between-legs then behind-back.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Moves flow in the called order (e.g. between the legs into a crossover) with no pause and no standing up between them; ball stays below the knee. 10 clean combos each.",
+      "mistakes": [
+        "Pausing between moves",
+        "Standing up between moves",
+        "Loose, high dribbles when rushing"
+      ]
+    }
+  },
+  {
+    "id": "drib_cone_weave",
+    "name": "Cone Weaving",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_control_dribble",
+      "drib_between_legs"
+    ],
+    "lesson": {
+      "summary": "Weave through cones with a tight, low handle like you're in traffic.",
+      "steps": [
+        "Set up 6 to 8 cones (or shoes) about 3 feet apart.",
+        "Weave through with crossovers, then between the legs, then behind the back.",
+        "Go back through backward with retreat dribbles.",
+        "Use one hand only through the line, then the other."
+      ],
+      "practice": "Through and back 3 times with each move.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "6-8 cones or shoes in a line, about 3 ft apart.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to the side so the whole cone line is in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Whole line weaved without touching a cone; hands change at each cone; ball below the knee near each cone; hips low the whole way.",
+      "mistakes": [
+        "Hitting cones",
+        "Rising up between cones",
+        "Ball bouncing high near cones"
+      ]
+    }
+  },
+  {
+    "id": "drib_shammgod",
+    "name": "The Shammgod",
+    "category": "ball_handling",
+    "level": 5,
+    "prerequisites": [
+      "drib_combos"
+    ],
+    "lesson": {
+      "summary": "Push the ball out with one hand and snatch it back across with the other.",
+      "steps": [
+        "Dribble with your right hand.",
+        "Push the ball out to your left side with your RIGHT hand while stepping that way with your left foot.",
+        "Pull the ball back across your body with your LEFT hand.",
+        "Explode right past the defender."
+      ],
+      "practice": "10 each direction stationary, 10 walking forward, 10 walking backward.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with a hard floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Strong hand pushes the ball out to the weak side as the same-side foot steps that way, then the other hand pulls it back across the body; stays low. 8 of 10 each direction.",
+      "mistakes": [
+        "Carrying the ball",
+        "Small push that doesn't sell",
+        "No sell step"
+      ]
+    }
+  },
+  {
+    "id": "shoot_beef_form",
+    "name": "BEEF Form",
+    "category": "shooting",
+    "level": 1,
+    "prerequisites": [],
+    "lesson": {
+      "summary": "Balance, Eyes, Elbow, Follow-through: the base of every good shot.",
+      "steps": [
+        "Feet shoulder-width, shooting foot slightly forward, knees bent.",
+        "Eyes on the front of the rim.",
+        "Elbow under the ball, about 90 degrees at the set point.",
+        "Extend up, snap the wrist, hold the follow-through."
+      ],
+      "practice": "10 form shots from 3 feet, then step back 2 feet.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height on your shooting-hand side. Whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shoot_form",
+      "target": null,
+      "criteria": "Knees bend before the shot, ball set above the shoulder with elbow near 90, arm finishes up toward the rim, follow-through held.",
+      "mistakes": [
+        "Straight legs",
+        "Pushing from the chest",
+        "Dropping the arm right after release"
+      ]
+    }
+  },
+  {
+    "id": "shoot_one_hand_form",
+    "name": "One-Hand Form",
+    "category": "shooting",
+    "level": 1,
+    "prerequisites": [
+      "shoot_beef_form"
+    ],
+    "lesson": {
+      "summary": "Shoot with only your shooting hand, close to the rim, to build a clean release.",
+      "steps": [
+        "Stand 3 feet in front of the rim.",
+        "Ball on your shooting hand only, elbow under the ball (waiter's tray position).",
+        "Shoot with your legs and arm together, snap and hold.",
+        "Only step back when you make 8 out of 10."
+      ],
+      "practice": "20 makes from 3 ft, then 5 ft, then 7 ft. Move back only after 8 of 10.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "3-5 ft in front of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height on your shooting-hand side. Whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shoot_form",
+      "target": null,
+      "criteria": "Only the shooting hand on the ball, elbow under it; knees bend before the shot; legs and arm extend together; wrist snaps and the follow-through is held; off hand stays away from the ball.",
+      "mistakes": [
+        "Pushing from the shoulder",
+        "Off hand sneaking onto the ball",
+        "Dropping the arm right after release",
+        "Straight legs"
+      ]
+    }
+  },
+  {
+    "id": "shoot_guide_hand",
+    "name": "Guide-Hand Form",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_one_hand_form"
+    ],
+    "lesson": {
+      "summary": "Add the guide hand on the side of the ball without letting it push the shot.",
+      "steps": [
+        "Add your off hand to the side of the ball, thumb pointing up.",
+        "Shoot the same as one-hand form shots.",
+        "Your guide hand stays still and comes off the ball at release.",
+        "Shoot from 5 to 8 feet."
+      ],
+      "practice": "15 makes each from 5 spots around the rim at 5-8 feet.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "5-8 ft from a hoop.",
+      "camera": "front",
+      "camera_tip": "Prop the phone facing you at chest height, about 10 ft away. Both hands and the ball clearly in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shoot_form",
+      "target": null,
+      "criteria": "Guide hand on the side of the ball with the thumb pointing up; it stays still and comes off at release without pushing; shooting elbow under the ball; follow-through held.",
+      "mistakes": [
+        "Guide-hand thumb flicking the ball",
+        "Guide hand behind the ball",
+        "Shooting elbow flaring out"
+      ]
+    }
+  },
+  {
+    "id": "shoot_bank_shots",
+    "name": "Bank Shots",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_guide_hand"
+    ],
+    "lesson": {
+      "summary": "Use the top corner of the backboard square for easy close shots from an angle.",
+      "steps": [
+        "Stand at a 45° angle to the rim, 5-8 feet out.",
+        "Aim for the top corner of the backboard square nearest you.",
+        "Shoot with a soft touch so it kisses off the glass."
+      ],
+      "practice": "10 shots each side from 3 different angles.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Block area, at a 45° angle to the rim, 5-8 ft out.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 7,
+        "attempts": 10
+      },
+      "criteria": "Make 7 of 10 bank shots.",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_free_throw",
+    "name": "Free Throw Routine",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_guide_hand"
+    ],
+    "lesson": {
+      "summary": "The same routine every time so your free throw form repeats.",
+      "steps": [
+        "Line up your shooting foot with the nail hole in the middle of the line.",
+        "Do the same routine every time (for example 2 dribbles, a breath, eyes on the rim).",
+        "Shoot with your normal BEEF form and hold your follow-through."
+      ],
+      "practice": "Shoot 20 free throws with the same routine. Track your percentage over time.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Free throw line.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 7,
+        "attempts": 10
+      },
+      "criteria": "Make 7 of 10.",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_catch_and_shoot",
+    "name": "Catch & Shoot",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_guide_hand",
+      "foot_shot_footwork"
+    ],
+    "lesson": {
+      "summary": "Be ready before the pass and go from catch to shot in one motion.",
+      "steps": [
+        "Show your hands as a target, knees already bent.",
+        "Use the hop or 1-2 step into the catch.",
+        "Go straight up into your shot in one motion.",
+        "Shoot from the elbows and short corners (about 12-15 feet)."
+      ],
+      "practice": "Self-toss or partner pass: 10 shots from 5 spots, half hop and half 1-2.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Elbows and short corners, 12-15 ft from a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height on your shooting-hand side. Whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hands up and knees bent before the catch; feet land square to the rim with a hop or 1-2; ball goes from the catch into the shot pocket and up in one motion within about a second; BEEF form on the release.",
+      "mistakes": [
+        "Catching standing straight, then dipping",
+        "Feet not set before the catch",
+        "Pausing between catch and shot"
+      ]
+    }
+  },
+  {
+    "id": "shoot_midrange_spots",
+    "name": "Mid-Range Spots",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_catch_and_shoot"
+    ],
+    "lesson": {
+      "summary": "Build a reliable mid-range shot from 5 game spots.",
+      "steps": [
+        "Pick 5 spots: both baselines, both elbows, the top of the key.",
+        "Take 5 shots at each spot.",
+        "Track your makes and attempts."
+      ],
+      "practice": "Around the World: 5 shots from each of the 5 spots. Record makes per spot.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "5 mid-range spots: both baselines, both elbows, top of the key.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 13,
+        "attempts": 25
+      },
+      "criteria": "Make 13 of 25 (5 shots from each spot).",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_pullup",
+    "name": "One-Dribble Pull-Up",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_midrange_spots",
+      "drib_speed_dribble"
+    ],
+    "lesson": {
+      "summary": "One hard dribble, a balanced stop, then straight up.",
+      "steps": [
+        "Start in triple threat.",
+        "Take one hard dribble left or right.",
+        "Gather the ball into your shot pocket as you plant (hop or 1-2).",
+        "Rise straight up and shoot."
+      ],
+      "practice": "10 pull-ups going right and 10 going left from each elbow.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Either elbow of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "One hard dribble; ball gathered into the shot pocket on the plant (hop or 1-2); body stops fully, rises straight up and lands where it took off; BEEF form on the release.",
+      "mistakes": [
+        "Drifting forward in the air",
+        "Ball dropped low before the shot",
+        "Extra dribbles"
+      ]
+    }
+  },
+  {
+    "id": "shoot_shot_fake",
+    "name": "Shot Fake",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_midrange_spots"
+    ],
+    "lesson": {
+      "summary": "A fake that looks exactly like your real shot, to get defenders off their feet.",
+      "steps": [
+        "From triple threat, raise the ball quickly to your forehead like you're shooting.",
+        "Keep your legs bent (don't stand up).",
+        "Eyes on the rim, hand close to the ball.",
+        "Bring it back down and then shoot, drive or pass."
+      ],
+      "practice": "10 shot fake and shoot, 10 shot fake and one dribble, 10 shot fake and drive.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height on your shooting-hand side. Whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_fake",
+      "target": null,
+      "criteria": "Ball comes up to forehead, feet stay on the ground, knees stay bent, quick (under a second).",
+      "mistakes": [
+        "Jumping on the fake",
+        "Standing up straight",
+        "Fake too slow"
+      ]
+    }
+  },
+  {
+    "id": "shoot_extend_range",
+    "name": "Extend Range",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_midrange_spots"
+    ],
+    "lesson": {
+      "summary": "Get to the three-point line with more legs, not more arm.",
+      "steps": [
+        "Start at the top of the key just inside the line.",
+        "Use more leg drive while keeping your arm motion the same.",
+        "Step back to the three-point line once you're making 6 of 10.",
+        "Corner three first, since it's the shortest three."
+      ],
+      "practice": "Earn-it ladder: 10 shots from 15 ft, 18 ft, corner 3, wing 3, top 3. Only move on at 6 of 10.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Corner three.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 6,
+        "attempts": 10
+      },
+      "criteria": "Make 6 of 10 from the corner three.",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_catch_shoot_3",
+    "name": "Catch & Shoot 3s",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_extend_range",
+      "shoot_catch_and_shoot"
+    ],
+    "lesson": {
+      "summary": "The most valuable shot in basketball: feet set, quick release from three.",
+      "steps": [
+        "Relocate to an open spot, hands ready.",
+        "Hop or 1-2 into the catch.",
+        "Shoot in one motion without bringing the ball down to your waist.",
+        "Shoot 5 spots around the arc."
+      ],
+      "practice": "5 spots x 10 shots. Record your makes.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "5 spots around the three-point line.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 20,
+        "attempts": 50
+      },
+      "criteria": "Make 20 of 50 threes (10 from each spot).",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_off_screens",
+    "name": "Shooting off Screens",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_catch_shoot_3",
+      "iq_screens"
+    ],
+    "lesson": {
+      "summary": "Curl and flare off screens to get shots before the defense recovers.",
+      "steps": [
+        "Curl: run tight around a screen toward the rim and catch on the move.",
+        "Flare: fade away from the ball off a screen.",
+        "Square your feet on the catch with a hop or 1-2 step.",
+        "Use a chair as your screen."
+      ],
+      "practice": "10 curls and 10 flares to each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop, with a chair as the screen.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Shoulder brushes the chair coming off the curl or flare; feet land square to the rim with a hop or 1-2 on the catch; rises straight up with no lean; BEEF form on the release.",
+      "mistakes": [
+        "Running wide around the screen",
+        "Shooting while still turning",
+        "Leaning or fading on the shot"
+      ]
+    }
+  },
+  {
+    "id": "shoot_hesi_pullup",
+    "name": "Hesi Pull-Up",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_pullup",
+      "drib_hesitation"
+    ],
+    "lesson": {
+      "summary": "Freeze the defender with a hesitation, then rise while they're flat-footed.",
+      "steps": [
+        "Attack with a dribble.",
+        "Hesitate with your ball-side foot stepping forward.",
+        "As the defender relaxes, gather and rise into the pull-up.",
+        "Shoot balanced."
+      ],
+      "practice": "10 hesi pull-ups each direction from each wing.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Either wing of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Clear hesitation (speed drops, eyes and shoulders rise, ball-side foot steps forward), then gather and rise within a second, going straight up and landing in place.",
+      "mistakes": [
+        "Drifting into the shot",
+        "No real hesitation",
+        "Picking up the ball before the hesi"
+      ]
+    }
+  },
+  {
+    "id": "shoot_game_speed",
+    "name": "Game-Speed Shooting",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_catch_shoot_3"
+    ],
+    "lesson": {
+      "summary": "Keep the same form when you're tired, like late in a game.",
+      "steps": [
+        "Sprint to half court and back.",
+        "Immediately catch and shoot from a spot.",
+        "Repeat for 5 spots.",
+        "Track your percentage tired versus fresh."
+      ],
+      "practice": "3 rounds: sprint, then 5 shots. Compare to your fresh percentage.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Any shooting spot with room to sprint to half court.",
+      "camera": "hoop",
+      "camera_tip": "Point the phone at the hoop. Whole rim and some space above it in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": "shot_session",
+      "target": {
+        "makes": 7,
+        "attempts": 15
+      },
+      "criteria": "Make 7 of 15 right after sprints (3 rounds of 5).",
+      "mistakes": []
+    }
+  },
+  {
+    "id": "shoot_turnaround",
+    "name": "Turnaround Jumper",
+    "category": "shooting",
+    "level": 5,
+    "prerequisites": [
+      "shoot_midrange_spots",
+      "shoot_post_moves"
+    ],
+    "lesson": {
+      "summary": "Turn from the post and shoot over a defender who's leaning on you.",
+      "steps": [
+        "Post up with your back to the basket.",
+        "Pivot on your inside foot and turn to face the rim.",
+        "Rise and shoot; for a fadeaway, lean back slightly while keeping your shoulders square.",
+        "Practice turning both ways."
+      ],
+      "practice": "10 turnarounds from each block, each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Low block of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height on your shooting-hand side. Whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Back to the basket, pivots on the inside foot to face the rim; shoulders square to the rim before the release (even when fading); releases above the head with the follow-through held.",
+      "mistakes": [
+        "Turning without finding the rim",
+        "Shoulders open on the release",
+        "Fading too far back"
+      ]
+    }
+  },
+  {
+    "id": "shoot_layup_footwork",
+    "name": "Layup Footwork",
+    "category": "shooting",
+    "level": 1,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Walk through the layup steps until right-left-up is automatic.",
+      "steps": [
+        "Start on the right side, a few steps from the rim.",
+        "Step with your right foot, then your left foot.",
+        "Jump off your left foot, lifting your right knee.",
+        "Without a ball first, then holding the ball."
+      ],
+      "practice": "10 walk-throughs each side without a ball, 10 with a ball.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Either side of a hoop, a few steps out.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Right side: right foot, then left foot, takeoff from the left foot while the right knee drives up; the jump goes up, not forward. Mirror on the left side.",
+      "mistakes": [
+        "Jumping off the wrong foot",
+        "Jumping forward instead of up",
+        "No knee drive"
+      ]
+    }
+  },
+  {
+    "id": "shoot_layup_right",
+    "name": "Right-Hand Layup",
+    "category": "shooting",
+    "level": 1,
+    "prerequisites": [
+      "shoot_layup_footwork"
+    ],
+    "lesson": {
+      "summary": "The basic right-hand layup off the glass: the highest-percentage shot in basketball.",
+      "steps": [
+        "Approach from the right side at a 45° angle.",
+        "Right-left footwork, jumping off your left foot.",
+        "Lay the ball high off the top corner of the square with your right hand.",
+        "Shooting hand under the ball, soft touch."
+      ],
+      "practice": "10 makes at walking speed, 10 jogging, 10 off one dribble.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Right side of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Approach from the right at about 45°; right-left steps; takeoff from the left foot with the right knee up; right hand under the ball lays it high off the top corner of the square.",
+      "mistakes": [
+        "Wrong takeoff foot",
+        "Finishing with the left hand",
+        "Throwing the ball hard off the glass"
+      ]
+    }
+  },
+  {
+    "id": "shoot_layup_left",
+    "name": "Left-Hand Layup",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_layup_right"
+    ],
+    "lesson": {
+      "summary": "Finish with your left hand on the left side to keep the ball away from the defender.",
+      "steps": [
+        "Approach from the left side.",
+        "Left-right footwork, jumping off your right foot.",
+        "Lay it up with your left hand off the top corner of the square."
+      ],
+      "practice": "10 makes walking, 10 jogging, 10 off one dribble.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Left side of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Approach from the left at about 45°; left-right steps; takeoff from the right foot with the left knee up; left hand lays it high off the top corner of the square.",
+      "mistakes": [
+        "Switching to the right hand on the left side",
+        "Wrong takeoff foot",
+        "Throwing the ball hard off the glass"
+      ]
+    }
+  },
+  {
+    "id": "shoot_mikan",
+    "name": "Mikan Drill",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_layup_left"
+    ],
+    "lesson": {
+      "summary": "Alternating layups under the rim to build touch and rhythm with both hands.",
+      "steps": [
+        "Stand under the rim.",
+        "Make a right-hand layup, catch the ball out of the net without letting it hit the floor.",
+        "Step to the left side and make a left-hand layup.",
+        "Keep alternating; the ball stays above your shoulders."
+      ],
+      "practice": "Make 20 in a row, alternating hands. Track your time.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Directly under a hoop.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at the free-throw line facing the hoop. Rim and your whole body in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Alternates right-hand and left-hand layups from each side of the rim; ball caught out of the net and kept above the shoulders between shots; one-foot takeoff off the correct foot. 20 makes in under 45 seconds.",
+      "mistakes": [
+        "Bringing the ball down to the waist",
+        "Jumping off two feet every time",
+        "Same hand on both sides"
+      ]
+    }
+  },
+  {
+    "id": "shoot_power_layup",
+    "name": "Power Layup",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_layup_left",
+      "foot_jump_stop"
+    ],
+    "lesson": {
+      "summary": "A two-foot, two-hand finish that holds up in traffic.",
+      "steps": [
+        "Dribble to the block and jump stop on both feet.",
+        "Keep the ball tight and chin it (protect it at your chin).",
+        "Explode up off both feet and shoot off the glass with the hand away from the defender."
+      ],
+      "practice": "10 power layups from each block.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Low block of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Jump stop on both feet at the block; ball chinned with elbows out; explodes straight up off both feet; lays it off the glass with the hand away from the defender.",
+      "mistakes": [
+        "Ball dropped low",
+        "Taking off from one foot",
+        "Jumping forward into the baseline"
+      ]
+    }
+  },
+  {
+    "id": "shoot_speed_layups",
+    "name": "Full-Speed Layups",
+    "category": "shooting",
+    "level": 2,
+    "prerequisites": [
+      "shoot_layup_left",
+      "drib_speed_dribble"
+    ],
+    "lesson": {
+      "summary": "Combine a speed dribble with a clean layup on both sides.",
+      "steps": [
+        "Start at half court.",
+        "Speed dribble with your outside hand.",
+        "Gather into your right-left (or left-right) footwork.",
+        "Finish high off the glass."
+      ],
+      "practice": "10 each side from the wing, 5 each side from half court.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop, starting from half court.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Outside-hand speed dribble; gathers under control into right-left (or left-right) footwork; takes off from the correct foot and finishes high off the glass with the outside hand.",
+      "mistakes": [
+        "Traveling on the gather",
+        "Out of control at the rim",
+        "Dribbling with the inside hand"
+      ]
+    }
+  },
+  {
+    "id": "shoot_reverse_layup",
+    "name": "Reverse Layup",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_mikan"
+    ],
+    "lesson": {
+      "summary": "Go under the rim and finish on the other side, using the rim to block defenders.",
+      "steps": [
+        "Drive along the baseline.",
+        "Go under the rim, jumping off your inside foot.",
+        "Finish with your outside hand on the other side, putting spin on it off the glass.",
+        "Practice from both sides."
+      ],
+      "practice": "10 reverse layups each side, then 20 reverse Mikans in a row.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Baseline of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone out on the wing facing the baseline, so the rim and your whole path under it are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Drives along the baseline, takes off from the inside foot, goes under the rim and finishes with the outside hand on the far side, spinning the ball up off the glass.",
+      "mistakes": [
+        "Going too far under the rim",
+        "Wrong hand on the finish",
+        "No spin off the glass"
+      ]
+    }
+  },
+  {
+    "id": "shoot_finish_contact",
+    "name": "Finish Through Contact",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_speed_layups",
+      "shoot_power_layup"
+    ],
+    "lesson": {
+      "summary": "Stay balanced and still score when a defender bumps you.",
+      "steps": [
+        "Have a partner push you lightly with a pad or pillow as you jump.",
+        "Keep the ball high and protected.",
+        "Absorb the contact with your shoulder and hips.",
+        "Finish with your inside or outside hand depending on the defender."
+      ],
+      "practice": "10 contact layups each side with a partner (or a wall pad).",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball stays high and protected, shoulder takes the bump, body stays upright, and you still finish with the right hand. 7 of 10 per side.",
+      "mistakes": [
+        "Shying away from contact",
+        "Bringing the ball down",
+        "Leaning or falling away"
+      ]
+    }
+  },
+  {
+    "id": "shoot_floater",
+    "name": "Floater / Runner",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_speed_layups",
+      "shoot_bank_shots"
+    ],
+    "lesson": {
+      "summary": "A soft, high shot released early to get over taller defenders at the rim.",
+      "steps": [
+        "Drive into the lane.",
+        "Take off from 6-10 feet out (either foot).",
+        "Release the ball high with a soft wrist flick and a high arc.",
+        "Land balanced."
+      ],
+      "practice": "10 floaters off each foot from both sides.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "In the lane, 6-10 ft from the rim.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Takeoff 6-10 ft from the rim; ball released early and high above the head with a soft one-hand flick and a high arc; lands balanced without flying forward.",
+      "mistakes": [
+        "Flat shot",
+        "Flying forward into the defender",
+        "Releasing too late, right at the rim"
+      ]
+    }
+  },
+  {
+    "id": "shoot_euro_step",
+    "name": "Euro Step",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_speed_layups",
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "One step one way, a long step the other way, to get around a defender.",
+      "steps": [
+        "Pick up your dribble and step to one side with your first foot.",
+        "Take a long second step across the defender's body.",
+        "Finish with the hand away from the defender.",
+        "Keep the ball moving from hip to hip."
+      ],
+      "practice": "10 each direction at a walk, then a jog, then full speed.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Lane of a hoop, starting at the top of the key.",
+      "camera": "front",
+      "camera_tip": "Put the phone under the hoop facing out toward you so your whole body is in frame as you come in."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "After picking up the dribble, the first step goes one way and the second step is long and lateral the other way (at least half a body-width); only two steps; ball moves hip to hip and finishes with the hand away from the defender.",
+      "mistakes": [
+        "Three steps (travel)",
+        "Short second step",
+        "Ball left out where it can be poked"
+      ]
+    }
+  },
+  {
+    "id": "shoot_pro_hop",
+    "name": "Pro Hop",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "shoot_power_layup",
+      "shoot_speed_layups"
+    ],
+    "lesson": {
+      "summary": "A quick two-foot hop off the dribble so you can finish with either hand.",
+      "steps": [
+        "Drive in, then pick up the dribble with a hop.",
+        "Land on two feet, ready to go either way.",
+        "Explode up and finish with the best hand."
+      ],
+      "practice": "10 pro hops into a layup each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "From a drive, picks up the dribble with a hop; both feet land at once, balanced; explodes up within half a second and finishes with the best hand.",
+      "mistakes": [
+        "Landing off balance",
+        "One foot landing before the other",
+        "Pausing after the landing"
+      ]
+    }
+  },
+  {
+    "id": "shoot_post_moves",
+    "name": "Post Moves",
+    "category": "shooting",
+    "level": 3,
+    "prerequisites": [
+      "foot_pivots",
+      "shoot_power_layup"
+    ],
+    "lesson": {
+      "summary": "Drop step and up-and-under: score with your back to the basket.",
+      "steps": [
+        "Drop step: post up, feel which side the defender is on, swing your other foot toward the rim, and power up.",
+        "Up-and-under: shot fake from the block, then step through under the defender and lay it in.",
+        "Practice both blocks."
+      ],
+      "practice": "10 drop steps and 10 up-and-unders from each block.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Low block of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Drop step: back to the basket, baseline-side foot swings toward the rim, ball chinned, powers up off two feet. Up-and-under: real-looking shot fake with knees bent, then the free foot steps through and lays it in before the pivot foot lifts.",
+      "mistakes": [
+        "Traveling on the step-through",
+        "Weak fake",
+        "Ball dropped low"
+      ]
+    }
+  },
+  {
+    "id": "shoot_pump_fake_reverse",
+    "name": "Pump-Fake Reverse",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_reverse_layup",
+      "shoot_shot_fake"
+    ],
+    "lesson": {
+      "summary": "Get the shot-blocker in the air with a fake, then reverse it under them.",
+      "steps": [
+        "Drive to the block.",
+        "Jump stop and shot fake.",
+        "When the defender jumps, step through under the rim.",
+        "Finish on the other side with a reverse layup."
+      ],
+      "practice": "10 each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Low block of a hoop.",
+      "camera": "side",
+      "camera_tip": "Set the phone on the sideline side of the lane, about 15 ft from the rim, so your last 3 steps, the rim and the release are in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Jump stop, shot fake with the ball to the forehead and knees bent, step through under the rim, then reverse finish on the far side with the outside hand.",
+      "mistakes": [
+        "Rushing the fake",
+        "Standing up on the fake",
+        "Traveling on the step-through"
+      ]
+    }
+  },
+  {
+    "id": "shoot_wrap_layup",
+    "name": "Around-the-Waist Layup",
+    "category": "shooting",
+    "level": 4,
+    "prerequisites": [
+      "shoot_finish_contact",
+      "drib_behind_back"
+    ],
+    "lesson": {
+      "summary": "Wrap the ball around your back mid-gather to dodge a reaching defender.",
+      "steps": [
+        "Gather the ball on your first step.",
+        "Wrap it around your waist into your other hand on the second step.",
+        "Finish with that hand.",
+        "Start slow and stationary."
+      ],
+      "practice": "10 each side walking, then jogging.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop.",
+      "camera": "front",
+      "camera_tip": "Put the phone under the hoop facing out toward you so your whole body is in frame as you come in."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Gathers on the first step; ball wraps tight around the back of the waist into the other hand on the second step; finishes with that hand; only two steps.",
+      "mistakes": [
+        "Losing the ball behind the back",
+        "Extra steps",
+        "Wrap swinging wide away from the body"
+      ]
+    }
+  },
+  {
+    "id": "drib_ready_hands",
+    "name": "Ready Hands",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Show a target, meet the pass and land ready to play.",
+      "steps": [
+        "Show your hands at chest height, fingers up.",
+        "Step toward the pass.",
+        "Catch with soft hands and pull the ball into triple threat.",
+        "Land in a jump stop."
+      ],
+      "practice": "Partner or wall: 30 catches, half while stepping to the ball.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "In front of a wall, or with a partner.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hands up at chest height as a target before the pass; steps toward the ball; soft two-hand catch; finishes in triple threat off a jump stop.",
+      "mistakes": [
+        "Hands down until the ball arrives",
+        "Waiting instead of stepping to the pass",
+        "Stiff hands"
+      ]
+    }
+  },
+  {
+    "id": "drib_chest_pass",
+    "name": "Chest Pass",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "drib_ready_hands"
+    ],
+    "lesson": {
+      "summary": "The fastest, most accurate short pass.",
+      "steps": [
+        "Hold the ball at your chest, thumbs behind it.",
+        "Step toward your target.",
+        "Push the ball, snapping your wrists so your thumbs point down.",
+        "Aim for your teammate's chest."
+      ],
+      "practice": "30 chest passes to a target on a wall.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "4-5 steps from a wall with a target spot on it.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball at the chest with thumbs behind it; steps toward the target; arms extend and wrists snap so the thumbs finish pointing down; ball travels on a straight line at chest height.",
+      "mistakes": [
+        "No step",
+        "Lobbing the ball",
+        "Elbows flared out"
+      ]
+    }
+  },
+  {
+    "id": "drib_bounce_pass",
+    "name": "Bounce Pass",
+    "category": "ball_handling",
+    "level": 1,
+    "prerequisites": [
+      "drib_chest_pass"
+    ],
+    "lesson": {
+      "summary": "A pass that's hard to deflect, bounced under the defender's hands.",
+      "steps": [
+        "Same motion as the chest pass, but aim at the floor.",
+        "Bounce it about two-thirds of the way to your target.",
+        "It should reach their waist."
+      ],
+      "practice": "30 bounce passes to a wall target or partner.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "4-5 steps from a wall or partner.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Chest-pass motion with a step; ball bounces about two-thirds of the way to the target and arrives at waist height; thumbs finish down.",
+      "mistakes": [
+        "Bouncing too close to yourself",
+        "No step",
+        "Ball arriving at the ankles"
+      ]
+    }
+  },
+  {
+    "id": "drib_overhead_pass",
+    "name": "Overhead Pass",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_chest_pass"
+    ],
+    "lesson": {
+      "summary": "Get the ball over defenders for skips and outlets.",
+      "steps": [
+        "Hold the ball above your forehead, not behind your head.",
+        "Step and snap your wrists forward.",
+        "Aim for your teammate's chin."
+      ],
+      "practice": "30 overhead passes to a high wall target.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "4-5 steps from a wall with a high target spot.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Ball held above the forehead, never behind the head; steps toward the target; wrists snap forward; ball arrives at chin height.",
+      "mistakes": [
+        "Ball behind the head",
+        "No step",
+        "Arms only, no wrist snap"
+      ]
+    }
+  },
+  {
+    "id": "drib_push_pass",
+    "name": "One-Hand Push Pass",
+    "category": "ball_handling",
+    "level": 2,
+    "prerequisites": [
+      "drib_bounce_pass",
+      "drib_heights"
+    ],
+    "lesson": {
+      "summary": "Pass straight off the dribble with one hand, quicker than picking the ball up.",
+      "steps": [
+        "Dribble with one hand.",
+        "On the bounce, push the ball with the same hand directly to the target.",
+        "Practice both chest-level and bounce versions.",
+        "Both hands."
+      ],
+      "practice": "20 per hand against a wall.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "In front of a wall.",
+      "camera": "front",
+      "camera_tip": "Prop the phone off to one side, angled at you, so your body, the ball and the wall target are all in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Without picking up the ball, the dribbling hand pushes it straight to the target right off the bounce with a wrist snap; works with each hand.",
+      "mistakes": [
+        "Picking up the ball with two hands first",
+        "Extra dribble before the pass",
+        "No wrist snap"
+      ]
+    }
+  },
+  {
+    "id": "drib_pass_fakes",
+    "name": "Pass Fakes",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_overhead_pass",
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "Fake one way, pass the other, to open passing lanes.",
+      "steps": [
+        "Jab or pass fake one direction, then pass the other way.",
+        "Look one way, pass the other (eyes sell it).",
+        "Fake over the defender's head, then bounce pass low.",
+        "Keep the fake short and quick."
+      ],
+      "practice": "10 of each fake pattern to a wall target.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "In front of a wall.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Quick, short fake one way (eyes and arms sell it), then a pass the other way within a second; ball stays under control and the pivot foot stays planted.",
+      "mistakes": [
+        "Fake so big the ball gets loose",
+        "Staring at the real target",
+        "Pivot foot moving"
+      ]
+    }
+  },
+  {
+    "id": "drib_skip_outlet",
+    "name": "Skip & Outlet Passes",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_overhead_pass"
+    ],
+    "lesson": {
+      "summary": "Long passes that swing the ball across the court or start the fast break.",
+      "steps": [
+        "Skip: overhead pass from one wing to the other, over the defense.",
+        "Outlet: grab a rebound, pivot to the sideline, pass to the wing.",
+        "Baseball pass: one-hand overhand for long distances."
+      ],
+      "practice": "10 skip passes each way, 10 outlets each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Lots of room: a long wall, or a partner across the court.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Skip: overhead pass from above the forehead on a flat line, not a lob. Outlet: pivots toward the sideline before passing. Baseball pass: one-hand overhand throw from beside the ear with a step.",
+      "mistakes": [
+        "Slow, high lob",
+        "No pivot before the outlet",
+        "Ball wound up behind the head"
+      ]
+    }
+  },
+  {
+    "id": "drib_behind_back_pass",
+    "name": "Behind-the-Back Pass",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_push_pass",
+      "drib_behind_back"
+    ],
+    "lesson": {
+      "summary": "Pass around a defender who's in your lane. Function first, style second.",
+      "steps": [
+        "Behind-the-back handoffs, then short passes.",
+        "Rotating shovel passes.",
+        "Dribble into a behind-the-back pass."
+      ],
+      "practice": "3-minute circuit: 1 min chest and bounce passes, 1 min behind-the-back handoffs and shovel passes, 1 min dribble into behind-the-back passes.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "In front of a wall.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Passing hand wraps the ball behind the hips and releases toward the target; hits the target on 70% of reps; dribble-into-pass done without picking the ball up first.",
+      "mistakes": [
+        "Wild, inaccurate passes",
+        "Ball slipping out behind the back",
+        "Picking up the dribble before the pass"
+      ]
+    }
+  },
+  {
+    "id": "drib_drive_and_kick",
+    "name": "Drive-and-Kick",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_push_pass",
+      "iq_spacing"
+    ],
+    "lesson": {
+      "summary": "Drive to score, and kick it out when a help defender steps up.",
+      "steps": [
+        "Drive hard to the paint.",
+        "Watch for the help defender stepping in.",
+        "Kick to the teammate whose defender helped.",
+        "Pass to the shooting pocket (chest)."
+      ],
+      "practice": "Read quiz, then 10 drive-and-kick passes to a wall target each side.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "You drive and the corner shooter's defender steps in to stop you. Who's open?",
+          "options": [
+            "The player at the top of the key",
+            "The corner shooter",
+            "Nobody, finish the layup"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "When should you decide to pass on a drive?",
+          "options": [
+            "Before you start driving",
+            "When a help defender commits to you",
+            "Only after you pick up the dribble"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Where should the kick-out pass arrive?",
+          "options": [
+            "In the shooter's shot pocket, at the chest",
+            "At their feet",
+            "High over their head"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "drib_pnr_passing",
+    "name": "Pick & Roll Passing",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_push_pass",
+      "iq_pick_and_roll"
+    ],
+    "lesson": {
+      "summary": "Hit the roller with a pocket pass, lob or skip depending on the defense.",
+      "steps": [
+        "Pocket pass: bounce pass to the roller under the defender's hands.",
+        "Lob: if the roller's defender is behind them.",
+        "Skip: if the help comes from the weak side."
+      ],
+      "practice": "Read quiz, then 10 pocket passes to a target each side.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "Both defenders jump out at you on the pick-and-roll. Best pass?",
+          "options": [
+            "Skip to the far corner",
+            "Hold the ball and back out",
+            "Pocket bounce pass to the rolling screener"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "The roller's defender is stuck behind him. Best pass?",
+          "options": [
+            "Pocket bounce pass",
+            "Lob over the top",
+            "Pass back to the top"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "A weak-side defender leaves his man to stop the roller. Best pass?",
+          "options": [
+            "Force it to the roller",
+            "Pick up your dribble",
+            "Skip pass to that defender's open man"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "foot_defensive_stance",
+    "name": "Defensive Stance",
+    "category": "footwork",
+    "level": 1,
+    "prerequisites": [
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "A wide, low stance that lets you move any direction instantly.",
+      "steps": [
+        "Feet wider than shoulders, weight on the balls of your feet.",
+        "Knees bent and butt down, back straight.",
+        "One hand up to contest, one hand in the passing lane.",
+        "Head over your waist, not your toes."
+      ],
+      "practice": "Hold stance 20 s, 5 rounds, adding quick-feet chops for the last 5 s.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone at waist height facing you, about 8-10 ft away. Whole body and the ball in frame, feet included."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Feet wider than the shoulders; knees bent and hips low; back straight with the head over the waist; weight on the balls of the feet; one hand up, one hand out. Held 20 seconds.",
+      "mistakes": [
+        "Standing straight up",
+        "Leaning over the toes",
+        "Hands down"
+      ]
+    }
+  },
+  {
+    "id": "foot_defensive_slides",
+    "name": "Defensive Slides",
+    "category": "footwork",
+    "level": 1,
+    "prerequisites": [
+      "foot_defensive_stance"
+    ],
+    "lesson": {
+      "summary": "Slide to stay in front of the ball without ever crossing your feet.",
+      "steps": [
+        "From stance, step with your lead foot in the direction you're going.",
+        "Push off your trail foot and bring it along.",
+        "Stay low the whole time; your head stays level.",
+        "Never let your feet touch or cross."
+      ],
+      "practice": "Lane slides: 3 trips sideline to sideline, 3 rounds.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor about the width of the lane.",
+      "camera": "front",
+      "camera_tip": "Prop the phone facing you about 15 ft away so the whole slide, side to side, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Lead foot steps, trail foot pushes and follows; feet never touch or cross; hips stay low and the head stays level through the whole slide.",
+      "mistakes": [
+        "Crossing feet",
+        "Bouncing up and down",
+        "Feet clicking together"
+      ]
+    }
+  },
+  {
+    "id": "foot_closeouts",
+    "name": "Closeouts",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_defensive_slides"
+    ],
+    "lesson": {
+      "summary": "Sprint at the shooter, then chop your feet to arrive under control with a hand up.",
+      "steps": [
+        "Sprint the first two-thirds of the distance.",
+        "Chop your feet with short steps the rest.",
+        "Arrive in stance with a high hand to contest the shot.",
+        "Be ready to slide if they drive."
+      ],
+      "practice": "10 closeouts from the paint to each wing.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with 15-20 ft of open floor. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Sprints the first two-thirds, then short choppy steps; arrives in stance with one hand high, balanced and ready to slide, without flying past.",
+      "mistakes": [
+        "Flying past the shooter",
+        "Arriving with hands down",
+        "Arriving standing straight up"
+      ]
+    }
+  },
+  {
+    "id": "foot_drop_step",
+    "name": "Drop Step & Swing Step",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_defensive_slides"
+    ],
+    "lesson": {
+      "summary": "Open your hips to change direction on defense without crossing your feet.",
+      "steps": [
+        "Slide to your left.",
+        "When the offense changes direction, open your hips by dropping your lead foot back.",
+        "Slide the new direction.",
+        "Zig-zag down the court."
+      ],
+      "practice": "Zig-zag slides: 3 full-court trips.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with 15-20 ft of open floor. No hoop needed.",
+      "camera": "front",
+      "camera_tip": "Prop the phone facing you about 15-20 ft away so a few zig-zags stay in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "While sliding, the lead foot drops back to open the hips (about a 45° turn) and you slide the new direction without crossing your feet; hips stay low through the turn.",
+      "mistakes": [
+        "Crossing over instead of dropping",
+        "Standing up on the turn",
+        "Turning your back to the ball"
+      ]
+    }
+  },
+  {
+    "id": "foot_box_out",
+    "name": "Boxing Out",
+    "category": "footwork",
+    "level": 2,
+    "prerequisites": [
+      "foot_defensive_stance"
+    ],
+    "lesson": {
+      "summary": "Find your player, make contact and keep them behind you on every shot.",
+      "steps": [
+        "When the shot goes up, find your player.",
+        "Front or reverse pivot into them, backside to their thighs.",
+        "Get wide and low, arms up and out.",
+        "Then go get the ball."
+      ],
+      "practice": "10 box-out reps on each side with a partner or a pad.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere. A partner or pad helps.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Pivots into position with the back to the 'opponent'; feet wide, hips low and back; arms up and out at shoulder height; holds for 3 seconds.",
+      "mistakes": [
+        "Ball watching instead of finding the player",
+        "Narrow stance",
+        "Arms down"
+      ]
+    }
+  },
+  {
+    "id": "foot_on_ball_defense",
+    "name": "On-Ball Defense",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_drop_step",
+      "foot_closeouts"
+    ],
+    "lesson": {
+      "summary": "Stay in front of the ball handler with active hands, without reaching.",
+      "steps": [
+        "Stay an arm's length away.",
+        "Mirror the ball with one hand.",
+        "Keep your nose on the ball handler's hip.",
+        "Slide and drop step as they move."
+      ],
+      "practice": "1-on-1 zig-zag drill with a partner, 3 full-court trips.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Stays an arm's length away in stance, nose on the dribbler's hip, one hand mirroring the ball; slides and drop steps without crossing feet or reaching, for 3 full-court trips.",
+      "mistakes": [
+        "Reaching and fouling",
+        "Crowding too close",
+        "Crossing feet"
+      ]
+    }
+  },
+  {
+    "id": "foot_help_defense",
+    "name": "Help Defense",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_defensive_slides",
+      "iq_spacing"
+    ],
+    "lesson": {
+      "summary": "Off the ball, see both your player and the ball and be ready to help.",
+      "steps": [
+        "Form a flat triangle between the ball, you and your player so you can see both.",
+        "One pass away: deny with a hand in the passing lane.",
+        "Two passes away: sag to the middle of the paint (help line).",
+        "Point one hand at the ball and one at your player ('pistols')."
+      ],
+      "practice": "Positioning quiz: pick the right spot as the ball moves.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "Your player is one pass away from the ball. Where are you?",
+          "options": [
+            "In the middle of the paint",
+            "Right next to the ball handler",
+            "Denying, with a hand in the passing lane"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Your player is two passes away. Where are you?",
+          "options": [
+            "Glued to your player",
+            "Sagged to the help line near the middle of the paint",
+            "Back at half court"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "What does 'pistols' mean?",
+          "options": [
+            "One hand pointing at the ball, one at your player",
+            "Both hands straight up",
+            "Hands on your knees"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "foot_def_rebound",
+    "name": "Defensive Rebounding",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_box_out"
+    ],
+    "lesson": {
+      "summary": "Box out, then grab the ball at its highest point and secure it.",
+      "steps": [
+        "Box out first.",
+        "Jump for the ball with two hands.",
+        "Chin it, elbows out.",
+        "Pivot away from pressure and outlet."
+      ],
+      "practice": "10 self-toss rebounds off the glass: box out, high grab, chin, pivot.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Near a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Box-out position first; jumps and grabs with two hands at the top of the jump; brings the ball to the chin with elbows out; then pivots away toward the sideline.",
+      "mistakes": [
+        "Bringing the ball down low",
+        "One-hand grabs",
+        "No pivot after the grab"
+      ]
+    }
+  },
+  {
+    "id": "foot_off_rebound",
+    "name": "Offensive Rebounding",
+    "category": "footwork",
+    "level": 3,
+    "prerequisites": [
+      "foot_def_rebound"
+    ],
+    "lesson": {
+      "summary": "Crash the boards for second chances. Most misses go long and opposite.",
+      "steps": [
+        "Watch the shot and predict where it will go.",
+        "Avoid the box-out with a swim or spin.",
+        "Tip or grab and go right back up."
+      ],
+      "practice": "Shoot, crash, put back: 10 reps each side.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Near a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone at waist height to your side, about 8-10 ft away. Whole body and the ball in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Moves toward the rim right after the shot (no standing still); goes to the side opposite the shot; grabs or tips with two hands and goes straight back up for the putback.",
+      "mistakes": [
+        "Standing and watching",
+        "Bringing the ball down before the putback",
+        "Going to the same side as the shot"
+      ]
+    }
+  },
+  {
+    "id": "foot_deflections",
+    "name": "Deflections",
+    "category": "footwork",
+    "level": 4,
+    "prerequisites": [
+      "foot_on_ball_defense"
+    ],
+    "lesson": {
+      "summary": "Poke the ball when the dribbler exposes it, without reaching and fouling.",
+      "steps": [
+        "Watch the ball's low point.",
+        "Swipe up at the ball with the hand nearest it (not down).",
+        "Only go for it when the ball is exposed, like on a high crossover."
+      ],
+      "practice": "Partner drill: they dribble, you swipe on exposed dribbles only (20 reps).",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Stays in stance and swipes up at the ball (not down) with the near hand, only on exposed dribbles. 15 of 20 swipes without lunging off balance.",
+      "mistakes": [
+        "Swiping down (foul)",
+        "Gambling and getting beat",
+        "Lunging out of stance"
+      ]
+    }
+  },
+  {
+    "id": "foot_contest_shots",
+    "name": "Contesting Shots",
+    "category": "footwork",
+    "level": 4,
+    "prerequisites": [
+      "foot_closeouts"
+    ],
+    "lesson": {
+      "summary": "A high hand and a straight-up jump to bother shots without fouling.",
+      "steps": [
+        "Close out with a high hand.",
+        "Go straight up, not forward.",
+        "Contest with the hand matching the shooter's shooting hand."
+      ],
+      "practice": "10 closeouts into a contest, 10 vertical jump contests.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Anywhere with 15-20 ft of open floor. No hoop needed.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Closeout ends with a jump straight up (not forward), contesting hand high above the head, landing in about the same spot.",
+      "mistakes": [
+        "Jumping into the shooter",
+        "Hand low",
+        "Closing out out of control"
+      ]
+    }
+  },
+  {
+    "id": "foot_defend_screens",
+    "name": "Defending Screens",
+    "category": "footwork",
+    "level": 4,
+    "prerequisites": [
+      "foot_on_ball_defense",
+      "iq_pick_and_roll"
+    ],
+    "lesson": {
+      "summary": "Fight over or go under screens to keep your player from getting open.",
+      "steps": [
+        "Over: lock and trail, get skinny and go over the top.",
+        "Under: go behind the screener when the shooter is weak.",
+        "Listen for the 'screen left/right' call."
+      ],
+      "practice": "Screen coverage quiz, then 10 over-the-screen reps with a chair.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "You're guarding a great shooter who's coming off a screen. What do you do?",
+          "options": [
+            "Go under the screen",
+            "Stop and wait for help",
+            "Lock and trail, and go over the top"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "You're guarding a weak shooter with the ball and a screen is coming. What's usually OK?",
+          "options": [
+            "Foul right away",
+            "Go under the screen",
+            "Run into the screener"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Your teammate yells 'screen left!' What does it mean?",
+          "options": [
+            "Switch to the player on your left",
+            "A screen is coming on your left side",
+            "Run to the left corner"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "How do you get through a screen?",
+          "options": [
+            "Get skinny and fight over it",
+            "Run straight into the screener",
+            "Stop and let it go"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "foot_take_charge",
+    "name": "Taking a Charge",
+    "category": "footwork",
+    "level": 4,
+    "prerequisites": [
+      "foot_help_defense"
+    ],
+    "lesson": {
+      "summary": "Beat the driver to the spot with your feet set to draw an offensive foul.",
+      "steps": [
+        "Rotate in from help early.",
+        "Set your feet outside the restricted area.",
+        "Take the contact in your chest and fall back safely."
+      ],
+      "practice": "Position quiz, then safe-falling practice on a mat.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "To draw a charge, when must your feet be set?",
+          "options": [
+            "Before the driver leaves the floor",
+            "After the driver jumps",
+            "It doesn't matter"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "If the court has a restricted-area arc under the rim, where can't you take a charge?",
+          "options": [
+            "Outside the paint",
+            "Inside the arc",
+            "At the free-throw line"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Where should you take the contact?",
+          "options": [
+            "In your chest, then fall back safely",
+            "On your side while sliding under",
+            "With your arms out"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Should you slide under a player who's already in the air?",
+          "options": [
+            "Yes, it's a charge",
+            "No, it's a foul and dangerous",
+            "Only on layups"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "drib_crossover_attack",
+    "name": "Crossover Attack",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_crossover",
+      "drib_speed_dribble"
+    ],
+    "lesson": {
+      "summary": "Plant, cross low, and cut off the defender with a long first step.",
+      "steps": [
+        "Attack right with a speed dribble.",
+        "Plant your right foot and cross low to the left.",
+        "Step across with your right foot to cut off the defender.",
+        "Explode to the rim."
+      ],
+      "practice": "10 crossover attacks each direction into a layup.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Attacks with a speed dribble, plants the outside foot hard, crosses low (below the knee), then a long first step across to cut off the defender and speeds up in the new direction.",
+      "mistakes": [
+        "High, slow crossover",
+        "Galloping after the cross",
+        "No plant before the cross"
+      ]
+    }
+  },
+  {
+    "id": "drib_in_out_attack",
+    "name": "In-and-Out Attack",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "drib_in_and_out",
+      "drib_speed_dribble"
+    ],
+    "lesson": {
+      "summary": "Fake the crossover with an in-and-out, then keep attacking the same way.",
+      "steps": [
+        "Attack right with your right hand.",
+        "Lean your head and shoulders left as you push the ball toward your middle (in).",
+        "Pull the ball back out with the same hand before it crosses.",
+        "When the defender leans, explode right with a long first step."
+      ],
+      "practice": "10 each direction into a layup.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Attacks with one hand; head and shoulders lean to the middle as the ball goes in; ball pulled back out with the same hand; then a long first step continuing the same direction.",
+      "mistakes": [
+        "No head and shoulder fake",
+        "Ball crossing over by accident",
+        "Slow first step after the fake"
+      ]
+    }
+  },
+  {
+    "id": "drib_jab_series",
+    "name": "Jab Series",
+    "category": "ball_handling",
+    "level": 3,
+    "prerequisites": [
+      "foot_jab_step",
+      "shoot_midrange_spots"
+    ],
+    "lesson": {
+      "summary": "Jab, read the defender, then shoot, drive, or cross and drive.",
+      "steps": [
+        "Jab at the defender.",
+        "If they step back: rise into your jump shot.",
+        "If they don't move: jab and go.",
+        "If they jump forward: crossover jab and drive the other way."
+      ],
+      "practice": "10 of each option from both wings.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Either wing of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Same short jab every rep with the pivot foot planted, then the called finish: rise straight into a shot, explode past on the jab side, or cross the ball and drive the other way, with the ball released on the dribble before the pivot foot lifts.",
+      "mistakes": [
+        "Deciding before the jab",
+        "Jab too big",
+        "Pivot foot lifting before the dribble (travel)"
+      ]
+    }
+  },
+  {
+    "id": "drib_spin_move",
+    "name": "Spin Move",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_crossover_attack",
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "Turn your back to the defender to change direction while protecting the ball.",
+      "steps": [
+        "Attack right, plant your left foot near the defender.",
+        "Spin backward on your left foot, pulling the ball with your right hand.",
+        "Switch the ball to your left hand as you come around.",
+        "Explode to the rim."
+      ],
+      "practice": "10 spins each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Plants the inside foot close to the 'defender', spins backward on it with the ball pulled tight in the same hand, switches hands coming around, and accelerates out of the spin.",
+      "mistakes": [
+        "Spinning far from the defender",
+        "Carrying the ball",
+        "Standing up on the spin"
+      ]
+    }
+  },
+  {
+    "id": "drib_cross_jab",
+    "name": "Cross Jab",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_crossover_attack",
+      "foot_jab_step"
+    ],
+    "lesson": {
+      "summary": "A crossover followed right away by a jab to freeze a sliding defender.",
+      "steps": [
+        "Attack right, then cross the ball low to your left hand.",
+        "As the ball lands in your left hand, jab your left foot hard to the left and shift your weight onto it.",
+        "If the defender slides left, cross back and drive right. If they stay, explode left off the jab.",
+        "Keep the dribble alive and low the whole time."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Low crossover, then a hard jab in the new direction with a real weight shift onto the jab foot; dribble stays alive and low; then attacks the open side.",
+      "mistakes": [
+        "Jab with no weight shift",
+        "High crossover",
+        "Losing the dribble on the jab"
+      ]
+    }
+  },
+  {
+    "id": "drib_btl_attack",
+    "name": "Between-Legs Attack",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_between_legs",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Sell one way with your body, go between your legs, and attack the other way.",
+      "steps": [
+        "Dribble with your right hand and step forward with your right foot (same side as the ball).",
+        "Lean your hips and shoulders right to sell the drive.",
+        "Bring your left foot forward and dribble between your legs to your left hand.",
+        "Push off your right foot and attack left."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Steps with the ball-side foot while the hips and shoulders lean that way, dribbles between the legs to the other hand, then pushes off and attacks the new direction with a long first step.",
+      "mistakes": [
+        "Stepping with the wrong foot",
+        "No hip and shoulder sell",
+        "High bounce between the legs"
+      ]
+    }
+  },
+  {
+    "id": "drib_btb_attack",
+    "name": "Behind-Back Attack",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_behind_back",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Change direction behind your back when a defender cuts you off.",
+      "steps": [
+        "Drive right with your right hand.",
+        "When the defender cuts you off, plant your right foot.",
+        "Wrap the ball behind your back to your left hand as you open your hips left.",
+        "Step through with your right foot and attack left."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Drives, plants the outside foot, wraps the ball behind the back to the other hand as the hips open, then the trail foot steps through and attacks the new direction.",
+      "mistakes": [
+        "Ball too far behind",
+        "No step-through",
+        "Slowing down before the move"
+      ]
+    }
+  },
+  {
+    "id": "drib_hesi_shot_fake",
+    "name": "Hesi Shot Fake",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "shoot_shot_fake",
+      "drib_hesitation"
+    ],
+    "lesson": {
+      "summary": "After a hesi the defender expects a drive, so a quick shot fake pulls them up.",
+      "steps": [
+        "Attack with a speed dribble and hesitate.",
+        "Pick up the ball into a shot fake: stop, eyes on the rim, hand close to the ball, knees still bent.",
+        "As soon as the defender rises or leans, rip the ball low across your body.",
+        "Take one long dribble and finish."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hesitates, picks up into a shot fake (ball to forehead, eyes on the rim, knees bent, feet down), then rips the ball low across the body and takes one long dribble to finish.",
+      "mistakes": [
+        "Standing up on the fake",
+        "Not stopping fully on the fake",
+        "Ripping the ball high"
+      ]
+    }
+  },
+  {
+    "id": "drib_snatchback_cross",
+    "name": "Snatchback Cross",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_snatchback",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Make the defender commit forward, then pull back to create space.",
+      "steps": [
+        "Cross toward the defender's closer foot and take one hard dribble that way.",
+        "Plant your front foot and snatch the ball back with a two-foot hop backward.",
+        "Land squared and balanced.",
+        "Read: if they recover hard, cross and drive; if they back off, shoot."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Crosses and takes one hard dribble, plants the front foot, hops back on two feet with the ball, lands square and balanced, then shoots, crosses again or drives.",
+      "mistakes": [
+        "Losing balance on the snatch",
+        "Ball left out in front",
+        "Landing sideways"
+      ]
+    }
+  },
+  {
+    "id": "drib_inside_out_cross",
+    "name": "Inside-Out Cross",
+    "category": "ball_handling",
+    "level": 4,
+    "prerequisites": [
+      "drib_in_out_attack",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Fake the cross with an in-and-out, then cross for real, then counter.",
+      "steps": [
+        "Inside-out.",
+        "Cross.",
+        "Then build counters: step back, side step, or come forward."
+      ],
+      "practice": "10 each direction, then 10 with each counter.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "In-and-out fake with head and shoulders, then a real low crossover with no pause, then the called counter (step back, side step or attack forward).",
+      "mistakes": [
+        "Rushing the in-and-out",
+        "Pause between the fake and the cross",
+        "Standing up"
+      ]
+    }
+  },
+  {
+    "id": "drib_utep_two_step",
+    "name": "UTEP Two-Step",
+    "category": "ball_handling",
+    "level": 5,
+    "prerequisites": [
+      "drib_btl_attack",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Tim Hardaway's killer crossover: between the legs straight into a cross.",
+      "steps": [
+        "Attack at the defender with your right hand.",
+        "Go between your legs right-to-left as you step with your right foot.",
+        "Immediately cross back left-to-right in front of you.",
+        "Explode right past the defender."
+      ],
+      "practice": "10 each direction, then build variations (UTEP + in-and-out, UTEP + behind-back, UTEP + Shammgod).",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Open floor. A chair works as a pretend defender.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Between the legs while stepping with the ball-side foot, immediately a low crossover back in front, then explodes in the crossover direction; no pause and no standing up between moves.",
+      "mistakes": [
+        "Standing up between moves",
+        "Pause between the two dribbles",
+        "High crossover"
+      ]
+    }
+  },
+  {
+    "id": "drib_stepback_three",
+    "name": "Step-Back Three",
+    "category": "ball_handling",
+    "level": 5,
+    "prerequisites": [
+      "shoot_catch_shoot_3",
+      "drib_stepback"
+    ],
+    "lesson": {
+      "summary": "Step-back footwork plus a reliable three: one of the hardest shots to guard.",
+      "steps": [
+        "Attack the defender for one or two hard dribbles toward the three-point line.",
+        "Plant your lead foot inside the arc and push back behind the line.",
+        "Land on both feet, squared to the rim, with the ball in your shot pocket.",
+        "Rise and shoot with your normal catch-and-shoot form."
+      ],
+      "practice": "10 step-back threes each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Three-point line of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "One or two hard dribbles; lead foot plants inside the arc and pushes back behind the line; both feet land square to the rim with the ball in the shot pocket; rises straight up with no fade.",
+      "mistakes": [
+        "Fading or drifting on the shot",
+        "Landing on the line",
+        "Ball not in the shot pocket on landing"
+      ]
+    }
+  },
+  {
+    "id": "drib_side_step_jumper",
+    "name": "Side-Step Jumper",
+    "category": "ball_handling",
+    "level": 5,
+    "prerequisites": [
+      "shoot_catch_shoot_3",
+      "drib_snatchback"
+    ],
+    "lesson": {
+      "summary": "Create space sideways instead of back: quicker than a step-back.",
+      "steps": [
+        "Attack the defender with a hard dribble.",
+        "Pick up the ball and hop sideways on both feet, away from the defender, in one motion.",
+        "Land shoulder-width and squared to the rim.",
+        "Rise straight up and shoot."
+      ],
+      "practice": "10 each direction.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Wing of a hoop.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Hard dribble, then picks up and hops sideways on both feet away from the defender in one motion; lands shoulder-width and square; rises straight up.",
+      "mistakes": [
+        "Extra step (travel)",
+        "Landing narrow or off balance",
+        "Drifting sideways on the shot"
+      ]
+    }
+  },
+  {
+    "id": "drib_attack_matrix",
+    "name": "Attack Matrix",
+    "category": "ball_handling",
+    "level": 5,
+    "prerequisites": [
+      "drib_snatchback_cross",
+      "drib_inside_out_cross",
+      "drib_utep_two_step"
+    ],
+    "lesson": {
+      "summary": "Build your own Setup, Move, Counter chains from the moves you've learned.",
+      "steps": [
+        "Pick a setup move (for example a hesi or jab).",
+        "Pick your primary move (for example a crossover).",
+        "Pick two counters for when the defender stops it (for example a snatchback or a spin).",
+        "Drill each chain at game speed until you can switch counters based on the defender."
+      ],
+      "practice": "Build 3 attack chains and drill each one for 5 minutes.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Runs 3 setup-move-counter chains at game speed and picks the counter from a partner's reaction, 8 of 10 times each.",
+      "mistakes": [
+        "Using the same move every time",
+        "Deciding the counter before the defender reacts"
+      ]
+    }
+  },
+  {
+    "id": "iq_court_rules",
+    "name": "Court & Rules",
+    "category": "iq",
+    "level": 1,
+    "prerequisites": [],
+    "lesson": {
+      "summary": "Court lines, positions and the most common violations.",
+      "steps": [
+        "Court: paint, free-throw line, three-point line, baseline, sideline.",
+        "Positions: guards, forwards, center.",
+        "Violations: traveling, double dribble, three seconds, backcourt."
+      ],
+      "practice": "Quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "How long can an offensive player stay in the paint (lane)?",
+          "options": [
+            "3 seconds",
+            "5 seconds",
+            "10 seconds"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "You dribble, pick the ball up with both hands, then start dribbling again. What's the call?",
+          "options": [
+            "Traveling",
+            "Double dribble",
+            "Three seconds"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "You catch the ball standing still and lift your pivot foot before you start dribbling. What's the call?",
+          "options": [
+            "Double dribble",
+            "Nothing, it's legal",
+            "Traveling"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Your team brings the ball past half court, then passes it back over the half-court line. What's the call?",
+          "options": [
+            "Three seconds",
+            "Traveling",
+            "Backcourt violation"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_mental_toughness",
+    "name": "Mental Toughness",
+    "category": "iq",
+    "level": 2,
+    "prerequisites": [
+      "iq_court_rules"
+    ],
+    "lesson": {
+      "summary": "Routines and visualization that keep you confident after mistakes.",
+      "steps": [
+        "Beliefs: the bad is a fixable fluke; the good is a timeless trend.",
+        "Replace a miss with an imagined swish.",
+        "Visualize yourself succeeding for 2 minutes before practice."
+      ],
+      "practice": "2-minute guided visualization before your next 3 sessions.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Did a 2-minute visualization before 3 practice sessions, and used a 'next play' reset after mistakes.",
+      "mistakes": [
+        "Getting angry after mistakes",
+        "Skipping the visualization"
+      ]
+    }
+  },
+  {
+    "id": "iq_spacing",
+    "name": "Spacing & Floor Spots",
+    "category": "iq",
+    "level": 2,
+    "prerequisites": [
+      "iq_court_rules"
+    ],
+    "lesson": {
+      "summary": "Stay 12-15 feet apart so drivers have room and shooters get open looks.",
+      "steps": [
+        "Learn the 5 spots: two corners, two wings, top.",
+        "Don't stand where your teammate is.",
+        "Move when the ball moves."
+      ],
+      "practice": "Spacing quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "How far apart should teammates usually be?",
+          "options": [
+            "About 3-5 feet",
+            "About 12-15 feet",
+            "As close to the ball as possible"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "What are the 5 spots in a basic spread?",
+          "options": [
+            "Both blocks, both elbows, the top",
+            "Two corners, two wings, the top",
+            "All five around the paint"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "A teammate cuts and leaves their spot empty. What should someone do?",
+          "options": [
+            "Follow the cutter",
+            "Fill the empty spot",
+            "Run to the ball"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "The ball moves to the other side of the floor. What should you do?",
+          "options": [
+            "Move to a new spot as the ball moves",
+            "Stay frozen where you are",
+            "Run toward the ball"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_triple_threat_reads",
+    "name": "Triple-Threat Reads",
+    "category": "iq",
+    "level": 2,
+    "prerequisites": [
+      "iq_court_rules",
+      "foot_triple_threat"
+    ],
+    "lesson": {
+      "summary": "Read your defender from triple threat: shoot, drive or pass.",
+      "steps": [
+        "Catch in triple threat and look at the rim first.",
+        "Defender far away or late: shoot.",
+        "Defender close with high hands or hips: jab, then drive past.",
+        "Help defender sliding over or a teammate cutting open: pass."
+      ],
+      "practice": "Read quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "You catch on the wing and your defender is far away and late to close out. Best read?",
+          "options": [
+            "Shoot",
+            "Drive",
+            "Hold the ball"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Your defender runs at you standing tall with high hips. Best read?",
+          "options": [
+            "Jab, then drive past",
+            "Shoot over them",
+            "Pass back out"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "A help defender slides over toward you and your teammate cuts open. Best read?",
+          "options": [
+            "Force a drive",
+            "Pass to the cutter",
+            "Shoot anyway"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_cutting",
+    "name": "Cutting",
+    "category": "iq",
+    "level": 3,
+    "prerequisites": [
+      "iq_spacing",
+      "foot_pivots"
+    ],
+    "lesson": {
+      "summary": "V-cuts, L-cuts and backdoors: get open by moving without the ball.",
+      "steps": [
+        "V-cut: walk your defender toward the paint, plant your inside foot, then sprint out to the wing with your hands ready.",
+        "L-cut: walk up the lane line, plant at the elbow, then cut out to the wing in an 'L'.",
+        "Backdoor: when your defender overplays the passing lane, plant your outside foot and cut hard to the rim behind them.",
+        "Always show your hands as a target at the end of the cut."
+      ],
+      "practice": "10 of each cut with a self-pass.",
+      "video_id": null
+    },
+    "setup": {
+      "stand": "Half court, wing area.",
+      "camera": "side",
+      "camera_tip": "Prop the phone 15-20 ft to your side so the whole move, start to finish, stays in frame."
+    },
+    "completion": {
+      "type": "vision",
+      "spec": null,
+      "target": null,
+      "criteria": "Each cut has a slow setup, then a hard plant and burst: V-cut plants the inside foot and sprints out, L-cut goes up the lane and out at the elbow, backdoor plants the outside foot and sprints to the rim; hands up as a target at the end.",
+      "mistakes": [
+        "Lazy cuts at one speed",
+        "No plant before changing direction",
+        "Hands down at the end of the cut"
+      ]
+    }
+  },
+  {
+    "id": "iq_give_and_go",
+    "name": "Give-and-Go",
+    "category": "iq",
+    "level": 3,
+    "prerequisites": [
+      "iq_cutting",
+      "drib_chest_pass"
+    ],
+    "lesson": {
+      "summary": "Pass, cut to the basket, and get it back for a layup.",
+      "steps": [
+        "Pass to a teammate on the wing or top.",
+        "Take one step away to set up your defender (jab or V).",
+        "Cut hard to the rim in front of your defender, hand up as a target.",
+        "Catch the return pass and finish."
+      ],
+      "practice": "Wall or partner drill: 10 reps each side.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "self_check",
+      "spec": null,
+      "target": null,
+      "criteria": "Passes, takes one setup step away, then cuts hard to the rim right away with a hand up, catches the return and finishes. 8 of 10.",
+      "mistakes": [
+        "Standing after passing",
+        "Cutting behind the defender instead of in front",
+        "No hand target"
+      ]
+    }
+  },
+  {
+    "id": "iq_screens",
+    "name": "Setting & Using Screens",
+    "category": "iq",
+    "level": 3,
+    "prerequisites": [
+      "iq_spacing"
+    ],
+    "lesson": {
+      "summary": "Set legal screens and use them patiently to get teammates open.",
+      "steps": [
+        "Setting: jump stop into a wide stance, arms crossed in front of you, and stay still until contact.",
+        "Using: set up your defender by walking them away, then wait until the screen is set.",
+        "Come off shoulder-to-shoulder so there's no gap.",
+        "Read the defender: curl if they trail, flare if they go under, pop/slip if they switch."
+      ],
+      "practice": "Screen quiz, then 10 reps with a chair.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "When you set a screen, you should...",
+          "options": [
+            "Lean into the defender as they come",
+            "Move with the defender to block them",
+            "Stand still with feet set and arms crossed in front"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Your teammate is coming to set a screen for you. When do you go?",
+          "options": [
+            "Before they get there",
+            "After the screen is set",
+            "Whenever you want"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Coming off a screen, your defender is trailing right behind you. Best move?",
+          "options": [
+            "Flare away from the ball",
+            "Curl tight toward the rim",
+            "Stop and wait"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Your defender cheats under the screen. Best move?",
+          "options": [
+            "Curl toward the rim",
+            "Go back the way you came",
+            "Flare out for the open shot"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_fast_break",
+    "name": "Fast Break",
+    "category": "iq",
+    "level": 3,
+    "prerequisites": [
+      "iq_spacing"
+    ],
+    "lesson": {
+      "summary": "Fill the right lanes to turn a rebound or steal into an easy score.",
+      "steps": [
+        "After a rebound or steal, sprint the first three steps.",
+        "Wings run wide, near the sideline, to the corners.",
+        "The ball handler takes the middle lane.",
+        "A rim runner sprints straight to the basket. At the paint, the ball handler reads: layup, pass to the rim runner, or kick to a corner."
+      ],
+      "practice": "Transition lanes quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "After a rebound, how should wings run the floor?",
+          "options": [
+            "Straight down the middle",
+            "Wide, near the sideline, to the corners",
+            "Toward the ball"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Who takes the middle lane on a fast break?",
+          "options": [
+            "The tallest player",
+            "The ball handler",
+            "Nobody"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "What matters most when your team gets a rebound?",
+          "options": [
+            "Jogging to save energy",
+            "Waiting until everyone is back",
+            "Sprinting the first three steps"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "On the break, the rim runner's defender steps up to stop the ball handler. Best read?",
+          "options": [
+            "Pass to the rim runner",
+            "Pull up from three",
+            "Stop and reset"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_pick_and_roll",
+    "name": "Pick & Roll",
+    "category": "iq",
+    "level": 4,
+    "prerequisites": [
+      "iq_screens",
+      "drib_control_dribble"
+    ],
+    "lesson": {
+      "summary": "Use the screen fully, then read how the defense guards it.",
+      "steps": [
+        "Set up your defender away from the screen, then wait for it to be set.",
+        "Come off the screen shoulder-to-shoulder.",
+        "Read the screener's defender: drop (pull up for a jumper), hedge (pass to the roller), switch (attack the mismatch).",
+        "Keep your dribble alive until you make the read."
+      ],
+      "practice": "Pick-and-roll read quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "Your defender goes under the screen. What do you do?",
+          "options": [
+            "Drive baseline",
+            "Pass to the corner",
+            "Pull up"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "The screener's defender drops back into the paint. Best read?",
+          "options": [
+            "Pick up your dribble",
+            "Pull up for a jumper",
+            "Lob to the screener"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "The screener's defender jumps out high at you. Best read?",
+          "options": [
+            "Pass to the rolling screener",
+            "Force a shot over two defenders",
+            "Turn your back and wait"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "The defenders switch and a big player is now guarding you. Best read?",
+          "options": [
+            "Pass back to the top",
+            "Attack the mismatch off the dribble",
+            "Hold the ball"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_read_defender",
+    "name": "Read the Defender",
+    "category": "iq",
+    "level": 4,
+    "prerequisites": [
+      "iq_triple_threat_reads",
+      "drib_crossover_attack"
+    ],
+    "lesson": {
+      "summary": "Attack the weak spots in the defender's stance: lead foot, momentum, high hips.",
+      "steps": [
+        "Look at your defender's feet: attack their lead (front) foot because it's the hardest side for them to recover.",
+        "Watch their momentum: when they lean or slide one way, go the other.",
+        "Look for high hips or a defender standing straight up: drive right away.",
+        "Hit the open space, then make the next best decision."
+      ],
+      "practice": "Defender read quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "Which of your defender's feet should you attack?",
+          "options": [
+            "Their lead (front) foot",
+            "Their back foot",
+            "It doesn't matter"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Your defender is leaning hard to your right. Where do you go?",
+          "options": [
+            "Left",
+            "Right",
+            "Stay put"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Your defender is standing straight up with high hips. What should you do?",
+          "options": [
+            "Pass it back out",
+            "Wait for them to get set",
+            "Drive right away"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_5_out_motion",
+    "name": "5-Out Motion",
+    "category": "iq",
+    "level": 4,
+    "prerequisites": [
+      "iq_cutting",
+      "iq_screens"
+    ],
+    "lesson": {
+      "summary": "All five players on the perimeter: pass, cut and fill to open the paint.",
+      "steps": [
+        "Fill the 5 spots: two corners, two wings, and the top.",
+        "Pass and cut to the rim, then fill an open spot on the opposite side.",
+        "If your defender overplays you, go backdoor.",
+        "When the wing gets the ball, the corner can cut, or the passer can screen away."
+      ],
+      "practice": "5-out read quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "In a 5-out offense, where do players start?",
+          "options": [
+            "Two in the post, three outside",
+            "All five in the paint",
+            "All five on the perimeter"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "You pass from the top to the wing. What's your next move?",
+          "options": [
+            "Stand and watch",
+            "Run to the corner with the ball",
+            "Cut to the rim, then fill an open spot"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Your defender is overplaying the passing lane. What do you do?",
+          "options": [
+            "Keep fighting for the same spot",
+            "Go backdoor to the rim",
+            "Stand still"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Why does 5-out work well for beginners?",
+          "options": [
+            "Only the best player touches the ball",
+            "Nobody has to move",
+            "The open paint gives room to cut and drive"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "iq_game_situations",
+    "name": "Game Situations",
+    "category": "iq",
+    "level": 5,
+    "prerequisites": [
+      "iq_pick_and_roll",
+      "iq_5_out_motion"
+    ],
+    "lesson": {
+      "summary": "Clock and score decisions that win close games.",
+      "steps": [
+        "Two-for-one: with about 35 seconds left in a quarter, shoot early so your team gets the last shot too.",
+        "Up late: get good shots and run clock, and make free throws.",
+        "Down late: push the pace and foul quickly if needed.",
+        "End of quarter: hold for the last shot and attack with about 5 seconds left."
+      ],
+      "practice": "Late-game decision quiz.",
+      "video_id": null
+    },
+    "setup": null,
+    "completion": {
+      "type": "quiz",
+      "spec": null,
+      "target": null,
+      "quiz": [
+        {
+          "q": "About 35 seconds are left in the quarter and you have the ball. Smart play?",
+          "options": [
+            "Get a good shot early so you get one more possession (2-for-1)",
+            "Hold it for the last shot",
+            "Heave it right away"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Your team is up 4 with 40 seconds left. Best approach?",
+          "options": [
+            "Shoot the first open three",
+            "Use the clock and get a good shot",
+            "Foul the other team"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Your team is down 5 with 30 seconds left and the other team has the ball. What do you do?",
+          "options": [
+            "Play normal defense",
+            "Foul quickly to stop the clock",
+            "Wait for a steal"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Holding for the last shot of the quarter, when do you start attacking?",
+          "options": [
+            "With 1 second left",
+            "With 20 seconds left",
+            "With about 5 seconds left"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  }
 ]
