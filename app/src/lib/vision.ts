@@ -104,27 +104,35 @@ export async function getGradableSkills(): Promise<Record<string, GradableSkill>
   return gradableCache;
 }
 
-export type VideoFile = {
-  uri: string;
+export type AnalyzeOptions = {
+  /** e.g. "video/mp4"; defaults to video/quicktime (iPhone .mov). */
   mimeType?: string | null;
   fileName?: string | null;
-  file?: File; // web only
+  /** Web only: the File from an <input> or picker, used instead of the uri. */
+  file?: File;
+  /** Shooting hand. "auto" picks the arm facing the camera. */
+  hand?: "auto" | "left" | "right";
 };
 
-/** Upload a clip for one skill and get the graded result. */
+/**
+ * Upload a clip for one skill and get the graded result.
+ * skillId is the app's skill id (e.g. "sh-beef"); uri is a local video file uri
+ * (e.g. from expo-image-picker or expo-camera).
+ */
 export async function analyzeSkill(
   skillId: string,
-  video: VideoFile,
-  hand: "auto" | "left" | "right" = "auto",
+  uri: string,
+  options: AnalyzeOptions = {},
 ): Promise<VisionResult> {
+  const { mimeType, fileName, file, hand = "auto" } = options;
   const form = new FormData();
-  if (Platform.OS === "web" && video.file) {
-    form.append("video", video.file);
+  if (Platform.OS === "web" && file) {
+    form.append("video", file);
   } else {
-    const type = video.mimeType ?? "video/quicktime";
-    const name = video.fileName ?? (type.includes("mp4") ? "clip.mp4" : "clip.mov");
+    const type = mimeType ?? "video/quicktime";
+    const name = fileName ?? (type.includes("mp4") ? "clip.mp4" : "clip.mov");
     // React Native's FormData takes a { uri, name, type } object for files.
-    form.append("video", { uri: video.uri, name, type } as unknown as Blob);
+    form.append("video", { uri, name, type } as unknown as Blob);
   }
   form.append("skill_id", skillId);
   form.append("hand", hand);
