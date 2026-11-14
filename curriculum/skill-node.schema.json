@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skill-node.schema.json",
+  "title": "Skill graph file",
+  "description": "A sport's skill graph: a list of skill nodes. A node unlocks once every node in its prerequisites is mastered.",
+  "type": "object",
+  "required": ["sport", "nodes"],
+  "additionalProperties": false,
+  "properties": {
+    "sport": { "type": "string", "description": "Sport id, e.g. basketball." },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/skillNode" }
+    }
+  },
+  "$defs": {
+    "skillNode": {
+      "type": "object",
+      "required": ["id", "name", "category", "level", "prerequisites", "lesson", "completion"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Stable kebab-case id, unique within the sport."
+        },
+        "name": { "type": "string" },
+        "category": {
+          "type": "string",
+          "description": "Skill category, e.g. shooting, dribbling, layups, finishes, moves, iq, defending."
+        },
+        "level": { "enum": ["beginner", "intermediate", "advanced"] },
+        "prerequisites": {
+          "type": "array",
+          "description": "Ids of nodes that must ALL be mastered before this node unlocks. Empty means a starting node.",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "lesson": {
+          "type": "object",
+          "required": ["summary", "steps", "practice", "video_long", "video_short"],
+          "additionalProperties": false,
+          "properties": {
+            "summary": { "type": "string" },
+            "steps": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            "practice": { "type": "string", "description": "What to practise before taking the skill test." },
+            "video_long": {
+              "type": ["string", "null"],
+              "format": "uri",
+              "description": "Full YouTube video, for users with more time. Null until chosen."
+            },
+            "video_short": {
+              "type": ["string", "null"],
+              "format": "uri",
+              "description": "Short reels-style clip, for users with less time. Null until chosen."
+            }
+          }
+        },
+        "completion": {
+          "type": "object",
+          "required": ["type", "criteria", "analyzer"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": ["vision", "tally", "self_check"],
+              "description": "vision: model checks form in the user's video. tally: model counts reps or makes. self_check: user confirms it themselves."
+            },
+            "criteria": { "type": "string", "description": "What counts as passing the skill test." },
+            "analyzer": {
+              "type": ["string", "null"],
+              "description": "Path to the analyzer spec in /vision (e.g. vision/analyzers/shot-form.md). Null for self_check."
+            }
+          }
+        }
+      }
+    }
+  }
+}

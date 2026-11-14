@@ -1,0 +1,78 @@
+{
+  "sport": "basketball",
+  "nodes": [
+    {
+      "id": "shooting-form",
+      "name": "Shooting form",
+      "category": "shooting",
+      "level": "beginner",
+      "prerequisites": [],
+      "lesson": {
+        "summary": "Build a repeatable one-handed shot close to the basket before adding distance.",
+        "steps": [
+          "Feet shoulder-width apart, shooting foot slightly ahead.",
+          "Ball on the fingertips of the shooting hand, elbow under the ball.",
+          "Guide hand on the side of the ball, not pushing it.",
+          "Extend up through the legs and arm in one motion.",
+          "Snap the wrist and hold the follow-through until the ball lands."
+        ],
+        "practice": "10 one-handed form shots from 3 feet, then 10 from the block on each side.",
+        "video_long": null,
+        "video_short": null
+      },
+      "completion": {
+        "type": "vision",
+        "criteria": "Across 10 form shots: elbow stays under the ball, guide hand does not push, follow-through is held, and at least 7 shots go in.",
+        "analyzer": "vision/analyzers/shot-form.md"
+      }
+    },
+    {
+      "id": "stationary-dribbling",
+      "name": "Stationary dribbling",
+      "category": "dribbling",
+      "level": "beginner",
+      "prerequisites": [],
+      "lesson": {
+        "summary": "Control the ball with either hand while standing still, without looking down.",
+        "steps": [
+          "Athletic stance: knees bent, back straight.",
+          "Push the ball with the fingertips, not the palm.",
+          "Keep the ball at or below the waist.",
+          "Eyes up, not on the ball."
+        ],
+        "practice": "30 seconds per hand, then 30 seconds of crossovers, 3 rounds.",
+        "video_long": null,
+        "video_short": null
+      },
+      "completion": {
+        "type": "tally",
+        "criteria": "30 seconds of continuous dribbling with each hand without losing the ball, at least 50 dribbles per hand.",
+        "analyzer": "vision/analyzers/dribble-count.md"
+      }
+    },
+    {
+      "id": "step-back",
+      "name": "Step-back",
+      "category": "moves",
+      "level": "intermediate",
+      "prerequisites": ["shooting-form", "stationary-dribbling"],
+      "lesson": {
+        "summary": "Create space from a defender with a backward hop off the dribble, then rise into your shot.",
+        "steps": [
+          "Attack forward with one or two dribbles.",
+          "Plant the lead foot and push back off it.",
+          "Gather the ball as you land on both feet, balanced.",
+          "Go straight into your shooting form."
+        ],
+        "practice": "10 step-backs to each side from 2 dribbles, shooting from the free-throw line.",
+        "video_long": null,
+        "video_short": null
+      },
+      "completion": {
+        "type": "vision",
+        "criteria": "Across 6 attempts: lands balanced on both feet after the step back, no travel, and shooting form matches the shooting-form criteria.",
+        "analyzer": "vision/analyzers/step-back.md"
+      }
+    }
+  ]
+}
