@@ -20,6 +20,7 @@ Changes are kept to the minimum needed to connect the lesson practice step to th
 | `src/lib/curriculum.ts` | `Completion` type | Added `{ source: "vision"; completedAt; attemptId; spec }` next to the existing `{ source: "demo"; completedAt }`. |
 | `src/lib/player-store.tsx` | load check + new action | **Load check:** saved progress was rejected unless every completion had `source: "demo"`, so the first verified completion would have made the app refuse to load. It now also accepts `"vision"` entries that have `attemptId` and `spec`. **New action:** `completeVision(id, attempt)` runs the same guards as `completeDemo` (unknown, locked, quiz, already done) through `completeSkillDemo`, then stores the vision provenance. `completeDemo` is unchanged. |
 | `src/app/complete/[id].tsx` | label only | Shows "SKILL VERIFIED" and a camera-check message for vision completions; demo completions show the same text as before. |
+| `src/app/_layout.tsx` | 1 prop | Bug fix, not vision: `redirectTo="/home"` on the `index` guard. With a saved profile, launching at `/` fell back to the `(main)` group (no index route) and showed "Unmatched route". |
 | `app.json` | plugin | `expo-image-picker` with camera, microphone and photos permission strings (used by dev/store builds; Expo Go has its own). |
 | `package.json`, `package-lock.json` | dependency | `expo-image-picker ~58.0.10` via `npx expo install` (included in Expo Go). |
 
