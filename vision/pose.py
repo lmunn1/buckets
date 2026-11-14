@@ -7,10 +7,22 @@ from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
 
 MODEL_PATH = "models/pose_landmarker_full.task"
+MAX_SIDE = 960  # px; frames are downscaled to this before MediaPipe
 
 # MediaPipe landmark indices
 L = {"nose": 0, "shoulder": 11, "elbow": 13, "wrist": 15, "hip": 23, "knee": 25, "ankle": 27}
 R = {"nose": 0, "shoulder": 12, "elbow": 14, "wrist": 16, "hip": 24, "knee": 26, "ankle": 28}
+
+
+def downscale(frame, max_side=MAX_SIDE):
+    """Shrink so the longer side is at most max_side px. Phone video is often 4K,
+    which makes MediaPipe slow without helping accuracy. Keeps the aspect ratio,
+    so the x scaling in extract() stays correct."""
+    h, w = frame.shape[:2]
+    s = max_side / max(h, w)
+    if s >= 1:
+        return frame
+    return cv2.resize(frame, (round(w * s), round(h * s)), interpolation=cv2.INTER_AREA)
 
 
 def extract(video_path, model_path=MODEL_PATH):
@@ -29,6 +41,7 @@ def extract(video_path, model_path=MODEL_PATH):
             ok, frame = cap.read()
             if not ok:
                 break
+            frame = downscale(frame)
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             img = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
             res = lm.detect_for_video(img, int(i * 1000 / fps))
