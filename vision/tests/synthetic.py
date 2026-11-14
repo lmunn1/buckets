@@ -93,6 +93,6 @@ def shot_fake(jump=False):
     for i in range(60):
         up_now = 20 <= i <= 34
         lift = 0.08 if (jump and 22 <= i <= 32) else 0.0
-        up, fore = (60, 100) if up_now else (-60, 60)
+        up, fore = (45, 135) if up_now else (-60, 60)   # elbow 90, ball at the forehead
         frames.append(frame(130, up, fore, lift))
     return frames

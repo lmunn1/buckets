@@ -29,6 +29,12 @@
       }
     },
     {
+      "name": "elbow_at_top", "label": "Arms bent at the top",
+      "measure": { "type": "joint_angle", "joint": "elbow", "pick": "at", "at": "top" },
+      "target": [40, 120],
+      "feedback": { "fail": "Don't release it, just show it: keep your elbows bent with the ball at your forehead." }
+    },
+    {
       "name": "fake_length_s", "label": "Fake speed",
       "measure": { "type": "duration", "condition": "wrist_above_nose", "from": "top", "direction": "around" },
       "target": [0.15, 1.0],

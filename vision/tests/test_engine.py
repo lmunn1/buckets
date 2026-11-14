@@ -69,6 +69,7 @@ def test_good_fake_passes(shot_fake):
     assert r["passed"], r["feedback"]
     assert m["air_time_s"]["value"] == 0
     assert m["knee_at_top"]["value"] == pytest.approx(130, abs=1)
+    assert m["elbow_at_top"]["value"] == pytest.approx(90, abs=1)
     assert m["fake_length_s"]["value"] == pytest.approx(0.5, abs=0.04)
 
 
@@ -78,6 +79,11 @@ def test_jumping_on_the_fake_fails_air_time(shot_fake):
     assert not m["air_time_s"]["ok"]
     assert m["air_time_s"]["value"] > 0.3
     assert "You left your feet. A fake only works if you stay grounded." in r["feedback"]
+
+
+def test_push_shot_fails_fake_elbow(shot_fake):
+    r = engine.analyze(shot_fake, synthetic.jump_shot(push=True), FPS)
+    assert not metrics(r)["elbow_at_top"]["ok"]
 
 
 def test_real_jump_shot_fails_fake_air_time(shot_fake):
