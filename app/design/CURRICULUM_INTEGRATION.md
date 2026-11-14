@@ -11,9 +11,11 @@ The latest supplied 107-node author export is active. Screens import [learning-s
 
 Keep stable IDs when replacing content. Validate the new export before changing the active assignment. Existing category familiarity defaults safely; removed goals become basics. Old demo IDs are not silently promoted into new curriculum completions.
 
-## One lesson surface
+## Lesson parts and camera
 
-Each source lesson renders explanation, steps, coaching cues, mistakes disclosure, visual guide/photos, official YouTube video, and inline practice together. Text/visual/video/practice remain sections of one scrollable lesson, not separate navigation pages.
+The current lesson flow is **Understand it -> See the technique -> Your turn**, with selectable parts and saved resume metadata. Explanation includes cues and common mistakes; See the technique uses the official video. Photos and diagrams no longer render in the lesson. Your turn leads to a separate camera practice screen with permission, countdown, real recording, replay, and a vision adapter.
+
+See the [camera and placement handoff](CAMERA_AND_PLACEMENT_HANDOFF.md) for platform files, temporary video lifetime, interruption behavior, and the exact teammate interface.
 
 `sourceNodeFor(id)` retains every source field, including tier, XP, supplied photo credits/fallbacks, video alternates, layout, and full `cvActivity` checks/passRule. The UI does not expose technical CV rules as user instructions.
 
@@ -21,21 +23,21 @@ The typed `CurriculumDocument` / `LearningPack` authoring adapter remains availa
 
 ## Media policy
 
-[lesson-media.ts](../src/lib/lesson-media.ts) accepts only supplied web photos with supported explicit open licenses and Commons source credits. Their author/license/source links stay visible, including when network images fail. Missing images try each fallback. Unlicensed YouTube-frame slots are retained in source metadata but excluded from photo reuse; original schematic guides and the official video are used instead.
+The source image metadata and existing media utilities are retained unchanged, but images and movement guides are no longer rendered in lessons. The app does not download or rehost video frames.
 
-[lesson-video.tsx](../src/components/lesson-video.tsx) loads the pinned video after a tap, permits alternate selection, and always exposes an external YouTube action. Native [youtube-player.tsx](../src/components/youtube-player.tsx) uses the official IFrame API in WebView, the real installed application ID as referrer, and automatic backup on player errors. Web [youtube-player.web.tsx](../src/components/youtube-player.web.tsx) uses an official iframe with manual backup selection. No files are downloaded from YouTube. Live playback remains a device/network check.
+[lesson-video.tsx](../src/components/lesson-video.tsx) loads the pinned video when the learner opens See the technique, without autoplay, permits alternate selection, and always exposes an external YouTube action. Native [youtube-player.tsx](../src/components/youtube-player.tsx) uses the official IFrame API in WebView, the real installed application ID as referrer, and automatic backup on player errors. Web [youtube-player.web.tsx](../src/components/youtube-player.web.tsx) uses an official iframe with manual backup selection. No files are downloaded from YouTube. Live playback remains a device/network check.
 
 ## Progress and ownership
 
-Local progress is currently `{ completed: Record<id, { source: 'demo', completedAt }>, lessonSteps: Record<id, number>, practiceCount }`. `lessonSteps` only preserves resume metadata; it never selects separate lesson pages. Completion is guarded against unknown IDs, locked nodes, repeats, and blank quizzes. Daily warmup and recap logging only increment practiceCount.
+Local progress includes `completed` (demo-only provenance), distinct `placedOut` foundation placement, `lessonSteps` for the selected lesson part, and `practiceCount`. Profile adds optional `experience` and `sessionMinutes` fields; existing local profiles migrate safely. Completion is guarded against unknown IDs, locked nodes, repeats, and blank quizzes. Daily warmup and recap logging only increment practiceCount.
 
-The author `applyPlacement()` is preserved/tested but not connected to the existing familiarity onboarding. Before enabling the 1-10 placement scheme, add distinct placedOut persistence and presentation. Skipping must not award verified mastery or XP. Keep demo, placed-out, and verified states distinguishable.
+The author `applyPlacement()` is now connected. Experience choices map to scores 1 / 3 / 5 across tracks; its existing cross-track pruning stays authoritative. Placement is persisted separately and labeled; it never increases earned completion or XP. Focus can recommend prerequisite lessons in another category. Session time defaults the Practice picker.
 
 Teammate-owned [curriculum/](../../curriculum), [data/](../data), [vision.ts](../src/lib/vision.ts), backend modules, and [docs/contracts.md](../../docs/contracts.md) have not been changed by this integration.
 
 ## Vision seam
 
-Replace [DemoAssessment](../src/components/demo-assessment.tsx) inline. The supplied ten cvActivity templates are specifications, not working camera analysis. Accept the source node and return `{ nodeId, attemptId, outcome, completedAt, provenance }` through a verified assessment service with explicit cancellation, permission, recording, transport error, analyzing, retry, and success states. These are proposed frontend integration requirements, not an unauthorized backend contract change.
+Implement [VisionService](../src/lib/vision-service.ts) using the supplied CV template/check/passRule and the local recorded clip. The UI handles permissions, a ten-second countdown, automatic recording, interruption, replay, retake, and cancellation. The default adapter reports analysis unavailable. No actual pass/fail or verified completion is fabricated. DemoAssessment remains an explicitly labeled developer preview, separate from capture.
 
 The existing shared endpoint contract remains `POST /analyze`, multipart `video` and `skill_id`, returning `{ passed, score, metrics: [{ name, value, target, ok }], feedback }`, and `GET /health` returning `{ ok }`. Agree on supported skills and authentic result validation before connecting it. The current UI sends no recordings or analysis requests. An always-pass placeholder must remain labeled mock.
 

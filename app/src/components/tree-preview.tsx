@@ -1,5 +1,5 @@
 import Svg, { Circle, Line } from "react-native-svg";
-import { sourceNodes } from "@/lib/learning-service";
+import { sourceNodes, categoryFor } from "@/lib/learning-service";
 import { palette } from "./hoop-ui";
 /** A true miniature of the same graph, not three disconnected category paths. */
 export function TreePreview() {
@@ -34,7 +34,7 @@ export function TreePreview() {
               y1={y(p.layout.y)}
               x2={x(n.layout.x)}
               y2={y(n.layout.y)}
-              stroke={palette.textSecondary}
+              stroke={categoryFor(n.track).color}
               strokeOpacity={0.25}
               strokeWidth={0.8}
             />
@@ -47,8 +47,8 @@ export function TreePreview() {
           cx={x(n.layout.x)}
           cy={y(n.layout.y)}
           r={n.tier === 1 ? 3.5 : 2.2}
-          fill={n.tier === 1 ? palette.accent : palette.backgroundSelected}
-          stroke={n.tier === 1 ? palette.accent : palette.textSecondary}
+          fill={categoryFor(n.track).color}
+          stroke={categoryFor(n.track).color}
           strokeOpacity={n.tier === 1 ? 1 : 0.55}
           strokeWidth={0.8}
         />

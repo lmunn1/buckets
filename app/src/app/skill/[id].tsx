@@ -24,26 +24,26 @@ export default function Skill() {
   const { player } = usePlayer();
   if (!node) return <MissingSkill />;
   const state = skillState(node, player.progress);
-  const closest = closestAvailable(catalog.nodes, node.id, player.progress.completed);
+  const closest = closestAvailable(catalog.nodes, node.id, {
+    ...player.progress.placedOut,
+    ...player.progress.completed,
+  });
   return (
     <LessonShell title="LESSON PREVIEW" close>
       <SkillHeading name={node.name} category={node.category} />
       <Copy>{node.lesson.summary}</Copy>
       <Section title="What you’ll do" />
       <View style={{ gap: 18 }}>
-        {[
-          "Learn the key idea",
-          "See the movement",
-          "Watch a demonstration",
-          "Try it yourself",
-        ].map((s, i) => (
-          <View key={s} style={ui.row}>
-            <Copy kind="eyebrow" style={{ color: palette.accent }}>
-              {String(i + 1).padStart(2, "0")}
-            </Copy>
-            <Copy>{s}</Copy>
-          </View>
-        ))}
+        {["Learn the key idea", "Watch the technique", "Try it yourself"].map(
+          (s, i) => (
+            <View key={s} style={ui.row}>
+              <Copy kind="eyebrow" style={{ color: palette.accent }}>
+                {String(i + 1).padStart(2, "0")}
+              </Copy>
+              <Copy>{s}</Copy>
+            </View>
+          ),
+        )}
       </View>
       <Section
         title={
@@ -53,7 +53,7 @@ export default function Skill() {
         }
         detail={
           node.prerequisites.length
-            ? "Every prerequisite needs completion."
+            ? "Every prerequisite needs completion or experience placement."
             : "This foundation has no prerequisites."
         }
       />
@@ -76,9 +76,13 @@ export default function Skill() {
             ]}
           >
             <Icon
-              name={player.progress.completed[id] ? "check" : "lock"}
+              name={
+                player.progress.completed[id] || player.progress.placedOut?.[id]
+                  ? "check"
+                  : "lock"
+              }
               color={
-                player.progress.completed[id]
+                player.progress.completed[id] || player.progress.placedOut?.[id]
                   ? palette.success
                   : palette.textSecondary
               }
@@ -114,7 +118,9 @@ export default function Skill() {
           onPress={() =>
             router.replace({
               pathname: "/lesson/[id]",
-              params: { id: state === "locked" && closest ? closest.id : node.id },
+              params: {
+                id: state === "locked" && closest ? closest.id : node.id,
+              },
             })
           }
         />

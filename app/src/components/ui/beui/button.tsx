@@ -33,6 +33,7 @@ export function ButtonRoot({
   disabled = false,
   style,
   accessibilityState,
+  accessibilityRole = "button",
   onPressIn,
   onPressOut,
   onHoverIn,
@@ -56,7 +57,7 @@ export function ButtonRoot({
   return (
     <AnimatedPressable
       {...props}
-      accessibilityRole="button"
+      accessibilityRole={accessibilityRole}
       accessibilityState={{ ...accessibilityState, disabled }}
       disabled={disabled}
       style={[style, animatedStyle]}

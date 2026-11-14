@@ -2,7 +2,7 @@
 
 The Hoop mobile app uses Expo SDK 58, React Native, TypeScript, and Expo Router.
 
-The frontend now includes onboarding, Home, a connected skill graph, continuous lesson pages with inline demo practice, timed warmups, and Profile. It uses the latest supplied 107-skill curriculum, eight categories, credited photos, official YouTube players, and inline assessment previews. Camera assessment remains simulated. See the [build report](FRONTEND_BUILD_REPORT.md) and [curriculum integration guide](design/CURRICULUM_INTEGRATION.md).
+The frontend includes a short experience/focus/time onboarding, a persistent connected 107-skill graph, three-part video-focused lessons, local camera recording with a 10-second positioning countdown, timed warmups, and Profile. Experience sets prerequisite-respecting placement; camera capture is real, but vision analysis is not connected. See the [build report](FRONTEND_BUILD_REPORT.md), [curriculum guide](design/CURRICULUM_INTEGRATION.md), and [camera/placement teammate handoff](design/CAMERA_AND_PLACEMENT_HANDOFF.md).
 
 ## Run it
 
@@ -37,7 +37,7 @@ node scripts/smoke-curriculum.cjs
 npx expo export --platform all --output-dir dist-frontend-all
 ```
 
-The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script, phone-size screenshots, free-tool licenses, and native testing limits. Web uses client rendering with local player state. Lessons show text, visuals, video, and practice on one page; practice completion remains explicitly simulated.
+The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script, phone-size screenshots, free-tool licenses, and native testing limits. Web uses client rendering with local player state. Lessons have Understand it, See the technique (video), and Your turn parts. Images and movement guides are removed from the lesson flow. Practice records temporary local video and can replay/retake it; analysis and verified completion remain teammate integration points.
 
 ## First-time setup (each person)
 1. Make a free Expo account and accept the Buckets org invite (check your email).

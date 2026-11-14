@@ -18,14 +18,14 @@ const icons = {
   IQ: "brain",
 } as const;
 const accents = {
-  FW: "#8EBAB0",
-  BH: "#E7AD5A",
-  SH: "#A8BDE0",
-  FN: "#71CBD2",
-  PA: "#B9A5DD",
-  DF: "#ED8C88",
-  LM: "#E8CD69",
-  IQ: "#C5B8EF",
+  FW: "#64CBAF",
+  BH: "#F4A340",
+  SH: "#8EDB4F",
+  FN: "#52CEDA",
+  PA: "#72A6F5",
+  DF: "#F17B79",
+  LM: "#F0CE53",
+  IQ: "#BC91EF",
 };
 const shorts = {
   FW: "Footwork",
@@ -85,7 +85,7 @@ export function importedState(node: SkillNode, progress: Progress) {
     completed: Object.fromEntries(
       Object.keys(progress.completed).map((id) => [id, true as const]),
     ),
-    placedOut: {},
+    placedOut: progress.placedOut ?? {},
   });
   return result === "unlocked" ? ("available" as const) : result;
 }
