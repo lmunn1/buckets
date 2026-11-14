@@ -6,6 +6,10 @@ node_modules/
 # Expo
 .expo/
 dist/
+dist-frontend/
+dist-frontend-ios/
+dist-frontend-all/
+dist-ios/
 web-build/
 expo-env.d.ts
 
@@ -41,3 +45,8 @@ example
 # generated native folders
 /ios
 /android
+
+# Keep current review evidence; omit scratch and legacy QA captures.
+/design/qa/*
+!/design/qa/*-curriculum-*.png
+!/design/qa/home-reduced-motion.png
