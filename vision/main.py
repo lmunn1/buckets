@@ -21,7 +21,7 @@ def health():
 
 
 @app.post("/analyze")
-async def analyze(video: UploadFile = File(...), skill_id: str = Form(...)):
+async def analyze(video: UploadFile = File(...), skill_id: str = Form(...), hand: str = Form("auto")):
     analyzer = ANALYZERS.get(skill_id)
     if analyzer is None:
         return {"passed": False, "score": 0.0, "metrics": [],
@@ -31,7 +31,7 @@ async def analyze(video: UploadFile = File(...), skill_id: str = Form(...)):
         tmp.write(await video.read())
         path = tmp.name
     try:
-        frames, _ = extract(path)
-        return analyzer(frames)
+        frames, fps = extract(path)
+        return analyzer(frames, fps=fps, hand=hand)
     finally:
         os.remove(path)

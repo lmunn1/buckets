@@ -1,5 +1,6 @@
 """Extract per-frame body landmarks from a video with MediaPipe Pose Landmarker."""
 import math
+from types import SimpleNamespace
 import cv2
 import mediapipe as mp
 from mediapipe.tasks import python as mp_python
@@ -31,7 +32,17 @@ def extract(video_path, model_path=MODEL_PATH):
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             img = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
             res = lm.detect_for_video(img, int(i * 1000 / fps))
-            frames.append(res.pose_landmarks[0] if res.pose_landmarks else None)
+            if res.pose_landmarks:
+                # Landmarks are normalized separately by width and height, which
+                # distorts angles on non-square video. Scale x by the aspect ratio
+                # so x and y use the same unit (y stays 0-1).
+                h, w = frame.shape[:2]
+                aspect = w / h
+                frames.append([SimpleNamespace(x=p.x * aspect, y=p.y,
+                                               visibility=getattr(p, "visibility", None))
+                               for p in res.pose_landmarks[0]])
+            else:
+                frames.append(None)
             i += 1
     cap.release()
     return frames, fps
