@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { FlowScreen } from "./flow-screen";
 import { Action, Copy, Icon, Tag, ui } from "./hoop-ui";
 import { categoryFor, catalog } from "@/lib/learning-service";
-import type { PropsWithChildren, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
 export function useSkill() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -13,11 +13,15 @@ export function LessonShell({
   children,
   title,
   close = false,
-  overlay,
-}: PropsWithChildren<{ title: string; close?: boolean; overlay?: ReactNode }>) {
+  reserveBottom = false,
+}: PropsWithChildren<{
+  title: string;
+  close?: boolean;
+  reserveBottom?: boolean;
+}>) {
   const router = useRouter();
   return (
-    <FlowScreen overlay={overlay}>
+    <FlowScreen reserveBottom={reserveBottom}>
       <View style={[ui.row, { marginBottom: 24 }]}>
         <Pressable
           accessibilityRole="button"

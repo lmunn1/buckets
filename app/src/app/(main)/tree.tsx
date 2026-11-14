@@ -44,7 +44,7 @@ export default function Tree() {
   const [list, setList] = useState(false);
   const [fullPath, setFullPath] = useState(false);
   const [focusVersion, setFocusVersion] = useState(0);
-  const [expanded, setExpanded] = useState(height >= 650);
+  const [expanded, setExpanded] = useState(false);
   useFocusEffect(
     useCallback(() => {
       if (params.category)
@@ -60,14 +60,28 @@ export default function Tree() {
   );
   const selected =
     catalog.nodes.find((n) => n.id === selection) ?? catalog.nodes[0];
+  const searchable = (text: string) =>
+    text.toLowerCase().replace(/[^a-z0-9]/g, "");
   const results = catalog.nodes.filter((n) =>
-    n.name.toLowerCase().includes(query.trim().toLowerCase()),
+    searchable(n.name).includes(searchable(query)),
   );
-  const select = (id: string) => {
+  const chooseCategory = (id: string | null) => {
+    setCategory(id);
+    setExpanded(false);
+    if (id) {
+      const entry =
+        catalog.nodes.find(
+          (n) =>
+            n.category === id && skillState(n, player.progress) === "available",
+        ) ?? catalog.nodes.find((n) => n.category === id);
+      if (entry) setSelection(entry.id);
+    }
+  };
+  const select = (id: string, focus = true) => {
     setSelection(id);
     setExpanded(true);
     setQuery("");
-    setFocusVersion((v) => v + 1);
+    if (focus) setFocusVersion((v) => v + 1);
     Keyboard.dismiss();
   };
   return (
@@ -153,7 +167,13 @@ export default function Tree() {
             onChangeText={setQuery}
             returnKeyType="search"
             onSubmitEditing={() => results[0] && select(results[0].id)}
-            style={{ flex: 1, height: 46, color: palette.text, fontSize: 15, fontFamily: "Inter_400Regular" }}
+            style={{
+              flex: 1,
+              height: 46,
+              color: palette.text,
+              fontSize: 15,
+              fontFamily: "Inter_400Regular",
+            }}
           />
           {!!query && (
             <Pressable
@@ -179,28 +199,33 @@ export default function Tree() {
               key={c.id}
               accessibilityRole="button"
               accessibilityState={{ selected: (category ?? "all") === c.id }}
-              onPress={() => setCategory(c.id === "all" ? null : c.id)}
+              onPress={() => chooseCategory(c.id === "all" ? null : c.id)}
               style={{
-                minHeight: 44,
+                minHeight: 48,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 8,
                 paddingHorizontal: 14,
                 justifyContent: "center",
-                borderRadius: 22,
+                borderRadius: 14,
                 borderWidth: 1,
                 borderColor:
                   (category ?? "all") === c.id ? c.color : palette.border,
                 backgroundColor:
                   (category ?? "all") === c.id
-                    ? palette.backgroundSelected
-                    : palette.background,
+                    ? c.color + "22"
+                    : c.color + "0C",
               }}
             >
+              <Icon
+                name={"icon" in c ? c.icon : "tree"}
+                size={18}
+                color={c.color}
+              />
               <Copy
                 kind="caption"
                 style={{
-                  color:
-                    (category ?? "all") === c.id
-                      ? c.color
-                      : palette.textSecondary,
+                  color: c.color,
                 }}
               >
                 {c.short}
@@ -249,13 +274,14 @@ export default function Tree() {
         </ScrollView>
       ) : (
         <ConnectedSkillMap
-          key={`${selected.id}-${focusVersion}`}
+          onCategory={chooseCategory}
+          focusVersion={focusVersion}
           nodes={catalog.nodes}
           progress={player.progress}
           selected={selected.id}
           category={category}
           fullPath={fullPath}
-          onSelect={select}
+          onSelect={(id) => select(id, false)}
         />
       )}
       {!query.trim() && !list && (

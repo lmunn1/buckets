@@ -152,3 +152,70 @@ assert.equal(
 console.log(
   "PASS: all 48 explicitly open-license photos retain credits; 273 video-frame slots excluded from image reuse.",
 );
+const cameraMath = load(path.resolve(__dirname, "../src/lib/map-camera"));
+const vision = load(path.resolve(__dirname, "../src/lib/vision-service"));
+for (const experience of ["new", "some", "experienced"]) {
+  const profile = { ...service.blankProfile(), experience, goal: "SH" };
+  const placedOut = service.placementFor(profile);
+  assert.equal(Object.keys(placedOut).length === 0, experience === "new");
+  const progress = { ...blankProgress(), placedOut };
+  assert.equal(
+    Object.keys(progress.completed).length,
+    0,
+    "Placement is not earned mastery",
+  );
+  for (const id of Object.keys(placedOut)) {
+    assert.equal(
+      skillState(
+        catalog.nodes.find((n) => n.id === id),
+        progress,
+      ),
+      "completed",
+    );
+    assert.ok(
+      service.sourceNodeFor(id).unlock.requiresAll.every((p) => placedOut[p]),
+    );
+  }
+  const next = service.recommend(catalog, profile, progress);
+  assert.ok(next && skillState(next, progress) === "available");
+  if (experience === "experienced")
+    assert.ok(service.sourceNodeFor(next.id).tier > 1);
+}
+let camera = { x: -600, y: -500, scale: 1.35 };
+const anchor = { x: 195, y: 240 };
+const worldAnchor = {
+  x: (anchor.x - camera.x) / camera.scale,
+  y: (anchor.y - camera.y) / camera.scale,
+};
+for (let i = 0; i < 500; i++) {
+  camera = cameraMath.zoomAt(camera, camera.scale * 1.25, anchor);
+  camera = cameraMath.zoomAt(camera, camera.scale * 0.8, anchor);
+}
+assert.ok(Math.abs(worldAnchor.x * camera.scale + camera.x - anchor.x) < 1e-7);
+assert.ok(Math.abs(worldAnchor.y * camera.scale + camera.y - anchor.y) < 1e-7);
+const viewport = { width: 390, height: 480 };
+const fit = cameraMath.fitMap(viewport, points);
+for (const p of points) {
+  assert.ok(
+    p.x * fit.scale + fit.x >= 0 && p.x * fit.scale + fit.x <= viewport.width,
+  );
+  assert.ok(
+    p.y * fit.scale + fit.y >= 0 && p.y * fit.scale + fit.y <= viewport.height,
+  );
+}
+const constrained = cameraMath.constrainMap(
+  { x: 1e9, y: -1e9, scale: 1 },
+  viewport,
+);
+assert.equal(constrained.x, viewport.width - 60);
+assert.equal(constrained.y, 60 - 1400);
+assert.equal(vision.POSITION_COUNTDOWN_SECONDS, 10);
+assert.equal(vision.countdownRemaining(10000, 0), 10);
+assert.equal(vision.countdownRemaining(10000, 9001), 1);
+assert.equal(vision.countdownRemaining(10000, 12000), 0);
+vision.visionService.assess({}, new AbortController().signal).then((result) => {
+  assert.equal(result.status, "unavailable");
+  console.log(
+    "PASS: experience placement, honest mastery, available recommendations, 500 anchor-preserving zoom cycles, overview fit, camera bounds, 10-second countdown, unavailable vision adapter.",
+  );
+});

@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 import { useIsFocused } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,8 +7,11 @@ import { Colors, MaxContentWidth, Spacing } from "@/constants/theme";
 
 export function FlowScreen({
   children,
-  overlay,
-}: PropsWithChildren<{ overlay?: ReactNode }>) {
+  reserveBottom = false,
+}: PropsWithChildren<{
+  /** Extra bottom space so floating UI (e.g. the Buckets coach) never covers content. */
+  reserveBottom?: boolean;
+}>) {
   const focused = useIsFocused();
   return (
     <SafeAreaView
@@ -20,11 +23,10 @@ export function FlowScreen({
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[styles.content, overlay ? { paddingBottom: 112 } : null]}>
+        <View style={[styles.content, reserveBottom && { paddingBottom: 112 }]}>
           {children}
         </View>
       </ScrollView>
-      {overlay}
     </SafeAreaView>
   );
 }

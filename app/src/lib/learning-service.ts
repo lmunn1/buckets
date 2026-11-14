@@ -17,6 +17,7 @@ import {
   type Progress,
   type SkillNode,
 } from "./curriculum";
+import { applyPlacement, type TrackId } from "./hooptree/skillTree";
 export {
   blankProgress,
   validateCatalog,
@@ -227,10 +228,28 @@ export const categoryFor = (id: string) =>
   categories.find((c) => c.id === id) ?? categories[0];
 export const blankProfile = (): Profile => ({
   goal: "basics",
+  experience: "new",
+  sessionMinutes: 10,
   familiarity: Object.fromEntries(
     categories.map((c) => [c.id, "new"]),
   ) as Profile["familiarity"],
 });
+/** Use the author's placement rules unchanged. Placement is never earned mastery. */
+export function placementFor(profile: Profile): Record<string, true> {
+  const score =
+    profile.experience === "experienced"
+      ? 5
+      : profile.experience === "some"
+        ? 3
+        : 1;
+  return applyPlacement(
+    sourceNodes,
+    Object.fromEntries(categories.map((c) => [c.id, score])) as Record<
+      TrackId,
+      number
+    >,
+  ).placedOut;
+}
 export function recommend(
   catalog: Catalog,
   profile: Profile,
@@ -239,8 +258,34 @@ export function recommend(
   const available = catalog.nodes.filter(
     (n) => skillState(n, progress) === "available",
   );
+  const resumed = available.find((n) => (progress.lessonSteps[n.id] ?? 0) > 0);
+  if (resumed) return resumed;
+  const goalNode = available.find((n) => n.category === profile.goal);
+  if (goalNode) return goalNode;
+  // Follow missing cross-category foundations toward the selected focus.
+  if (profile.goal !== "basics") {
+    const visit = (
+      id: string,
+      seen = new Set<string>(),
+    ): SkillNode | undefined => {
+      if (seen.has(id)) return;
+      seen.add(id);
+      const node = catalog.nodes.find((n) => n.id === id);
+      if (!node || skillState(node, progress) === "completed") return;
+      if (skillState(node, progress) === "available") return node;
+      for (const parent of node.prerequisites) {
+        const found = visit(parent, seen);
+        if (found) return found;
+      }
+    };
+    for (const node of catalog.nodes.filter(
+      (n) => n.category === profile.goal,
+    )) {
+      const next = visit(node.id);
+      if (next) return next;
+    }
+  }
   return (
-    available.find((n) => n.category === profile.goal) ??
     available.find((n) => profile.familiarity[n.category] === "new") ??
     available[0]
   );

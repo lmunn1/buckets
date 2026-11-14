@@ -55,6 +55,14 @@ export default function Home() {
       <Copy kind="display" style={{ marginBottom: 24 }}>
         Ready to get{String.fromCharCode(10)}better?
       </Copy>
+      {Object.keys(player.progress.placedOut ?? {}).length > 0 && (
+        <View style={{ marginBottom: 18 }}>
+          <Copy kind="caption" muted>
+            {Object.keys(player.progress.placedOut ?? {}).length} foundations
+            placed from your experience. Review any skill on the tree.
+          </Copy>
+        </View>
+      )}
       {node ? (
         <View style={styles.hero}>
           <View

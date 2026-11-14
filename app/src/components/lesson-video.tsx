@@ -4,14 +4,20 @@ import { sourceNodeFor } from "@/lib/learning-service";
 import { Action, Copy, ErrorNotice, Icon, palette, ui } from "./hoop-ui";
 import { YouTubePlayer } from "./youtube-player";
 
-export function LessonVideo({ id }: { id: string }) {
+export function LessonVideo({
+  id,
+  eager = false,
+}: {
+  id: string;
+  eager?: boolean;
+}) {
   const source = sourceNodeFor(id)!;
   const options = [
     source.lesson.video.pinned,
     ...source.lesson.video.alternates,
   ].filter((v) => v !== null);
   const [index, setIndex] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(eager);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [width, setWidth] = useState(300);

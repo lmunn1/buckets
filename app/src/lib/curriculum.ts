@@ -60,6 +60,8 @@ export type Familiarity = "new" | "tried" | "learning" | "unsure";
 export type Profile = {
   goal: CategoryId | "basics";
   familiarity: Record<CategoryId, Familiarity>;
+  experience?: "new" | "some" | "experienced";
+  sessionMinutes?: 5 | 10 | 20;
 };
 export type SkillNode = {
   id: string;
@@ -84,6 +86,7 @@ export type Catalog = { sport: string; nodes: SkillNode[] };
 export type Completion = { source: "demo"; completedAt: string };
 export type Progress = {
   completed: Record<string, Completion>;
+  placedOut?: Record<string, true>;
   lessonSteps: Record<string, number>;
   practiceCount: number;
 };
@@ -566,8 +569,11 @@ export function skillState(
   node: SkillNode,
   progress: Progress,
 ): "completed" | "available" | "locked" {
-  if (progress.completed[node.id]) return "completed";
-  return node.prerequisites.every((id) => !!progress.completed[id])
+  if (progress.completed[node.id] || progress.placedOut?.[node.id])
+    return "completed";
+  return node.prerequisites.every(
+    (id) => !!(progress.completed[id] || progress.placedOut?.[id]),
+  )
     ? "available"
     : "locked";
 }
