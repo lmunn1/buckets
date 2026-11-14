@@ -81,10 +81,7 @@ export type SkillNode = {
   };
 };
 export type Catalog = { sport: string; nodes: SkillNode[] };
-export type Completion =
-  | { source: "demo"; completedAt: string }
-  // Verified by the vision server: attemptId/spec identify the graded upload.
-  | { source: "vision"; completedAt: string; attemptId: string; spec: string };
+export type Completion = { source: "demo"; completedAt: string };
 export type Progress = {
   completed: Record<string, Completion>;
   lessonSteps: Record<string, number>;

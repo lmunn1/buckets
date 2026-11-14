@@ -81,9 +81,7 @@ function Navigator() {
           contentStyle: { backgroundColor: Colors.dark.background },
         }}
       >
-        {/* redirectTo: with a saved profile, "/" would otherwise fall back to the
-            (main) group, which has no index route -> "Unmatched route" on launch. */}
-        <Stack.Protected guard={!player.profile} redirectTo="/home">
+        <Stack.Protected guard={!player.profile}>
           <Stack.Screen name="index" />
         </Stack.Protected>
         <Stack.Screen name="setup" />

@@ -13,7 +13,7 @@ import { LessonShell, MissingSkill, useSkill } from "@/components/lesson-shell";
 import { LessonVisual } from "@/components/lesson-visual";
 import { LessonPhotos, licensedPhotos } from "@/components/lesson-photos";
 import { LessonVideo } from "@/components/lesson-video";
-import { PracticeAssessment } from "@/components/vision-assessment";
+import { DemoAssessment } from "@/components/demo-assessment";
 import { Reveal } from "@/components/motion";
 import { ButtonRoot } from "@/components/ui/beui/button";
 import { usePlayer } from "@/lib/player-store";
@@ -176,7 +176,7 @@ export default function Lesson() {
           </Copy>
         ) : practicing ? (
           <Reveal style={{ marginTop: 20 }}>
-            <PracticeAssessment node={node} />
+            <DemoAssessment node={node} />
           </Reveal>
         ) : (
           <View style={{ gap: 12, marginTop: 20 }}>

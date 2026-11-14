@@ -19,7 +19,6 @@ export default function Complete() {
   const { player } = usePlayer();
   if (!node) return <MissingSkill />;
   const completed = !!player.progress.completed[node.id];
-  const verified = player.progress.completed[node.id]?.source === "vision";
   const unlocked = completed
     ? catalog.nodes.filter(
         (n) =>
@@ -28,7 +27,7 @@ export default function Complete() {
       )
     : [];
   return (
-    <LessonShell title={verified ? "SKILL CHECK" : "DEMO PROGRESSION"}>
+    <LessonShell title="DEMO PROGRESSION">
       <Reveal style={{ alignItems: "center", paddingVertical: 32, gap: 20 }}>
         <View
           style={{
@@ -52,7 +51,7 @@ export default function Complete() {
           </View>
         </View>
         <Tag color={palette.success}>
-          {verified ? "SKILL VERIFIED" : completed ? "DEMO SKILL COMPLETE" : "NOT COMPLETED"}
+          {completed ? "DEMO SKILL COMPLETE" : "NOT COMPLETED"}
         </Tag>
         <Copy kind="title" style={{ textAlign: "center" }}>
           {completed ? "Your path just grew." : "This skill is still waiting."}
@@ -63,9 +62,8 @@ export default function Complete() {
       </Reveal>
       <Panel>
         <Copy>
-          {verified
-            ? "Checked by the camera: your rep passed every form check for this skill."
-            : "This demonstrates completion and prerequisite unlocks. It is saved as demo progress, not verified basketball mastery."}
+          This demonstrates completion and prerequisite unlocks. It is saved as
+          demo progress, not verified basketball mastery.
         </Copy>
       </Panel>
       <Section
