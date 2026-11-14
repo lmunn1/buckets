@@ -1,16 +1,15 @@
-# app - Part 1: UI/UX and user flow
+# Hoop app - frontend preview
 
-The Buckets mobile app (Expo / React Native, Expo Router), plus wireframes.
+The Hoop mobile app uses Expo SDK 58, React Native, TypeScript, and Expo Router.
 
-Everything about what the user sees and how they move through the app: onboarding (sport pick, proficiency rating), the skill graph view, lesson screens, and the skill test / feedback screens.
+The frontend now includes onboarding, Home, a connected skill graph, continuous lesson pages with inline demo practice, timed warmups, and Profile. It uses the latest supplied 107-skill curriculum, eight categories, credited photos, official YouTube players, and inline assessment previews. Camera assessment remains simulated. See the [build report](FRONTEND_BUILD_REPORT.md) and [curriculum integration guide](design/CURRICULUM_INTEGRATION.md).
 
 ## Run it
 
 ```bash
 cd app
 npm install
-cp .env.example .env      # set EXPO_PUBLIC_VISION_URL to the vision API, e.g. http://<your-laptop-ip>:8000
-npx expo start            # scan the QR code with Expo Go, or press i / a / w
+npx expo start            # scan with Expo Go or press w for web
 ```
 
 Use `npx expo install <package>` to add packages so versions match the Expo SDK.
@@ -19,9 +18,26 @@ Use `npx expo install <package>` to add packages so versions match the Expo SDK.
 
 - `src/app/`: screens (Expo Router: every file is a route).
 - `src/components/`, `src/hooks/`, `src/constants/`: shared code.
-- `data/skills.json`: copy of `curriculum/sample.json` for the app to read.
+- `src/lib/learning-service.ts`: shared catalog boundary and typed curriculum authoring adapter.
+- `src/lib/hooptree/`: unchanged supplied curriculum/helper; `hooptree-adapter.ts` connects it to the UI.
+- `src/lib/curriculum.ts`: inactive legacy fixture and guarded demo progression types/selectors.
+- `data/skills.json`: older sample data; do not use for progression until its format is reconciled with the curriculum team.
 - `design/`: wireframes and mockups (`wireframe.html` is the pre-pivot hobby-era wireframe).
 - `AGENTS.md` / `CLAUDE.md`: Expo's notes for AI coding assistants.
+
+## Validation
+
+```bash
+npx tsc --noEmit
+npm run lint
+npx expo install --check
+node scripts/verify-frontend.cjs
+node scripts/verify-learning.cjs
+node scripts/smoke-curriculum.cjs
+npx expo export --platform all --output-dir dist-frontend-all
+```
+
+The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script, phone-size screenshots, free-tool licenses, and native testing limits. Web uses client rendering with local player state. Lessons show text, visuals, video, and practice on one page; practice completion remains explicitly simulated.
 
 ## First-time setup (each person)
 1. Make a free Expo account and accept the Buckets org invite (check your email).
