@@ -15,3 +15,7 @@ build/
 .env
 .env.*
 !.env.example
+vision/.venv/
+vision/models/
+vision/clips/
+__pycache__/
