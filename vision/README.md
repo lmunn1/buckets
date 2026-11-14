@@ -1,17 +1,19 @@
-# vision - Part 3: visual model and completion criteria
+# Vision server
 
-The knowledge base for skill tests: how the vision model reads a user's video and what counts as passing.
+Setup (once):
+    cd vision
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    mkdir -p models clips
+    curl -o models/pose_landmarker_full.task https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task
 
-What belongs here:
+Run the server:
+    uvicorn main:app --host 0.0.0.0 --port 8000
 
-- Analyzer specs: one file per reusable check (form/pose check, rep counting, tallies). Skill nodes in `/curriculum` reference these through `completion.analyzer`.
-- Completion criteria: what the model looks for, thresholds, and the feedback it gives on a fail.
-- Notes on models, datasets, and camera setup.
+Test a clip:
+    python test_clip.py clips/shot.mov
+    python debug_video.py clips/shot.mov
 
-Analyzers should be sport-agnostic where possible, so a new sport reuses them instead of needing new ML work.
-
-Planned analyzer specs (referenced by the curriculum example, not written yet):
-
-- `analyzers/shot-form.md`
-- `analyzers/dribble-count.md`
-- `analyzers/step-back.md`
+Film from the shooting-hand side, whole body in frame.
+Only skill_id "shoot_form" is graded so far.
