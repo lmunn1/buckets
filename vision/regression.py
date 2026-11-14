@@ -2,7 +2,10 @@
 
 python regression.py          exit code 1 if anything differs
 Values must match within TOL; pass/fail, side and key frames must match exactly.
+This tests the engine's logic, not calibration: the spec is run with
+jump_shot.TARGETS, so later range changes in shoot_form.json don't count as diffs.
 """
+import copy
 import sys
 
 import clip_cache
@@ -33,8 +36,16 @@ def compare(path, spec):
     return rows, extra, ok
 
 
+def ported_spec():
+    """shoot_form.json with the original jump_shot.py target ranges."""
+    spec = copy.deepcopy(engine.load_spec("shoot_form"))
+    for rule in spec["rules"]:
+        rule["target"] = list(jump_shot.TARGETS[rule["name"]])
+    return spec
+
+
 def main():
-    spec = engine.load_spec("shoot_form")
+    spec = ported_spec()
     all_ok = True
     for path in clip_cache.clip_paths():
         rows, extra, ok = compare(path, spec)
