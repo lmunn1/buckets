@@ -5,6 +5,7 @@ Run from vision/:  uvicorn main:app --host 0.0.0.0 --port 8000
 import json
 import os
 import tempfile
+import time
 import uuid
 from datetime import datetime, timezone
 
@@ -123,6 +124,7 @@ def analyze(video: UploadFile = File(...), skill_id: str = Form(...), hand: str 
     except engine.SpecError as e:
         raise HTTPException(500, f"Spec error: {e}")
 
+    started = time.monotonic()
     suffix = os.path.splitext(video.filename or "")[1] or ".mov"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(video.file.read())
@@ -132,7 +134,10 @@ def analyze(video: UploadFile = File(...), skill_id: str = Form(...), hand: str 
             frames, fps = extract(path, model_path=MODEL_PATH)
         except ValueError as e:
             raise HTTPException(400, f"Couldn't read the video: {e}")
+        extracted = time.monotonic()
         result = engine.analyze(spec, frames, fps=fps, hand=hand)
     finally:
         os.remove(path)
+    result["debug"]["timing_s"] = {"extract": round(extracted - started, 2),
+                                   "total": round(time.monotonic() - started, 2)}
     return {"graded": True, "spec": spec_name, **result, **meta}
