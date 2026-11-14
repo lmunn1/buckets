@@ -1,6 +1,6 @@
 {
   "title": "Jump shot",
-  "description": "Jump shot form, filmed from the shooting-hand side. Exact port of jump_shot.py.",
+  "description": "Jump shot form, filmed from the shooting-hand side. Port of jump_shot.py; set point and release extension ranges are provisional (see rule notes).",
   "success": "Clean shot: good dip, set point, extension and follow-through.",
   "moments": [
     { "name": "release", "type": "highest", "point": "wrist" }
@@ -20,7 +20,8 @@
       "name": "set_point_elbow", "label": "Set point elbow", "debug_frame": "set_frame",
       "measure": { "type": "joint_angle", "joint": "elbow", "pick": "min", "only_when": "wrist_above_shoulder",
                    "window": { "moment": "release", "offset_s": [-0.6, 0] } },
-      "target": [60, 110],
+      "note": "Provisional, calibrated on far_shot only; recalibrate with real ball clips.",
+      "target": [50, 110],
       "feedback": {
         "fail_high": "Your elbow is too open at the set point. Bring the ball back so your elbow is near 90°.",
         "fail_low": "Your elbow is too tight at the set point. Let it open toward 90°.",
@@ -31,7 +32,8 @@
       "name": "release_elbow", "label": "Release extension",
       "measure": { "type": "joint_angle", "joint": "elbow", "pick": "max",
                    "window": { "moment": "release", "offset_s": [-0.1, 0.1] } },
-      "target": [150, 180],
+      "note": "Provisional, calibrated on far_shot only; recalibrate with real ball clips.",
+      "target": [140, 180],
       "feedback": { "fail": "Fully extend your arm at release, reach up toward the rim." }
     },
     {
