@@ -162,6 +162,34 @@ svg.i.lg{width:24px;height:24px}
 .grouped .item{display:flex;align-items:center;gap:12px;min-height:50px;border-bottom:1px solid var(--line)}
 .grouped .item:last-child{border-bottom:0}
 .grouped .val{font-size:14px;color:var(--muted)}
+
+/* ---------- Gamification (v0.2) ---------- */
+.badge{width:48px;height:48px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;position:relative;flex:none}
+.badge b{position:absolute;right:-6px;bottom:-6px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;display:grid;place-items:center;border:2px solid var(--bg)}
+.badge.lg{width:96px;height:96px;border-radius:28px}
+.badge.lg svg.i{width:48px;height:48px;stroke-width:1.6}
+.badge.lg b{width:36px;height:36px;font-size:17px;right:-10px;bottom:-10px;border-width:3px}
+.badge.off{background:var(--surface);color:var(--faint)}
+.tiertrack{display:flex;align-items:flex-start;position:relative}
+.tiertrack:before{content:"";position:absolute;left:10%;right:10%;top:13px;height:2px;background:var(--line)}
+.tiertrack .t{flex:1;text-align:center;position:relative;font-size:11.5px;font-weight:600;color:var(--faint)}
+.tiertrack .t i{display:grid;place-items:center;margin:0 auto 6px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid var(--line2);font-style:normal;font-size:12px;color:var(--muted)}
+.tiertrack .t.done i{background:var(--accent);border-color:var(--accent);color:#fff}
+.tiertrack .t.cur i{background:var(--bg);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.tiertrack .t.done,.tiertrack .t.cur{color:var(--ink)}
+.tree{position:relative}
+.tree:before{content:"";position:absolute;left:19px;top:20px;bottom:20px;width:2px;background:var(--line)}
+.node-row{display:flex;align-items:center;gap:12px;padding:7px 0;position:relative}
+.node{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--bg);border:2px solid var(--line2);color:var(--ink2);position:relative}
+.node.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.node.prog{border:0;background:none}
+.node.locked{background:var(--surface);border-color:var(--surface);color:var(--faint)}
+.node.test{border-radius:12px}
+.node-row.dim .strong,.node-row.dim .grow>div{color:var(--faint)}
+.pips{display:flex;gap:4px}
+.pips i{flex:1;height:8px;border-radius:4px;background:var(--line)}
+.pips i.on{background:var(--accent)}
+.confetti{position:absolute;color:var(--accent);opacity:.55}
 </style>
 </head>
 <body>
@@ -218,14 +246,16 @@ svg.i.lg{width:24px;height:24px}
     <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.6 3.2 7.8 7.5 9 4.3-1.2 7.5-4.4 7.5-9V6z"/></symbol>
     <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.5M12 17h.01"/></symbol>
     <symbol id="chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
-    <symbol id="cup" viewBox="0 0 24 24"><path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 10h1.5a2.5 2.5 0 0 1 0 5H16M8 3v2M11 3v2"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></symbol>
+    <symbol id="star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z"/></symbol>
+    <symbol id="cup"viewBox="0 0 24 24"><path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 10h1.5a2.5 2.5 0 0 1 0 5H16M8 3v2M11 3v2"/></symbol>
   </defs>
 </svg>
 
 <header class="canvas-head">
   <div>
     <h1>Kindling · Mobile wireframes</h1>
-    <p>v0.1 · 10 Nov 2026 · 9 screens · iPhone 390×844 · static mockup, nothing is clickable. Scroll the canvas sideways; long screens also scroll inside the phone.</p>
+    <p>v0.2 · 13 Nov 2026 · 12 screens · adds hobby tiers &amp; skills (Spark → Kindling → Flame → Blaze → Bonfire) · iPhone 390×844 · static mockup, nothing is clickable. Scroll the canvas sideways; long screens also scroll inside the phone.</p>
   </div>
   <div class="legend">
     <span><i class="sw" style="background:var(--accent)"></i>Accent = primary action / active state / progress</span>
@@ -272,10 +302,11 @@ svg.i.lg{width:24px;height:24px}
         <div class="sec-head"><h3>Continue</h3><a>All projects<svg class="i sm"><use href="#chev-r"/></svg></a></div>
         <div class="card">
           <div class="row">
-            <div class="ph-img thumb"><svg class="i"><use href="#run"/></svg></div>
-            <div class="grow"><div class="small">Running · Week 3 of 8</div><div class="h3">Couch to 5K</div></div>
-            <div class="ring sm"><svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="48 126" transform="rotate(-90 24 24)"/></svg><b>38%</b></div>
+            <div class="badge"><svg class="i lg"><use href="#flame"/></svg><b>2</b></div>
+            <div class="grow"><div class="small">Running · Tier 2 · Kindling</div><div class="h3">Couch to 5K</div></div>
+            <span class="small strong">3/5 skills</span>
           </div>
+          <div class="progress mt12"><i style="width:60%"></i></div>
           <div class="divider"></div>
           <div class="row">
             <div class="icon-sq"><svg class="i sm"><use href="#clock"/></svg></div>
@@ -332,7 +363,7 @@ svg.i.lg{width:24px;height:24px}
               <div class="small">Zero to a continuous 5K with gentle run/walk intervals.</div>
             </div>
           </div>
-          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Beginner</span><span><svg class="i"><use href="#calendar"/></svg>8 weeks</span><span><svg class="i"><use href="#clock"/></svg>~1.5 hrs/wk</span></div>
+          <div class="meta mt12"><span><svg class="i"><use href="#flame"/></svg>Tier 1 → 3</span><span><svg class="i"><use href="#calendar"/></svg>8 weeks</span><span><svg class="i"><use href="#clock"/></svg>~1.5 hrs/wk</span></div>
         </div>
         <div class="card">
           <div class="row top">
@@ -342,7 +373,7 @@ svg.i.lg{width:24px;height:24px}
               <div class="small">Build a 3×/week habit with easy runs and one longer run.</div>
             </div>
           </div>
-          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Beginner+</span><span><svg class="i"><use href="#calendar"/></svg>12 weeks</span><span><svg class="i"><use href="#clock"/></svg>~2.5 hrs/wk</span></div>
+          <div class="meta mt12"><span><svg class="i"><use href="#flame"/></svg>Tier 1 → 3</span><span><svg class="i"><use href="#calendar"/></svg>12 weeks</span><span><svg class="i"><use href="#clock"/></svg>~2.5 hrs/wk</span></div>
         </div>
         <div class="card">
           <div class="row top">
@@ -352,7 +383,7 @@ svg.i.lg{width:24px;height:24px}
               <div class="small">Progressive long runs to 21.1 km, with taper week.</div>
             </div>
           </div>
-          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Intermediate</span><span><svg class="i"><use href="#calendar"/></svg>16 weeks</span><span><svg class="i"><use href="#clock"/></svg>~4.5 hrs/wk</span></div>
+          <div class="meta mt12"><span><svg class="i"><use href="#flame"/></svg>Tier 3 → 4</span><span><svg class="i"><use href="#calendar"/></svg>16 weeks</span><span><svg class="i"><use href="#clock"/></svg>~4.5 hrs/wk</span></div>
         </div>
 
         <div class="card dashed row">
@@ -393,18 +424,17 @@ svg.i.lg{width:24px;height:24px}
         <p class="body">Alternate short runs with walking breaks, adding a little more running each week. By week 8 you run 5 km (3.1 mi) without stopping. No prior fitness needed.</p>
         <div class="row mt12" style="gap:8px">
           <div class="stat"><div class="v">24</div><div class="k">sessions</div></div>
-          <div class="stat"><div class="v">4</div><div class="k">milestones</div></div>
-          <div class="stat"><div class="v">5 km</div><div class="k">end goal</div></div>
+          <div class="stat"><div class="v">13</div><div class="k">skills</div></div>
+          <div class="stat"><div class="v">T3</div><div class="k">Flame tier</div></div>
         </div>
       </div>
 
       <div class="section">
-        <div class="sec-head"><h3>Milestones</h3></div>
+        <div class="sec-head"><h3>Tiers you'll reach</h3><span class="small">13 skills</span></div>
         <div class="timeline">
-          <div class="tl"><div class="micro">Week 1</div><div class="strong" style="font-size:15px">Complete your first 3 sessions</div><div class="small">Run 1 min / walk 1.5 min × 8</div></div>
-          <div class="tl"><div class="micro">Week 3</div><div class="strong" style="font-size:15px">Run 3 minutes non-stop</div><div class="small">Intervals get longer, walks shorter</div></div>
-          <div class="tl"><div class="micro">Week 5</div><div class="strong" style="font-size:15px">Run 20 minutes continuously</div><div class="small">The big jump: no walking breaks</div></div>
-          <div class="tl goal"><div class="micro accent-t">Week 8 · Goal</div><div class="strong" style="font-size:15px">Finish a 5K</div><div class="small">Join a local parkrun or run your own route</div></div>
+          <div class="tl"><div class="micro">Tier 1 · Spark · weeks 1–2</div><div class="strong" style="font-size:15px">3 skills: first session, easy pace, right shoes</div><div class="small">Tier test: complete 3 sessions in a week</div></div>
+          <div class="tl"><div class="micro">Tier 2 · Kindling · weeks 3–5</div><div class="strong" style="font-size:15px">5 skills: run 3 min, run 10 min, warm-up routine…</div><div class="small">Tier test: run 20 minutes non-stop</div></div>
+          <div class="tl goal"><div class="micro accent-t">Tier 3 · Flame · weeks 6–8</div><div class="strong" style="font-size:15px">5 skills: pacing, hills, group run…</div><div class="small">Tier test: finish a 5K</div></div>
         </div>
       </div>
 
@@ -551,25 +581,31 @@ svg.i.lg{width:24px;height:24px}
 
 <!-- ======================= 06 PROJECT DASHBOARD ======================= -->
 <section class="frame">
-  <div class="flabel"><div class="num">06 · MY PROJECTS › PROJECT</div><h2>Project Dashboard</h2><p>The core screen: progress, this week, next milestone, logging and AI help.</p></div>
+  <div class="flabel"><div class="num">06 · MY PROJECTS › PROJECT</div><h2>Project Dashboard</h2><p>The core screen: current tier, next skill, this week, logging and AI help.</p></div>
   <div class="phone">
     <div class="island"></div>
     <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
     <div class="content">
       <div class="nav"><div class="back"><svg class="i lg"><use href="#chev-l"/></svg>Projects</div><div class="icon-btn"><svg class="i"><use href="#more"/></svg></div></div>
 
-      <div class="row mt4" style="gap:16px">
-        <div class="grow">
-          <div class="small">Running · ends 9 Jan</div>
-          <h1 class="h2">Couch to 5K</h1>
-          <div class="small mt4"><span class="strong">Week 3 of 8</span> · 9 of 24 sessions</div>
+      <div class="small mt4">Running · Week 3 of 8</div>
+      <h1 class="h2">Couch to 5K</h1>
+
+      <div class="card mt16">
+        <div class="row" style="gap:14px">
+          <div class="badge"><svg class="i lg"><use href="#flame"/></svg><b>2</b></div>
+          <div class="grow"><div class="micro">Tier 2 of 5</div><div class="h3">Kindling</div></div>
+          <a class="small accent-t strong row" style="gap:2px">Skill tree<svg class="i sm"><use href="#chev-r"/></svg></a>
         </div>
-        <div class="ring"><svg width="88" height="88" viewBox="0 0 88 88"><circle cx="44" cy="44" r="37" fill="none" stroke="var(--line)" stroke-width="9"/><circle cx="44" cy="44" r="37" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="88 233" transform="rotate(-90 44 44)"/></svg><b>38%</b></div>
+        <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:60%"></i></div><span class="small strong">3/5 skills</span></div>
+        <div class="small mt8">Master 1 more skill to unlock the tier test → <b style="color:var(--ink)">Flame</b></div>
       </div>
 
-      <div class="row mt16" style="gap:10px;align-items:stretch">
-        <div class="stat"><div class="row" style="gap:6px"><svg class="i sm"><use href="#flame"/></svg><span class="v">6</span><span class="small">days</span></div><div class="k">Current streak · best 9</div></div>
-        <div class="stat" style="flex:1.35"><div class="row" style="gap:6px"><svg class="i sm"><use href="#flag"/></svg><span class="v">4</span><span class="small">days to go</span></div><div class="k">Next: run 3 min non-stop</div></div>
+      <div class="card flat mt12">
+        <div class="row between"><div class="micro">Next skill</div><span class="tag accent">In progress</span></div>
+        <div class="h3 mt4">Run 10 minutes non-stop</div>
+        <div class="pips mt12"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="row between mt8 small"><span>3 of 5 practice sessions</span><span class="row" style="gap:4px"><svg class="i sm"><use href="#flame"/></svg>6-day streak</span></div>
       </div>
 
       <span class="btn btn-primary mt16" style="display:flex"><svg class="i"><use href="#plus"/></svg>Log session</span>
@@ -579,7 +615,7 @@ svg.i.lg{width:24px;height:24px}
         <div class="card list">
           <div class="item"><span class="check done"><svg class="i"><use href="#check"/></svg></span><div class="grow"><div style="font-size:15px;color:var(--muted);text-decoration:line-through">Run 2 min / walk 1 min × 8</div><div class="small">Mon · 24 min</div></div></div>
           <div class="item"><span class="check done"><svg class="i"><use href="#check"/></svg></span><div class="grow"><div style="font-size:15px;color:var(--muted);text-decoration:line-through">Run 2 min / walk 1 min × 8</div><div class="small">Wed · 26 min</div></div></div>
-          <div class="item"><span class="check"></span><div class="grow"><div class="strong" style="font-size:15px">Run 2.5 min / walk 1 min × 7</div><div class="small">Fri · ~28 min</div></div><span class="tag accent">Today</span></div>
+          <div class="item"><span class="check"></span><div class="grow"><div class="strong" style="font-size:15px">Run 2.5 min / walk 1 min × 7</div><div class="small">Fri · ~28 min · +1 toward “Run 10 min”</div></div><span class="tag accent">Today</span></div>
           <div class="item"><span class="check" style="border-style:dashed"></span><div class="grow"><div style="font-size:15px;color:var(--ink2)">Easy walk + stretch</div><div class="small">Sun · optional</div></div></div>
         </div>
       </div>
@@ -605,6 +641,155 @@ svg.i.lg{width:24px;height:24px}
   </div>
 </section>
 
+<!-- ======================= 06b SKILL TREE ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">06b · PROJECT › SKILL TREE · NEW</div><h2>Skill Tree</h2><p>5 tiers per hobby. Master skills to unlock each tier's test, then level up.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav"><div class="back"><svg class="i lg"><use href="#chev-l"/></svg>Couch to 5K</div><span class="title">Running skills</span><span style="width:60px"></span></div>
+
+      <div class="row mt8" style="gap:14px">
+        <div class="badge" style="width:60px;height:60px;border-radius:18px"><svg class="i lg"><use href="#flame"/></svg><b>2</b></div>
+        <div class="grow"><div class="micro">You are</div><div class="h2">Kindling</div><div class="small">6 of 22 running skills mastered</div></div>
+      </div>
+
+      <div class="tiertrack mt20">
+        <div class="t done"><i><svg class="i sm" style="stroke-width:3"><use href="#check"/></svg></i>Spark</div>
+        <div class="t cur"><i>2</i>Kindling</div>
+        <div class="t"><i>3</i>Flame</div>
+        <div class="t"><i>4</i>Blaze</div>
+        <div class="t"><i>5</i>Bonfire</div>
+      </div>
+
+      <div class="section" style="margin-top:24px">
+        <div class="card flat row" style="padding:12px 14px">
+          <div class="node done" style="width:32px;height:32px"><svg class="i sm" style="stroke-width:3"><use href="#check"/></svg></div>
+          <div class="grow"><div class="strong" style="font-size:15px">Tier 1 · Spark</div><div class="small">3/3 skills · test passed 1 Nov</div></div>
+          <svg class="i sm" style="color:var(--faint)"><use href="#chev-d"/></svg>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:20px">
+        <div class="sec-head"><h3>Tier 2 · Kindling</h3><span class="small">3/5</span></div>
+        <div class="tree">
+          <div class="node-row"><div class="node done"><svg class="i sm" style="stroke-width:3"><use href="#check"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Run 3 min non-stop</div><div class="small">Mastered 6 Nov</div></div></div>
+          <div class="node-row"><div class="node done"><svg class="i sm" style="stroke-width:3"><use href="#check"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Warm-up &amp; cool-down routine</div><div class="small">Mastered 8 Nov</div></div></div>
+          <div class="node-row"><div class="node done"><svg class="i sm" style="stroke-width:3"><use href="#check"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Run 3 times in one week</div><div class="small">Mastered 11 Nov</div></div></div>
+          <div class="node-row"><div class="node prog"><svg width="40" height="40" viewBox="0 0 40 40" style="position:absolute"><circle cx="20" cy="20" r="18" fill="var(--bg)" stroke="var(--line)" stroke-width="3"/><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-dasharray="68 113" transform="rotate(-90 20 20)"/></svg><svg class="i sm accent-t" style="position:relative"><use href="#run"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Run 10 min non-stop</div><div class="small">3 of 5 practice sessions</div></div><span class="tag accent">Next</span></div>
+          <div class="node-row"><div class="node"><svg class="i sm"><use href="#star"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Breathing rhythm (3:3)</div><div class="small">Available · 2 practice sessions</div></div></div>
+          <div class="node-row dim"><div class="node test locked"><svg class="i sm"><use href="#trophy"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Tier test: run 20 min</div><div>Unlocks after 4 of 5 skills</div></div><svg class="i sm" style="color:var(--faint)"><use href="#lock"/></svg></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:20px">
+        <div class="sec-head"><h3 style="color:var(--muted)">Tier 3 · Flame</h3><span class="small row" style="gap:4px"><svg class="i sm"><use href="#lock"/></svg>Locked</span></div>
+        <div class="tree">
+          <div class="node-row dim"><div class="node locked"><svg class="i sm"><use href="#lock"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Even pacing for 30 min</div></div></div>
+          <div class="node-row dim"><div class="node locked"><svg class="i sm"><use href="#lock"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Run up a hill without stopping</div></div></div>
+          <div class="node-row dim"><div class="node locked"><svg class="i sm"><use href="#lock"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Join a group run</div></div></div>
+          <div class="node-row dim"><div class="node test locked"><svg class="i sm"><use href="#trophy"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Tier test: finish a 5K</div></div></div>
+        </div>
+      </div>
+      <div class="card flat row mt16" style="padding:12px 14px"><svg class="i" style="color:var(--faint)"><use href="#lock"/></svg><div class="grow small">Blaze &amp; Bonfire · 10 more skills, up to half marathon</div></div>
+    </div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab on"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 06c SKILL DETAIL ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">06c · SKILL TREE › SKILL · NEW</div><h2>Skill Detail</h2><p>What the skill is, how to practise it, and how you prove you've got it.</p></div>
+  <div class="phone has-action">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav"><div class="back"><svg class="i lg"><use href="#chev-l"/></svg>Skills</div><div class="icon-btn"><svg class="i"><use href="#more"/></svg></div></div>
+      <div class="row mt4" style="gap:6px"><span class="tag">Tier 2 · Kindling</span><span class="tag accent">In progress</span></div>
+      <h1 class="h2 mt8">Run 10 minutes non-stop</h1>
+      <p class="body mt8">The bridge between intervals and real running. Once you can hold an easy pace for 10 minutes, 20 is mostly patience.</p>
+
+      <div class="card mt16">
+        <div class="row between"><span class="strong" style="font-size:15px">Practice</span><span class="small">3 of 5 sessions</span></div>
+        <div class="pips mt12"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="small mt8">Sessions on your plan count automatically.</div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>How to practise</h3></div>
+        <div class="card list">
+          <div class="item"><span class="tag" style="width:24px;justify-content:center">1</span><div class="grow" style="font-size:15px">Slow down until you can talk in full sentences</div></div>
+          <div class="item"><span class="tag" style="width:24px;justify-content:center">2</span><div class="grow" style="font-size:15px">Go 5 → 7 → 10 minutes over three runs</div></div>
+          <div class="item"><span class="tag" style="width:24px;justify-content:center">3</span><div class="grow" style="font-size:15px">Pick a flat loop so hills don't stop you</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Prove it</h3><span class="small">pick one</span></div>
+        <div class="stack">
+          <div class="card row" style="border-color:var(--accent);border-width:1.5px"><div class="icon-sq"><svg class="i sm"><use href="#heart"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Auto-detect from Apple Health</div><div class="small">A run with 10+ min at steady pace</div></div><span class="check done"><svg class="i"><use href="#check"/></svg></span></div>
+          <div class="card row"><div class="icon-sq"><svg class="i sm"><use href="#pencil"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Self check-in</div><div class="small">Log it and rate how it felt</div></div><span class="check"></span></div>
+        </div>
+      </div>
+
+      <div class="card soft row top mt16" style="gap:10px;padding:12px 14px">
+        <svg class="i accent-t"><use href="#sparkle"/></svg>
+        <div class="small" style="color:var(--accent-ink)"><b>Stuck at minute 6?</b> Ask AI what usually goes wrong here and how to fix it.</div>
+      </div>
+      <div class="small mt16 row" style="gap:6px"><svg class="i sm"><use href="#lock"/></svg>Mastering this unlocks the <b style="color:var(--ink)">Tier 2 test</b></div>
+    </div>
+    <div class="actionbar"><span class="btn btn-secondary" style="flex:.8">I've got it</span><span class="btn btn-primary"><svg class="i"><use href="#plus"/></svg>Log practice</span></div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab on"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 06d LEVEL UP ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">06d · AFTER PASSING A TIER TEST · NEW</div><h2>Level Up</h2><p>Full-screen moment when you pass a tier test. Shown later in the plan (week 5).</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content" style="bottom:0;text-align:center;padding-bottom:40px">
+      <div class="row between" style="margin:0 -10px"><div class="icon-btn"><svg class="i"><use href="#x"/></svg></div><div class="icon-btn"><svg class="i"><use href="#share"/></svg></div></div>
+
+      <div style="position:relative;height:200px;margin-top:8px">
+        <svg class="i confetti" style="left:60px;top:20px;width:22px;height:22px"><use href="#sparkle"/></svg>
+        <svg class="i confetti" style="right:56px;top:40px"><use href="#star"/></svg>
+        <svg class="i confetti" style="left:84px;top:150px;width:16px;height:16px"><use href="#star"/></svg>
+        <svg class="i confetti" style="right:80px;top:140px;width:24px;height:24px"><use href="#sparkle"/></svg>
+        <div style="position:absolute;left:50%;top:50%;width:170px;height:170px;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent-soft)"></div>
+        <div class="badge lg" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)"><svg class="i"><use href="#flame"/></svg><b>3</b></div>
+      </div>
+
+      <div class="micro accent-t mt16">Tier 3 unlocked</div>
+      <h1 class="large-title mt8">You're a Flame</h1>
+      <p class="body mt8" style="padding:0 12px">You ran 20 minutes without stopping. Five weeks ago you couldn't run for one.</p>
+
+      <div class="row mt20" style="gap:8px;text-align:left">
+        <div class="stat"><div class="v">8</div><div class="k">skills mastered</div></div>
+        <div class="stat"><div class="v">15</div><div class="k">sessions</div></div>
+        <div class="stat"><div class="v">5 wks</div><div class="k">Spark → Flame</div></div>
+      </div>
+
+      <div class="card mt16" style="text-align:left">
+        <div class="micro">New skills unlocked</div>
+        <div class="list mt4">
+          <div class="item" style="padding:10px 0"><div class="node" style="width:32px;height:32px"><svg class="i sm"><use href="#star"/></svg></div><div class="grow strong" style="font-size:15px">Even pacing for 30 min</div></div>
+          <div class="item" style="padding:10px 0"><div class="node" style="width:32px;height:32px"><svg class="i sm"><use href="#star"/></svg></div><div class="grow strong" style="font-size:15px">Run up a hill without stopping</div></div>
+          <div class="item" style="padding:10px 0"><div class="node test" style="width:32px;height:32px;border-radius:10px"><svg class="i sm"><use href="#trophy"/></svg></div><div class="grow strong" style="font-size:15px">Tier test: finish a 5K</div></div>
+        </div>
+      </div>
+
+      <span class="btn btn-primary mt20" style="display:flex">See my new skills</span>
+      <div class="small mt12 strong" style="color:var(--ink2)">Share my badge</div>
+    </div>
+    <div class="homebar"></div>
+  </div>
+</section>
+
 <!-- ======================= 07 MY PROJECTS ======================= -->
 <section class="frame">
   <div class="flabel"><div class="num">07 · MY PROJECTS TAB</div><h2>My Projects</h2><p>All projects at a glance with progress and status (icon + label, not color alone).</p></div>
@@ -618,36 +803,36 @@ svg.i.lg{width:24px;height:24px}
       <div class="stack mt16">
         <div class="card">
           <div class="row">
-            <div class="ph-img thumb"><svg class="i"><use href="#run"/></svg></div>
-            <div class="grow"><div class="small">Running</div><div class="h3">Couch to 5K</div></div>
+            <div class="badge"><svg class="i lg"><use href="#flame"/></svg><b>2</b></div>
+            <div class="grow"><div class="small">Running · Tier 2 Kindling</div><div class="h3">Couch to 5K</div></div>
             <span class="tag accent"><svg class="i"><use href="#check"/></svg>On track</span>
           </div>
-          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:38%"></i></div><span class="small strong">38%</span></div>
-          <div class="row between mt8 small"><span>Week 3 of 8</span><span><svg class="i sm" style="vertical-align:-3px"><use href="#flame"/></svg> 6-day streak</span></div>
+          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:60%"></i></div><span class="small strong">3/5</span></div>
+          <div class="row between mt8 small"><span>Skills to reach Flame</span><span><svg class="i sm" style="vertical-align:-3px"><use href="#flame"/></svg> 6-day streak</span></div>
           <div class="divider" style="margin:12px 0"></div>
           <div class="row small" style="gap:8px;color:var(--ink2)"><svg class="i sm"><use href="#clock"/></svg>Next: <b>Today</b> · Run/walk intervals, 28 min</div>
         </div>
 
         <div class="card">
           <div class="row">
-            <div class="ph-img thumb"><svg class="i"><use href="#music"/></svg></div>
-            <div class="grow"><div class="small">Guitar</div><div class="h3">Play 10 songs by ear</div></div>
+            <div class="badge"><svg class="i lg"><use href="#flame"/></svg><b>3</b></div>
+            <div class="grow"><div class="small">Guitar · Tier 3 Flame</div><div class="h3">Play 10 songs by ear</div></div>
             <span class="tag"><svg class="i"><use href="#alert"/></svg>Behind</span>
           </div>
-          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:62%"></i></div><span class="small strong">62%</span></div>
-          <div class="row between mt8 small"><span>6 of 10 songs</span><span>2 sessions missed</span></div>
+          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:33%"></i></div><span class="small strong">2/6</span></div>
+          <div class="row between mt8 small"><span>Skills to reach Blaze</span><span>2 sessions missed</span></div>
           <div class="divider" style="margin:12px 0"></div>
           <div class="row small" style="gap:8px;color:var(--ink2)"><svg class="i sm"><use href="#clock"/></svg>Next: <b>Tomorrow</b> · G–C–D chord changes</div>
         </div>
 
         <div class="card">
           <div class="row">
-            <div class="ph-img thumb"><svg class="i"><use href="#mountain"/></svg></div>
-            <div class="grow"><div class="small">Rock Climbing</div><div class="h3">Send a V3 boulder</div></div>
+            <div class="badge off"><svg class="i lg"><use href="#flame"/></svg><b>1</b></div>
+            <div class="grow"><div class="small">Rock Climbing · Tier 1 Spark</div><div class="h3">Send a V3 boulder</div></div>
             <span class="tag"><svg class="i"><use href="#pause"/></svg>Paused</span>
           </div>
-          <div class="row mt12" style="gap:10px"><div class="progress gray grow"><i style="width:15%"></i></div><span class="small strong">15%</span></div>
-          <div class="row between mt8 small"><span>Week 2 of 10</span><span>Paused since 28 Oct</span></div>
+          <div class="row mt12" style="gap:10px"><div class="progress gray grow"><i style="width:33%"></i></div><span class="small strong">1/3</span></div>
+          <div class="row between mt8 small"><span>Skills to reach Kindling</span><span>Paused since 28 Oct</span></div>
           <div class="divider" style="margin:12px 0"></div>
           <div class="row small accent-t" style="gap:8px;font-weight:600"><svg class="i sm"><use href="#refresh"/></svg>Resume project</div>
         </div>
@@ -742,16 +927,16 @@ svg.i.lg{width:24px;height:24px}
       <div class="row mt20" style="gap:8px">
         <div class="stat"><div class="v">3</div><div class="k">Active projects</div></div>
         <div class="stat"><div class="v">41</div><div class="k">Sessions logged</div></div>
-        <div class="stat"><div class="v">27h</div><div class="k">Time practiced</div></div>
+        <div class="stat"><div class="v">14</div><div class="k">Skills mastered</div></div>
       </div>
       <div class="card flat row mt8" style="padding:12px 14px;gap:10px"><svg class="i"><use href="#flame"/></svg><div class="grow small" style="color:var(--ink2)"><b>6-day streak</b> · longest 14 days</div><svg class="i"><use href="#trophy"/></svg><span class="small strong">2 completed</span></div>
 
       <div class="section">
-        <div class="sec-head"><h3>Active hobbies</h3><a>Edit</a></div>
+        <div class="sec-head"><h3>Hobbies &amp; tiers</h3><a>Edit</a></div>
         <div class="chips">
-          <span class="chip"><svg class="i sm"><use href="#run"/></svg>Running</span>
-          <span class="chip"><svg class="i sm"><use href="#music"/></svg>Guitar</span>
-          <span class="chip"><svg class="i sm"><use href="#mountain"/></svg>Rock Climbing</span>
+          <span class="chip"><svg class="i sm"><use href="#run"/></svg>Running <span class="tag accent">T2</span></span>
+          <span class="chip"><svg class="i sm"><use href="#music"/></svg>Guitar <span class="tag accent">T3</span></span>
+          <span class="chip"><svg class="i sm"><use href="#mountain"/></svg>Climbing <span class="tag">T1</span></span>
           <span class="chip ghost"><svg class="i sm"><use href="#plus"/></svg>Add</span>
         </div>
       </div>
