@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindling · Wireframes v0.1</title>
+<style>
+:root{
+  --ink:#141414; --ink2:#3b3b3b; --muted:#6b6b6b; --faint:#9b9b9b;
+  --line:#e4e4e4; --line2:#cdcdcd; --surface:#f3f3f3; --surface2:#f9f9f9; --bg:#fff;
+  --accent:#0E7C66; --accent-ink:#0A5A4A; --accent-soft:#E3F1EC;
+  --r-sm:10px; --r:14px; --r-lg:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#e8e8e5;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.35}
+svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+svg.i.sm{width:16px;height:16px}
+svg.i.lg{width:24px;height:24px}
+
+/* ---------- Canvas ---------- */
+.canvas-head{padding:36px 56px 0;display:flex;flex-wrap:wrap;gap:24px 48px;align-items:flex-end;justify-content:space-between}
+.canvas-head h1{font-size:26px;letter-spacing:-.02em}
+.canvas-head p{color:var(--muted);font-size:14px;margin-top:4px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--ink2)}
+.legend span{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:4px;display:inline-block}
+.canvas{display:flex;gap:64px;padding:40px 56px 72px;overflow-x:auto;align-items:flex-start}
+.frame{flex:0 0 390px}
+.flabel{margin-bottom:28px;min-height:58px}
+.flabel .num{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);letter-spacing:.04em}
+.flabel h2{font-size:18px;margin-top:6px;letter-spacing:-.01em}
+.flabel p{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ---------- Device ---------- */
+.phone{width:390px;height:844px;background:var(--bg);border-radius:54px;position:relative;overflow:hidden;
+  box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #444,0 34px 60px rgba(0,0,0,.20)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:124px;height:36px;background:#000;border-radius:20px;z-index:20}
+.status{position:absolute;top:0;left:0;right:0;height:54px;display:flex;justify-content:space-between;align-items:center;padding:8px 30px 0 48px;font-weight:600;font-size:16px;z-index:15;background:var(--bg)}
+.status .sb{display:flex;gap:6px;align-items:center}
+.status .sb svg{fill:currentColor;height:12px}
+.content{position:absolute;top:54px;left:0;right:0;bottom:83px;overflow-y:auto;padding:0 20px 28px;scrollbar-width:none}
+.content::-webkit-scrollbar{display:none}
+.has-action .content{bottom:159px}
+.actionbar{position:absolute;left:0;right:0;bottom:83px;height:76px;padding:12px 20px;background:var(--bg);border-top:1px solid var(--line);display:flex;gap:12px;z-index:10}
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:83px;border-top:1px solid var(--line);background:rgba(255,255,255,.97);display:flex;padding:7px 6px 0;z-index:10}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:500;color:var(--faint)}
+.tab svg.i{width:26px;height:26px;stroke-width:1.7}
+.tab.on{color:var(--accent);font-weight:600}
+.tab.on svg.i{stroke-width:2.1}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:21}
+
+/* ---------- Type ---------- */
+.large-title{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.1}
+.h2{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.h3{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.body{font-size:15px;line-height:1.5;color:var(--ink2)}
+.small{font-size:13px;color:var(--muted);line-height:1.4}
+.micro{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.strong{font-weight:600;color:var(--ink)}
+.accent-t{color:var(--accent)}
+
+/* ---------- Layout helpers ---------- */
+.row{display:flex;align-items:center;gap:12px}
+.row.top{align-items:flex-start}
+.between{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.section{margin-top:28px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sec-head h3{font-size:19px;font-weight:650;letter-spacing:-.01em}
+.sec-head a{font-size:14px;color:var(--accent);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:4px}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.mt4{margin-top:4px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+
+/* ---------- Components ---------- */
+.nav{display:flex;align-items:center;justify-content:space-between;height:44px;margin:0 -10px}
+.nav .back{display:flex;align-items:center;gap:2px;color:var(--accent);font-size:17px;padding:0 6px;height:44px}
+.nav .title{font-weight:600;font-size:17px}
+.nav .txt{color:var(--accent);font-size:17px;padding:0 10px}
+.icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:var(--ink)}
+.icon-btn.soft{background:var(--surface);width:40px;height:40px}
+
+.card{border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;background:var(--bg)}
+.card.flat{background:var(--surface);border-color:transparent}
+.card.dashed{border:1.5px dashed var(--line2);background:var(--surface2)}
+.card.soft{background:var(--accent-soft);border-color:transparent}
+.stack>*+*{margin-top:12px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.scroll{flex-wrap:nowrap;overflow:hidden;margin-right:-20px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);font-size:14px;font-weight:500;background:var(--bg);color:var(--ink2);white-space:nowrap}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.sm{height:30px;padding:0 11px;font-size:13px;gap:4px}
+.chip.sq{width:56px;justify-content:center;border-radius:12px;height:44px;font-size:16px}
+.chip.ghost{border-style:dashed;color:var(--muted)}
+
+.tag{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:6px;background:var(--surface);font-size:12px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.tag.accent{background:var(--accent-soft);color:var(--accent-ink)}
+.tag.dark{background:var(--ink);color:#fff}
+.tag svg.i{width:13px;height:13px;stroke-width:2.2}
+
+.btn{height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;flex:1;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{border:1.5px solid var(--line2);color:var(--ink);background:var(--bg)}
+.btn.sm{height:38px;font-size:14px;border-radius:11px;flex:none;padding:0 14px}
+
+.field-label{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:8px;display:flex;justify-content:space-between}
+.input{height:50px;border-radius:12px;background:var(--surface);display:flex;align-items:center;gap:10px;padding:0 14px;font-size:16px;color:var(--ink);border:1.5px solid transparent}
+.input.ph{color:var(--faint)}
+.input.focus{border-color:var(--accent);background:var(--bg)}
+.caret{display:inline-block;width:2px;height:20px;background:var(--accent);margin-left:1px;vertical-align:middle}
+.helper{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+.progress{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.progress>i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.progress.gray>i{background:#8c8c8c}
+
+.ph-img{background:repeating-linear-gradient(135deg,#e9e9e9 0 9px,#f3f3f3 9px 18px);display:grid;place-items:center;color:#a9a9a9;border-radius:12px;flex:none}
+.thumb{width:52px;height:52px;border-radius:12px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#d9d9d9;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink2);flex:none}
+
+.segmented{display:flex;background:var(--surface);border-radius:11px;padding:3px}
+.segmented span{flex:1;text-align:center;padding:8px 0;font-size:14px;font-weight:500;color:var(--muted);border-radius:9px}
+.segmented .on{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14);font-weight:600}
+
+.check{width:26px;height:26px;border-radius:50%;border:2px solid var(--line2);display:grid;place-items:center;flex:none;color:#fff}
+.check.done{background:var(--accent);border-color:var(--accent)}
+.check svg.i{width:14px;height:14px;stroke-width:3}
+
+.list>.item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.list>.item:last-child{border-bottom:0}
+.card.list{padding-top:2px;padding-bottom:2px}
+
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2);font-weight:500}
+.meta span{display:flex;align-items:center;gap:5px}
+.meta svg.i{width:15px;height:15px;color:var(--muted)}
+
+.ring{position:relative;display:grid;place-items:center;flex:none}
+.ring b{position:absolute;font-size:20px;letter-spacing:-.02em}
+.ring.sm b{font-size:13px}
+
+.timeline{position:relative;padding-left:28px}
+.timeline:before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl{position:relative;padding-bottom:18px}
+.tl:last-child{padding-bottom:0}
+.tl:before{content:"";position:absolute;left:-26px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--line2)}
+.tl.goal:before{background:var(--accent);border-color:var(--accent)}
+
+.stat{flex:1;background:var(--surface);border-radius:14px;padding:12px 14px}
+.stat .v{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.stat .k{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+.prompt-box{border:1.5px solid var(--line2);border-radius:20px;padding:16px;margin-top:16px;background:var(--bg);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.prompt-text{font-size:18px;color:var(--faint);min-height:52px}
+.send{width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
+.dateblock{width:44px;text-align:center;flex:none}
+.dateblock .d{font-size:20px;font-weight:700;line-height:1}
+.dateblock .m{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.05em}
+.grip{color:var(--faint)}
+.icon-sq{width:32px;height:32px;border-radius:9px;background:var(--surface);display:grid;place-items:center;color:var(--ink2);flex:none}
+.hscroll{display:flex;gap:12px;overflow:hidden;margin-right:-20px}
+.grouped{background:var(--surface);border-radius:14px;padding:0 14px}
+.grouped .item{display:flex;align-items:center;gap:12px;min-height:50px;border-bottom:1px solid var(--line)}
+.grouped .item:last-child{border-bottom:0}
+.grouped .val{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- Icon sprite (Lucide-style, 1.8 stroke) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+    <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="sparkle" viewBox="0 0 24 24"><path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z"/></symbol>
+    <symbol id="arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="chev-r" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="chev-l" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="plus-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="minus-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></symbol>
+    <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="x-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></symbol>
+    <symbol id="grip" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></g></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="flame" viewBox="0 0 24 24"><path d="M12 3c1 3.2 5 5.2 5 10.2a5 5 0 0 1-10 0c0-2.2 1-3.7 2-4.7 0 2 1 3 2 3 0-3-1.2-5.5 1-8.5z"/></symbol>
+    <symbol id="flag" viewBox="0 0 24 24"><path d="M5 21V4h12l-2.5 4.5L17 13H5"/></symbol>
+    <symbol id="bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+    <symbol id="share" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+    <symbol id="sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="box" viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></symbol>
+    <symbol id="book" viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h14"/></symbol>
+    <symbol id="play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5.5 3.5-5.5 3.5z"/></symbol>
+    <symbol id="link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+    <symbol id="run" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="mountain" viewBox="0 0 24 24"><path d="m2 20 7-12 4 6 3-4 6 10z"/></symbol>
+    <symbol id="utensils" viewBox="0 0 24 24"><path d="M7 3v18M4.5 3v5a2.5 2.5 0 0 0 5 0V3M17 21V3c-2 0-3.5 2.5-3.5 6.5S15 13 17 13"/></symbol>
+    <symbol id="brush" viewBox="0 0 24 24"><path d="M18.5 3.5 10 12l2 2 8.5-8.5a1.4 1.4 0 0 0-2-2z"/><path d="M9 13c-2 0-4 1.5-4 4 0 1.5-1 2.5-2 3 3 1 8 .5 8-4z"/></symbol>
+    <symbol id="brain" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 10c1.5 0 2.5-1 2.5-2M16 14c-1.5 0-2.5 1-2.5 2"/></symbol>
+    <symbol id="more" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></g></symbol>
+    <symbol id="pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></symbol>
+    <symbol id="bars" viewBox="0 0 24 24"><path d="M6 20v-5M12 20v-9M18 20V5"/></symbol>
+    <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.5M20 3.5v5h-5"/></symbol>
+    <symbol id="alert" viewBox="0 0 24 24"><path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.5h.01"/></symbol>
+    <symbol id="pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+    <symbol id="trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4.5a3.5 3.5 0 0 0 3.6 4M16 6h3.5a3.5 3.5 0 0 1-3.6 4M12 13v4M8 21h8M9.5 17h5"/></symbol>
+    <symbol id="ruler" viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/></symbol>
+    <symbol id="heart" viewBox="0 0 24 24"><path d="M20.5 8.8a4.8 4.8 0 0 0-8.5-3 4.8 4.8 0 0 0-8.5 3c0 5.2 8.5 10.7 8.5 10.7s8.5-5.5 8.5-10.7z"/></symbol>
+    <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.6 3.2 7.8 7.5 9 4.3-1.2 7.5-4.4 7.5-9V6z"/></symbol>
+    <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.5M12 17h.01"/></symbol>
+    <symbol id="chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="cup" viewBox="0 0 24 24"><path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 10h1.5a2.5 2.5 0 0 1 0 5H16M8 3v2M11 3v2"/></symbol>
+  </defs>
+</svg>
+
+<header class="canvas-head">
+  <div>
+    <h1>Kindling · Mobile wireframes</h1>
+    <p>v0.1 · 10 Nov 2026 · 9 screens · iPhone 390×844 · static mockup, nothing is clickable. Scroll the canvas sideways; long screens also scroll inside the phone.</p>
+  </div>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--accent)"></i>Accent = primary action / active state / progress</span>
+    <span><i class="sw" style="background:repeating-linear-gradient(135deg,#ddd 0 3px,#f3f3f3 3px 6px)"></i>Hatched = image placeholder</span>
+    <span><i class="sw" style="border:1.5px dashed #aaa"></i>Dashed = create / add</span>
+  </div>
+</header>
+
+<main class="canvas">
+
+<!-- ======================= 01 HOME ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">01 · HOME TAB</div><h2>Home</h2><p>Prompt-first entry point plus a shortcut back into the active project.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="row between mt8">
+        <div><div class="small">Tuesday, 10 November</div><div class="strong" style="font-size:16px">Good morning, Maya</div></div>
+        <div class="row" style="gap:2px"><div class="icon-btn"><svg class="i lg"><use href="#bell"/></svg></div><div class="avatar">MJ</div></div>
+      </div>
+
+      <h1 class="large-title mt24" style="font-size:34px">I want to learn…</h1>
+      <div class="prompt-box">
+        <div class="prompt-text"><span class="caret" style="margin:0 2px 0 0"></span>e.g. running, sourdough, watercolor</div>
+        <div class="row between mt8">
+          <span class="small row" style="gap:6px"><svg class="i sm accent-t"><use href="#sparkle"/></svg>AI drafts a starter blueprint</span>
+          <div class="send"><svg class="i"><use href="#arrow-up"/></svg></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:22px">
+        <div class="micro" style="margin-bottom:10px">Popular right now</div>
+        <div class="chips">
+          <span class="chip"><svg class="i sm"><use href="#run"/></svg>Running</span>
+          <span class="chip"><svg class="i sm"><use href="#music"/></svg>Guitar</span>
+          <span class="chip"><svg class="i sm"><use href="#mountain"/></svg>Rock Climbing</span>
+          <span class="chip"><svg class="i sm"><use href="#camera"/></svg>Photography</span>
+          <span class="chip"><svg class="i sm"><use href="#utensils"/></svg>Cooking</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Continue</h3><a>All projects<svg class="i sm"><use href="#chev-r"/></svg></a></div>
+        <div class="card">
+          <div class="row">
+            <div class="ph-img thumb"><svg class="i"><use href="#run"/></svg></div>
+            <div class="grow"><div class="small">Running · Week 3 of 8</div><div class="h3">Couch to 5K</div></div>
+            <div class="ring sm"><svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="48 126" transform="rotate(-90 24 24)"/></svg><b>38%</b></div>
+          </div>
+          <div class="divider"></div>
+          <div class="row">
+            <div class="icon-sq"><svg class="i sm"><use href="#clock"/></svg></div>
+            <div class="grow"><div class="small">Up next · Today</div><div class="strong" style="font-size:15px">Run 2 min / walk 1 min × 8</div></div>
+            <span class="btn btn-secondary sm">Open</span>
+          </div>
+          <div class="row mt12 small" style="gap:6px"><svg class="i sm"><use href="#flame"/></svg>6-day streak · keep it going</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Recently viewed</h3></div>
+        <div class="card list">
+          <div class="item"><div class="ph-img" style="width:40px;height:40px;border-radius:10px"><svg class="i sm"><use href="#mountain"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Beginner bouldering</div><div class="small">Blueprint · 6 weeks</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="ph-img" style="width:40px;height:40px;border-radius:10px"><svg class="i sm"><use href="#music"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Play 10 songs by ear</div><div class="small">Project · Guitar</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab on"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 02 RESULTS ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">02 · HOME TAB › RESULTS</div><h2>Generating / Results</h2><p>User typed “running”. AI returns matching blueprints, or start blank.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="row" style="gap:6px;margin:4px -8px 0">
+        <div class="icon-btn accent-t"><svg class="i lg"><use href="#chev-l"/></svg></div>
+        <div class="input grow" style="height:44px"><svg class="i sm" style="color:var(--muted)"><use href="#search"/></svg><span class="grow">running</span><svg class="i sm" style="color:var(--faint)"><use href="#x-c"/></svg></div>
+      </div>
+
+      <div class="card soft mt16 row top" style="gap:10px;padding:12px 14px">
+        <svg class="i accent-t"><use href="#sparkle"/></svg>
+        <div class="body" style="font-size:14px;color:var(--accent-ink)"><b>3 blueprints</b> for running. Picked for a beginner with ~3 free evenings a week.</div>
+      </div>
+
+      <div class="chips mt12">
+        <span class="chip sm on">Beginner<svg class="i sm"><use href="#chev-d"/></svg></span>
+        <span class="chip sm">Any length<svg class="i sm"><use href="#chev-d"/></svg></span>
+        <span class="chip sm">≤ 3 hrs/week<svg class="i sm"><use href="#chev-d"/></svg></span>
+      </div>
+
+      <div class="stack mt16">
+        <div class="card" style="border-color:var(--accent);border-width:1.5px">
+          <div class="row top">
+            <div class="ph-img" style="width:64px;height:64px"><svg class="i"><use href="#run"/></svg></div>
+            <div class="grow">
+              <span class="tag accent"><svg class="i"><use href="#check"/></svg>Best match</span>
+              <div class="h3 mt4">Couch to 5K</div>
+              <div class="small">Zero to a continuous 5K with gentle run/walk intervals.</div>
+            </div>
+          </div>
+          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Beginner</span><span><svg class="i"><use href="#calendar"/></svg>8 weeks</span><span><svg class="i"><use href="#clock"/></svg>~1.5 hrs/wk</span></div>
+        </div>
+        <div class="card">
+          <div class="row top">
+            <div class="ph-img" style="width:64px;height:64px"><svg class="i"><use href="#run"/></svg></div>
+            <div class="grow">
+              <div class="h3">Run consistently</div>
+              <div class="small">Build a 3×/week habit with easy runs and one longer run.</div>
+            </div>
+          </div>
+          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Beginner+</span><span><svg class="i"><use href="#calendar"/></svg>12 weeks</span><span><svg class="i"><use href="#clock"/></svg>~2.5 hrs/wk</span></div>
+        </div>
+        <div class="card">
+          <div class="row top">
+            <div class="ph-img" style="width:64px;height:64px"><svg class="i"><use href="#run"/></svg></div>
+            <div class="grow">
+              <div class="h3">First half marathon</div>
+              <div class="small">Progressive long runs to 21.1 km, with taper week.</div>
+            </div>
+          </div>
+          <div class="meta mt12"><span><svg class="i"><use href="#bars"/></svg>Intermediate</span><span><svg class="i"><use href="#calendar"/></svg>16 weeks</span><span><svg class="i"><use href="#clock"/></svg>~4.5 hrs/wk</span></div>
+        </div>
+
+        <div class="card dashed row">
+          <div class="icon-sq" style="background:var(--bg);width:40px;height:40px"><svg class="i"><use href="#plus"/></svg></div>
+          <div class="grow"><div class="strong" style="font-size:16px">Start from scratch</div><div class="small">Build your own running plan</div></div>
+          <svg class="i" style="color:var(--faint)"><use href="#chev-r"/></svg>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:22px">
+        <div class="field-label">Not quite right? Refine with AI</div>
+        <div class="input ph"><span class="grow">e.g. “I have bad knees” or “mornings only”</span><svg class="i accent-t"><use href="#arrow-up"/></svg></div>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab on"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 03 BLUEPRINT PREVIEW ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">03 · HOME TAB › RESULTS › PREVIEW</div><h2>Blueprint Preview</h2><p>Everything in “Couch to 5K” before committing. Sticky actions at the bottom.</p></div>
+  <div class="phone has-action">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav">
+        <div class="back"><svg class="i lg"><use href="#chev-l"/></svg>Results</div>
+        <div class="row" style="gap:0"><div class="icon-btn"><svg class="i"><use href="#bookmark"/></svg></div><div class="icon-btn"><svg class="i"><use href="#share"/></svg></div></div>
+      </div>
+      <div class="ph-img mt4" style="height:150px;border-radius:16px"><svg class="i lg"><use href="#run"/></svg></div>
+      <div class="row mt16" style="gap:6px"><span class="tag accent"><svg class="i"><use href="#sparkle"/></svg>AI-generated</span><span class="tag">Running</span></div>
+      <h1 class="h2 mt8">Couch to 5K</h1>
+      <div class="meta mt8"><span><svg class="i"><use href="#bars"/></svg>Beginner</span><span><svg class="i"><use href="#calendar"/></svg>8 weeks</span><span><svg class="i"><use href="#clock"/></svg>3 × 30 min/wk</span></div>
+
+      <div class="section" style="margin-top:22px">
+        <div class="sec-head"><h3>Overview</h3></div>
+        <p class="body">Alternate short runs with walking breaks, adding a little more running each week. By week 8 you run 5 km (3.1 mi) without stopping. No prior fitness needed.</p>
+        <div class="row mt12" style="gap:8px">
+          <div class="stat"><div class="v">24</div><div class="k">sessions</div></div>
+          <div class="stat"><div class="v">4</div><div class="k">milestones</div></div>
+          <div class="stat"><div class="v">5 km</div><div class="k">end goal</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Milestones</h3></div>
+        <div class="timeline">
+          <div class="tl"><div class="micro">Week 1</div><div class="strong" style="font-size:15px">Complete your first 3 sessions</div><div class="small">Run 1 min / walk 1.5 min × 8</div></div>
+          <div class="tl"><div class="micro">Week 3</div><div class="strong" style="font-size:15px">Run 3 minutes non-stop</div><div class="small">Intervals get longer, walks shorter</div></div>
+          <div class="tl"><div class="micro">Week 5</div><div class="strong" style="font-size:15px">Run 20 minutes continuously</div><div class="small">The big jump: no walking breaks</div></div>
+          <div class="tl goal"><div class="micro accent-t">Week 8 · Goal</div><div class="strong" style="font-size:15px">Finish a 5K</div><div class="small">Join a local parkrun or run your own route</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Sample week</h3><span class="small">Week 1</span></div>
+        <div class="card list">
+          <div class="item"><div class="dateblock"><div class="m">MON</div></div><div class="grow"><div class="strong" style="font-size:15px">Run/walk intervals</div><div class="small">5 min warm-up walk, 1 min run / 1.5 min walk × 8</div></div><span class="small">25 min</span></div>
+          <div class="item"><div class="dateblock"><div class="m">WED</div></div><div class="grow"><div class="strong" style="font-size:15px">Run/walk intervals</div><div class="small">Same as Monday, focus on easy pace</div></div><span class="small">25 min</span></div>
+          <div class="item"><div class="dateblock"><div class="m">SAT</div></div><div class="grow"><div class="strong" style="font-size:15px">Intervals + stretch</div><div class="small">Add 5 min of calf and hip stretches</div></div><span class="small">30 min</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Gear</h3></div>
+        <div class="card list">
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#box"/></svg></div><div class="grow strong" style="font-size:15px">Running shoes</div><span class="tag dark">Essential</span></div>
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#box"/></svg></div><div class="grow strong" style="font-size:15px">Moisture-wicking shirt</div><span class="tag">Recommended</span></div>
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#box"/></svg></div><div class="grow strong" style="font-size:15px">Phone armband</div><span class="tag">Optional</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Resources</h3></div>
+        <div class="card list">
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#play"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Running form in 5 minutes</div><div class="small">Video · 6 min</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#book"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">How slow is “easy pace”?</div><div class="small">Article · 4 min read</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#link"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Find a free 5K near you</div><div class="small">Website · parkrun events</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <div class="actionbar"><span class="btn btn-secondary" style="flex:.8"><svg class="i sm"><use href="#pencil"/></svg>Customize</span><span class="btn btn-primary">Use this blueprint</span></div>
+    <nav class="tabbar"><div class="tab on"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 04 CUSTOMIZE ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">04 · PREVIEW › CUSTOMIZE</div><h2>Customize Blueprint</h2><p>4 quick questions re-tune the plan; milestones are directly editable.</p></div>
+  <div class="phone has-action">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav"><span class="txt">Cancel</span><span class="title">Customize</span><span class="txt">Reset</span></div>
+      <div class="small mt8">Based on</div>
+      <div class="h2">Couch to 5K</div>
+      <div class="card flat row top mt12" style="gap:10px;padding:12px 14px">
+        <svg class="i accent-t"><use href="#sparkle"/></svg>
+        <div class="small" style="color:var(--ink2)">Answer 4 quick questions and AI will re-tune sessions and milestones to fit you.</div>
+      </div>
+
+      <div class="section" style="margin-top:22px">
+        <div class="field-label"><span>1 · Experience level</span></div>
+        <div class="segmented"><span class="on">Brand new</span><span>Some running</span><span>Regular</span></div>
+      </div>
+      <div class="section" style="margin-top:20px">
+        <div class="field-label"><span>2 · Days per week</span><span style="font-weight:500;color:var(--muted)">~30 min each</span></div>
+        <div class="chips"><span class="chip sq">2</span><span class="chip sq on">3</span><span class="chip sq">4</span><span class="chip sq">5</span></div>
+      </div>
+      <div class="section" style="margin-top:20px">
+        <div class="field-label"><span>3 · Target date</span></div>
+        <div class="input"><svg class="i" style="color:var(--muted)"><use href="#calendar"/></svg><span class="grow">Sat, 9 January 2027</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-d"/></svg></div>
+        <div class="helper">8 weeks from today · fits the plan as written</div>
+      </div>
+      <div class="section" style="margin-top:20px">
+        <div class="field-label"><span>4 · Main goal</span></div>
+        <div class="chips"><span class="chip sm on">Finish a 5K</span><span class="chip sm">Build a habit</span><span class="chip sm">Get fitter</span><span class="chip sm">Run with friends</span></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Milestones</h3><a><svg class="i sm"><use href="#refresh"/></svg>Regenerate</a></div>
+        <div class="card list" style="padding-left:10px;padding-right:12px">
+          <div class="item"><svg class="i grip"><use href="#grip"/></svg><span class="tag">Wk 1</span><div class="grow" style="font-size:15px">Complete first 3 sessions</div><svg class="i" style="color:var(--muted)"><use href="#minus-c"/></svg></div>
+          <div class="item"><svg class="i grip"><use href="#grip"/></svg><span class="tag">Wk 3</span><div class="input focus grow" style="height:40px;font-size:15px;padding:0 10px">Run 3 min non-stop<span class="caret" style="height:18px"></span></div><svg class="i" style="color:var(--muted)"><use href="#minus-c"/></svg></div>
+          <div class="item"><svg class="i grip"><use href="#grip"/></svg><span class="tag">Wk 5</span><div class="grow" style="font-size:15px">Run 20 min continuously</div><svg class="i" style="color:var(--muted)"><use href="#minus-c"/></svg></div>
+          <div class="item"><svg class="i grip"><use href="#grip"/></svg><span class="tag accent">Wk 8</span><div class="grow" style="font-size:15px;font-weight:600">Finish a 5K</div><svg class="i" style="color:var(--muted)"><use href="#minus-c"/></svg></div>
+        </div>
+        <div class="card dashed row mt8" style="padding:12px 14px;color:var(--accent)"><svg class="i"><use href="#plus"/></svg><span class="strong" style="color:var(--accent);font-size:15px">Add milestone</span></div>
+        <div class="helper">Drag <svg class="i sm" style="vertical-align:-3px"><use href="#grip"/></svg> to reorder · tap text to edit</div>
+      </div>
+    </div>
+    <div class="actionbar"><span class="btn btn-primary">Create dashboard<svg class="i"><use href="#arrow-right"/></svg></span></div>
+    <nav class="tabbar"><div class="tab on"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 05 CREATE YOUR OWN ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">05 · RESULTS › START FROM SCRATCH</div><h2>Create Your Own</h2><p>Blank builder. Same parts as a blueprint, filled in by hand.</p></div>
+  <div class="phone has-action">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav"><span class="txt">Cancel</span><span class="title">New project</span><span class="txt" style="color:var(--faint)">Save draft</span></div>
+      <h1 class="h2 mt8">Build your own</h1>
+      <p class="small mt4">Set your own goals and checkpoints. You can ask AI for help at any step.</p>
+
+      <div class="section" style="margin-top:22px">
+        <div class="field-label"><span>Project name <span class="accent-t">*</span></span></div>
+        <div class="input focus">Run my first 10K<span class="caret"></span></div>
+      </div>
+      <div class="section" style="margin-top:20px">
+        <div class="field-label"><span>Hobby</span></div>
+        <div class="chips">
+          <span class="chip sm on"><svg class="i sm"><use href="#run"/></svg>Running</span>
+          <span class="chip sm"><svg class="i sm"><use href="#music"/></svg>Guitar</span>
+          <span class="chip sm"><svg class="i sm"><use href="#mountain"/></svg>Climbing</span>
+          <span class="chip sm"><svg class="i sm"><use href="#camera"/></svg>Photography</span>
+          <span class="chip sm ghost"><svg class="i sm"><use href="#plus"/></svg>Other</span>
+        </div>
+      </div>
+      <div class="row mt20" style="gap:12px">
+        <div class="grow"><div class="field-label">Start</div><div class="input" style="font-size:15px"><svg class="i sm" style="color:var(--muted)"><use href="#calendar"/></svg>Mon, 16 Nov</div></div>
+        <div class="grow"><div class="field-label">Time per week</div><div class="input" style="font-size:15px"><svg class="i sm" style="color:var(--muted)"><use href="#clock"/></svg>3 hrs</div></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Goals</h3><span class="small">1 added</span></div>
+        <div class="card list">
+          <div class="item"><svg class="i accent-t"><use href="#target"/></svg><div class="grow" style="font-size:15px">Run 10K without stopping</div><svg class="i sm" style="color:var(--faint)"><use href="#x"/></svg></div>
+          <div class="item"><svg class="i" style="color:var(--faint)"><use href="#plus-c"/></svg><div class="grow" style="font-size:15px;color:var(--faint)">Add a goal, e.g. “Finish under 60 min”</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Milestones</h3></div>
+        <div class="card dashed" style="text-align:center;padding:22px 18px">
+          <div class="icon-sq" style="margin:0 auto;width:44px;height:44px;border-radius:50%;background:var(--bg)"><svg class="i"><use href="#flag"/></svg></div>
+          <div class="strong mt12" style="font-size:16px">No milestones yet</div>
+          <p class="small mt4">Break your goal into checkpoints, like “Run 5K by 15 Dec”.</p>
+          <div class="row mt16" style="justify-content:center;gap:8px">
+            <span class="btn btn-secondary sm"><svg class="i sm"><use href="#plus"/></svg>Add milestone</span>
+            <span class="btn btn-secondary sm"><svg class="i sm accent-t"><use href="#sparkle"/></svg>Suggest with AI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actionbar"><span class="btn btn-primary">Create project<svg class="i"><use href="#arrow-right"/></svg></span></div>
+    <nav class="tabbar"><div class="tab on"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 06 PROJECT DASHBOARD ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">06 · MY PROJECTS › PROJECT</div><h2>Project Dashboard</h2><p>The core screen: progress, this week, next milestone, logging and AI help.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="nav"><div class="back"><svg class="i lg"><use href="#chev-l"/></svg>Projects</div><div class="icon-btn"><svg class="i"><use href="#more"/></svg></div></div>
+
+      <div class="row mt4" style="gap:16px">
+        <div class="grow">
+          <div class="small">Running · ends 9 Jan</div>
+          <h1 class="h2">Couch to 5K</h1>
+          <div class="small mt4"><span class="strong">Week 3 of 8</span> · 9 of 24 sessions</div>
+        </div>
+        <div class="ring"><svg width="88" height="88" viewBox="0 0 88 88"><circle cx="44" cy="44" r="37" fill="none" stroke="var(--line)" stroke-width="9"/><circle cx="44" cy="44" r="37" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="88 233" transform="rotate(-90 44 44)"/></svg><b>38%</b></div>
+      </div>
+
+      <div class="row mt16" style="gap:10px;align-items:stretch">
+        <div class="stat"><div class="row" style="gap:6px"><svg class="i sm"><use href="#flame"/></svg><span class="v">6</span><span class="small">days</span></div><div class="k">Current streak · best 9</div></div>
+        <div class="stat" style="flex:1.35"><div class="row" style="gap:6px"><svg class="i sm"><use href="#flag"/></svg><span class="v">4</span><span class="small">days to go</span></div><div class="k">Next: run 3 min non-stop</div></div>
+      </div>
+
+      <span class="btn btn-primary mt16" style="display:flex"><svg class="i"><use href="#plus"/></svg>Log session</span>
+
+      <div class="section">
+        <div class="sec-head"><h3>This week</h3><span class="small">2 of 3 done</span></div>
+        <div class="card list">
+          <div class="item"><span class="check done"><svg class="i"><use href="#check"/></svg></span><div class="grow"><div style="font-size:15px;color:var(--muted);text-decoration:line-through">Run 2 min / walk 1 min × 8</div><div class="small">Mon · 24 min</div></div></div>
+          <div class="item"><span class="check done"><svg class="i"><use href="#check"/></svg></span><div class="grow"><div style="font-size:15px;color:var(--muted);text-decoration:line-through">Run 2 min / walk 1 min × 8</div><div class="small">Wed · 26 min</div></div></div>
+          <div class="item"><span class="check"></span><div class="grow"><div class="strong" style="font-size:15px">Run 2.5 min / walk 1 min × 7</div><div class="small">Fri · ~28 min</div></div><span class="tag accent">Today</span></div>
+          <div class="item"><span class="check" style="border-style:dashed"></span><div class="grow"><div style="font-size:15px;color:var(--ink2)">Easy walk + stretch</div><div class="small">Sun · optional</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="border-color:var(--accent);background:linear-gradient(var(--accent-soft),var(--bg) 70%)">
+          <div class="row" style="gap:10px"><div class="icon-sq" style="background:var(--accent);color:#fff"><svg class="i sm"><use href="#sparkle"/></svg></div><div class="grow"><div class="h3">Ask AI</div><div class="small">Research, tips, or adjust this plan</div></div></div>
+          <div class="input ph mt12" style="background:var(--bg);border-color:var(--line)"><span class="grow">Ask about your plan…</span><svg class="i accent-t"><use href="#arrow-up"/></svg></div>
+          <div class="chips mt12"><span class="chip sm">My shins hurt after runs</span><span class="chip sm">Switch to 4 days/week</span><span class="chip sm">Best beginner shoes?</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Recent logs</h3><a>See all<svg class="i sm"><use href="#chev-r"/></svg></a></div>
+        <div class="card list">
+          <div class="item" style="align-items:flex-start"><div class="dateblock"><div class="m">WED</div><div class="d">4</div></div><div class="grow"><div class="strong" style="font-size:15px">Run/walk intervals</div><div class="small">26 min · 2.4 km · effort 3/5</div><div class="small mt4" style="color:var(--ink2)">“Last interval was tough but finished strong.”</div></div></div>
+          <div class="item" style="align-items:flex-start"><div class="dateblock"><div class="m">MON</div><div class="d">2</div></div><div class="grow"><div class="strong" style="font-size:15px">Run/walk intervals</div><div class="small">24 min · 2.1 km · effort 2/5</div></div></div>
+        </div>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab on"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 07 MY PROJECTS ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">07 · MY PROJECTS TAB</div><h2>My Projects</h2><p>All projects at a glance with progress and status (icon + label, not color alone).</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <div class="row between" style="margin-top:14px"><h1 class="large-title">My Projects</h1><div class="icon-btn soft"><svg class="i"><use href="#plus"/></svg></div></div>
+      <div class="segmented mt16"><span class="on">Active · 3</span><span>Completed · 2</span><span>Archived</span></div>
+
+      <div class="stack mt16">
+        <div class="card">
+          <div class="row">
+            <div class="ph-img thumb"><svg class="i"><use href="#run"/></svg></div>
+            <div class="grow"><div class="small">Running</div><div class="h3">Couch to 5K</div></div>
+            <span class="tag accent"><svg class="i"><use href="#check"/></svg>On track</span>
+          </div>
+          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:38%"></i></div><span class="small strong">38%</span></div>
+          <div class="row between mt8 small"><span>Week 3 of 8</span><span><svg class="i sm" style="vertical-align:-3px"><use href="#flame"/></svg> 6-day streak</span></div>
+          <div class="divider" style="margin:12px 0"></div>
+          <div class="row small" style="gap:8px;color:var(--ink2)"><svg class="i sm"><use href="#clock"/></svg>Next: <b>Today</b> · Run/walk intervals, 28 min</div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div class="ph-img thumb"><svg class="i"><use href="#music"/></svg></div>
+            <div class="grow"><div class="small">Guitar</div><div class="h3">Play 10 songs by ear</div></div>
+            <span class="tag"><svg class="i"><use href="#alert"/></svg>Behind</span>
+          </div>
+          <div class="row mt12" style="gap:10px"><div class="progress grow"><i style="width:62%"></i></div><span class="small strong">62%</span></div>
+          <div class="row between mt8 small"><span>6 of 10 songs</span><span>2 sessions missed</span></div>
+          <div class="divider" style="margin:12px 0"></div>
+          <div class="row small" style="gap:8px;color:var(--ink2)"><svg class="i sm"><use href="#clock"/></svg>Next: <b>Tomorrow</b> · G–C–D chord changes</div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div class="ph-img thumb"><svg class="i"><use href="#mountain"/></svg></div>
+            <div class="grow"><div class="small">Rock Climbing</div><div class="h3">Send a V3 boulder</div></div>
+            <span class="tag"><svg class="i"><use href="#pause"/></svg>Paused</span>
+          </div>
+          <div class="row mt12" style="gap:10px"><div class="progress gray grow"><i style="width:15%"></i></div><span class="small strong">15%</span></div>
+          <div class="row between mt8 small"><span>Week 2 of 10</span><span>Paused since 28 Oct</span></div>
+          <div class="divider" style="margin:12px 0"></div>
+          <div class="row small accent-t" style="gap:8px;font-weight:600"><svg class="i sm"><use href="#refresh"/></svg>Resume project</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Recently completed</h3></div>
+        <div class="card list">
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#trophy"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Sourdough basics</div><div class="small">Cooking · finished Aug 2026</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq"><svg class="i sm"><use href="#trophy"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Film photography 101</div><div class="small">Photography · finished Jun 2026</div></div><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab on"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 08 BLUEPRINTS LIBRARY ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">08 · BLUEPRINTS TAB</div><h2>Blueprints Library</h2><p>Browse and search by category; featured picks and your saved or modified blueprints.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <h1 class="large-title" style="margin-top:14px">Blueprints</h1>
+      <div class="row mt16" style="gap:8px">
+        <div class="input ph grow"><svg class="i sm" style="color:var(--muted)"><use href="#search"/></svg>Search 1,200+ blueprints</div>
+        <div class="icon-btn soft" style="width:50px;height:50px;border-radius:12px"><svg class="i"><use href="#sliders"/></svg></div>
+      </div>
+      <div class="chips scroll mt12">
+        <span class="chip sm on">All</span>
+        <span class="chip sm"><svg class="i sm"><use href="#run"/></svg>Fitness</span>
+        <span class="chip sm"><svg class="i sm"><use href="#music"/></svg>Music</span>
+        <span class="chip sm"><svg class="i sm"><use href="#mountain"/></svg>Outdoors</span>
+        <span class="chip sm"><svg class="i sm"><use href="#brush"/></svg>Creative</span>
+        <span class="chip sm"><svg class="i sm"><use href="#utensils"/></svg>Food</span>
+      </div>
+
+      <div class="section" style="margin-top:24px">
+        <div class="sec-head"><h3>Featured</h3><a>See all<svg class="i sm"><use href="#chev-r"/></svg></a></div>
+        <div class="hscroll">
+          <div class="card" style="flex:0 0 250px;padding:0;overflow:hidden">
+            <div class="ph-img" style="height:120px;border-radius:0"><svg class="i lg"><use href="#music"/></svg></div>
+            <div style="padding:12px 14px 14px"><span class="tag accent">Editor’s pick</span><div class="h3 mt8">Read sheet music in 30 days</div><div class="meta mt8"><span>Beginner</span><span>4 wks</span><span>2 hrs/wk</span></div></div>
+          </div>
+          <div class="card" style="flex:0 0 250px;padding:0;overflow:hidden">
+            <div class="ph-img" style="height:120px;border-radius:0"><svg class="i lg"><use href="#utensils"/></svg></div>
+            <div style="padding:12px 14px 14px"><span class="tag">Trending</span><div class="h3 mt8">Your first sourdough loaf</div><div class="meta mt8"><span>Beginner</span><span>3 wks</span><span>3 hrs/wk</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>My saved &amp; modified</h3><a>Manage</a></div>
+        <div class="card list">
+          <div class="item"><div class="ph-img" style="width:44px;height:44px;border-radius:10px"><svg class="i sm"><use href="#run"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Couch to 5K</div><div class="small">3 changes · used in 1 project</div></div><span class="tag accent"><svg class="i"><use href="#pencil"/></svg>Modified</span></div>
+          <div class="item"><div class="ph-img" style="width:44px;height:44px;border-radius:10px"><svg class="i sm"><use href="#mountain"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Beginner bouldering</div><div class="small">6 weeks · Beginner</div></div><span class="tag"><svg class="i"><use href="#bookmark"/></svg>Saved</span></div>
+          <div class="item"><div class="ph-img" style="width:44px;height:44px;border-radius:10px"><svg class="i sm"><use href="#camera"/></svg></div><div class="grow"><div class="strong" style="font-size:15px">Street photography basics</div><div class="small">4 weeks · Beginner</div></div><span class="tag"><svg class="i"><use href="#bookmark"/></svg>Saved</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Popular this week</h3></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><div class="ph-img" style="height:96px"><svg class="i"><use href="#brush"/></svg></div><div class="strong mt8" style="font-size:14px">Watercolor landscapes</div><div class="small">6 wks · Beginner</div></div>
+          <div><div class="ph-img" style="height:96px"><svg class="i"><use href="#cup"/></svg></div><div class="strong mt8" style="font-size:14px">Home espresso</div><div class="small">2 wks · Beginner</div></div>
+          <div><div class="ph-img" style="height:96px"><svg class="i"><use href="#brain"/></svg></div><div class="strong mt8" style="font-size:14px">Chess openings 101</div><div class="small">5 wks · Beginner</div></div>
+          <div><div class="ph-img" style="height:96px"><svg class="i"><use href="#mountain"/></svg></div><div class="strong mt8" style="font-size:14px">Trail running 10K</div><div class="small">10 wks · Intermediate</div></div>
+        </div>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab on"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+<!-- ======================= 09 PROFILE ======================= -->
+<section class="frame">
+  <div class="flabel"><div class="num">09 · PROFILE TAB</div><h2>Profile</h2><p>Identity, active hobbies, lifetime stats and settings.</p></div>
+  <div class="phone">
+    <div class="island"></div>
+    <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12" width="18"><rect y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" width="16"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM2.8 6.2a7.4 7.4 0 0 1 10.4 0l-1.4 1.4a5.4 5.4 0 0 0-7.6 0zM0 3.4a11.3 11.3 0 0 1 16 0l-1.4 1.4a9.3 9.3 0 0 0-13.2 0z"/></svg><svg viewBox="0 0 27 13" width="27"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity=".4"/></svg></span></div>
+    <div class="content">
+      <h1 class="large-title" style="margin-top:14px">Profile</h1>
+      <div class="row mt16" style="gap:14px">
+        <div class="avatar" style="width:72px;height:72px;font-size:24px">MJ</div>
+        <div class="grow"><div class="h3" style="font-size:20px">Maya Jensen</div><div class="small">Learning since Sep 2026</div></div>
+        <span class="btn btn-secondary sm">Edit</span>
+      </div>
+
+      <div class="row mt20" style="gap:8px">
+        <div class="stat"><div class="v">3</div><div class="k">Active projects</div></div>
+        <div class="stat"><div class="v">41</div><div class="k">Sessions logged</div></div>
+        <div class="stat"><div class="v">27h</div><div class="k">Time practiced</div></div>
+      </div>
+      <div class="card flat row mt8" style="padding:12px 14px;gap:10px"><svg class="i"><use href="#flame"/></svg><div class="grow small" style="color:var(--ink2)"><b>6-day streak</b> · longest 14 days</div><svg class="i"><use href="#trophy"/></svg><span class="small strong">2 completed</span></div>
+
+      <div class="section">
+        <div class="sec-head"><h3>Active hobbies</h3><a>Edit</a></div>
+        <div class="chips">
+          <span class="chip"><svg class="i sm"><use href="#run"/></svg>Running</span>
+          <span class="chip"><svg class="i sm"><use href="#music"/></svg>Guitar</span>
+          <span class="chip"><svg class="i sm"><use href="#mountain"/></svg>Rock Climbing</span>
+          <span class="chip ghost"><svg class="i sm"><use href="#plus"/></svg>Add</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="micro" style="margin:0 0 8px 2px">Settings</div>
+        <div class="grouped">
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#bell"/></svg></div><span class="grow">Reminders</span><span class="val">Mon, Wed, Fri · 7am</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#calendar"/></svg></div><span class="grow">Weekly check-in</span><span class="val">Sundays</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#sparkle"/></svg></div><span class="grow">AI coach tone</span><span class="val">Encouraging</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#ruler"/></svg></div><span class="grow">Units</span><span class="val">Kilometers</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#heart"/></svg></div><span class="grow">Connected apps</span><span class="val">Apple Health</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+        </div>
+        <div class="grouped mt12">
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#shield"/></svg></div><span class="grow">Privacy &amp; data</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+          <div class="item"><div class="icon-sq" style="background:var(--bg)"><svg class="i sm"><use href="#help"/></svg></div><span class="grow">Help &amp; feedback</span><svg class="i sm" style="color:var(--faint)"><use href="#chev-r"/></svg></div>
+        </div>
+        <div class="grouped mt24"><div class="item" style="justify-content:center;font-weight:600;color:var(--ink2)">Sign out</div></div>
+        <p class="small mt12" style="text-align:center;color:var(--faint)">Version 0.1 (wireframe)</p>
+      </div>
+    </div>
+    <nav class="tabbar"><div class="tab"><svg class="i"><use href="#home"/></svg>Home</div><div class="tab"><svg class="i"><use href="#layers"/></svg>Blueprints</div><div class="tab"><svg class="i"><use href="#target"/></svg>My Projects</div><div class="tab on"><svg class="i"><use href="#user"/></svg>Profile</div></nav>
+    <div class="homebar"></div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
