@@ -3,3 +3,4 @@ uvicorn
 python-multipart
 mediapipe
 opencv-python
+pytest

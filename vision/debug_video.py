@@ -1,23 +1,24 @@
-"""Render an annotated replay of a jump shot.
+"""Render an annotated replay of a clip graded with any spec.
 
-python debug_video.py clips/shot1.mov [left|right|auto]
-Writes clips/<name>_debug.mp4
+python debug_video.py clips/shot.mov [--spec shoot_form] [left|right]
+Writes clips/<name>_<spec>_debug.mp4
 
 What it draws:
 - Full skeleton; the shooting side is bold, the other side faded
-- Angle arcs at the elbow and knee, green when in range, red when not
-- Wrist trail so you can see the shot path
-- Phase label (DIP / SET / RELEASE / FOLLOW-THROUGH)
-- Slow motion around release, then a freeze frame at each key moment
-- Scorecard panel at the end
+- Wrist trail so you can see the path of the ball
+- Angle arcs at the joints the spec measures (elbow and/or knee). They start
+  green and turn red from the frame where a failed rule was judged, then stay red
+- A label at each rule's judged frame (green = passed, red = failed) and at each moment
+- Slow motion around the spec's first moment, a freeze at each judged frame
+- Scorecard at the end
 """
+import argparse
 import math
 import os
-import sys
 
 import cv2
 
-import jump_shot
+import engine
 from pose import extract
 
 GREEN = (90, 220, 120)
@@ -27,14 +28,13 @@ GREY = (170, 170, 170)
 ACCENT = (102, 124, 14)  # teal #0E7C66 in BGR
 DARK = (20, 20, 20)
 FONT = cv2.FONT_HERSHEY_DUPLEX
+LABEL_FRAMES = 2  # show a label this many frames either side of its frame
 
 BONES = [(11, 12), (11, 23), (12, 24), (23, 24),
          (11, 13), (13, 15), (12, 14), (14, 16),
          (23, 25), (25, 27), (24, 26), (26, 28)]
-
-
-def metric_ok(result):
-    return {m["name"]: m["ok"] for m in result["metrics"]}, {m["name"]: m["value"] for m in result["metrics"]}
+BOLD = [("shoulder", "elbow"), ("elbow", "wrist"), ("shoulder", "hip"), ("hip", "knee"), ("knee", "ankle")]
+ARC_JOINTS = {"elbow": ("shoulder", "elbow", "wrist"), "knee": ("hip", "knee", "ankle")}
 
 
 def text(img, s, org, scale, color=WHITE, thick=2, bg=True):
@@ -51,9 +51,8 @@ def text(img, s, org, scale, color=WHITE, thick=2, bg=True):
 def draw_arc(img, a, b, c, value, ok, scale):
     """Arc at joint b between rays b->a and b->c, with the angle value."""
     r = int(45 * scale)
-    ang_a = math.degrees(math.atan2(a[1] - b[1], a[0] - b[0]))
-    ang_c = math.degrees(math.atan2(c[1] - b[1], c[0] - b[0]))
-    start, end = ang_a, ang_c
+    start = math.degrees(math.atan2(a[1] - b[1], a[0] - b[0]))
+    end = math.degrees(math.atan2(c[1] - b[1], c[0] - b[0]))
     if (end - start) % 360 > 180:
         start, end = end, start
     if end < start:
@@ -66,40 +65,74 @@ def draw_arc(img, a, b, c, value, ok, scale):
     text(img, f"{round(value)}", (tx - int(20 * scale), ty + int(10 * scale)), 0.9 * scale, color, max(1, int(2 * scale)))
 
 
-def phase_at(i, dbg):
-    rel, st, dip, fol = dbg["release_frame"], dbg.get("set_frame"), dbg.get("dip_frame"), dbg.get("follow_end_frame")
-    if abs(i - rel) <= 2:
-        return "RELEASE"
-    if i > rel and fol and i <= fol:
-        return "FOLLOW-THROUGH"
-    if st is not None and abs(i - st) <= 2:
-        return "SET POINT"
-    if dip is not None and abs(i - dip) <= 2:
-        return "DIP"
-    return None
+def arc_rules(spec):
+    """joint -> rules drawn on that joint's arc. arm_direction is shown on the elbow."""
+    out = {"elbow": [], "knee": []}
+    for r in spec["rules"]:
+        m = r["measure"]
+        if m["type"] == "joint_angle":
+            out[m["joint"]].append(r["name"])
+        elif m["type"] == "arm_direction":
+            out["elbow"].append(r["name"])
+    return {j: names for j, names in out.items() if names}
 
 
-def render(path, frames, fps, result, out_path):
-    S = jump_shot.L if result["debug"]["side"] == "left" else jump_shot.R
-    O = jump_shot.R if S is jump_shot.L else jump_shot.L
-    elbow, knee = jump_shot.joint_series(frames, S)
-    oks, vals = metric_ok(result)
+def red_from(result, rule_names, fallback):
+    """First frame from which the arc is red: the earliest judged frame of a failed rule."""
+    ok = {m["name"]: m["ok"] for m in result["metrics"]}
+    picked = result["debug"].get("picked_frames", {})
+    frames = [picked.get(n) if picked.get(n) is not None else fallback
+              for n in rule_names if not ok.get(n, True)]
+    frames = [f for f in frames if f is not None]
+    return min(frames) if frames else None
+
+
+def labels_at(i, result):
+    """(text, color) labels to show on frame i."""
+    out = []
+    for name, f in result["debug"].get("moments", {}).items():
+        if f is not None and abs(i - f) <= LABEL_FRAMES:
+            out.append((name.replace("_", " ").upper(), WHITE))
+    picked = result["debug"].get("picked_frames", {})
+    for m in result["metrics"]:
+        f = picked.get(m["name"])
+        if f is not None and abs(i - f) <= LABEL_FRAMES:
+            out.append((m["label"].upper(), GREEN if m["ok"] else RED))
+    return out
+
+
+def format_value(m):
+    if m["value"] is None:
+        return "-"
+    if m["unit"] == "s":
+        return f"{m['value']:.2f} s"
+    if m["unit"] == "bool":
+        return "yes" if m["value"] else "no"
+    return f"{m['value']:.0f} deg"
+
+
+def render(path, frames, fps, spec, result, hand, out_path):
+    clip = engine.Clip(frames, fps, hand)
+    S = clip.S
     dbg = result["debug"]
-    release = dbg["release_frame"]
+    moments = dbg.get("moments", {})
+    main_moment = next((f for f in moments.values() if f is not None), None)
+    arcs = {j: (clip.joint(j), red_from(result, names, main_moment)) for j, names in arc_rules(spec).items()}
+    freeze = {f for f in dbg.get("picked_frames", {}).values() if f is not None}
+    if main_moment is not None:
+        freeze.add(main_moment)
+        slow_lo, slow_hi = main_moment - int(0.4 * fps), main_moment + int(0.3 * fps)
+    else:
+        slow_lo = slow_hi = -1
 
     cap = cv2.VideoCapture(path)
     w, h = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     aspect = w / h
     scale = max(0.6, min(w, h) / 1080 * 1.4)
     out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+    side_ids = {S[k] for k in ("shoulder", "elbow", "wrist", "hip", "knee", "ankle")}
+    trail, last, i = [], None, 0
 
-    side_ids = {v for v in S.values()}
-    slow_lo, slow_hi = release - int(0.4 * fps), release + int(0.3 * fps)
-    freeze = {f for f in (dbg.get("dip_frame"), dbg.get("set_frame"), release) if f is not None}
-    trail = []
-    last = None
-
-    i = 0
     while True:
         ok, img = cap.read()
         if not ok:
@@ -107,64 +140,34 @@ def render(path, frames, fps, result, out_path):
         f = frames[i] if i < len(frames) else None
         if f is not None:
             px = lambda idx: (int(f[idx].x / aspect * w), int(f[idx].y * h))
-
-            # faded off-side + torso
-            for a, b in BONES:
-                if a in side_ids and b in side_ids:
-                    continue
-                cv2.line(img, px(a), px(b), GREY, max(2, int(3 * scale)), cv2.LINE_AA)
-
-            # wrist trail
+            for a, b in BONES:  # faded off-side and torso
+                if not (a in side_ids and b in side_ids):
+                    cv2.line(img, px(a), px(b), GREY, max(2, int(3 * scale)), cv2.LINE_AA)
             trail.append(px(S["wrist"]))
             trail = trail[-int(0.6 * fps):]
             for k in range(1, len(trail)):
-                alpha = k / len(trail)
-                cv2.line(img, trail[k - 1], trail[k], ACCENT, max(1, int(6 * scale * alpha)), cv2.LINE_AA)
-
-            # bold shooting side
-            for a, b in [("shoulder", "elbow"), ("elbow", "wrist"), ("shoulder", "hip"), ("hip", "knee"), ("knee", "ankle")]:
+                cv2.line(img, trail[k - 1], trail[k], ACCENT, max(1, int(6 * scale * k / len(trail))), cv2.LINE_AA)
+            for a, b in BOLD:
                 cv2.line(img, px(S[a]), px(S[b]), WHITE, max(3, int(7 * scale)), cv2.LINE_AA)
-            for name in S:
-                cv2.circle(img, px(S[name]), max(4, int(9 * scale)), ACCENT, -1, cv2.LINE_AA)
-                cv2.circle(img, px(S[name]), max(4, int(9 * scale)), WHITE, max(1, int(2 * scale)), cv2.LINE_AA)
+            for k in ("shoulder", "elbow", "wrist", "hip", "knee", "ankle"):
+                cv2.circle(img, px(S[k]), max(4, int(9 * scale)), ACCENT, -1, cv2.LINE_AA)
+                cv2.circle(img, px(S[k]), max(4, int(9 * scale)), WHITE, max(1, int(2 * scale)), cv2.LINE_AA)
+            for joint, (series, red) in arcs.items():
+                v = series.get(i)
+                if v is not None:
+                    a, b, c = ARC_JOINTS[joint]
+                    draw_arc(img, px(S[a]), px(S[b]), px(S[c]), v, red is None or i < red, scale)
+            y = int(130 * scale)
+            for label, color in labels_at(i, result):
+                text(img, label, (int(40 * scale), y), 1.2 * scale, color, max(2, int(3 * scale)))
+                y += int(60 * scale)
 
-            # angle arcs; color by the metric that phase is judged on
-            ph = phase_at(i, dbg)
-            e, k = elbow.get(i), knee.get(i)
-            # Live coloring: everything starts green and turns red at the moment
-            # a check is judged and fails, then stays red.
-            set_f, dip_f = dbg.get("set_frame"), dbg.get("dip_frame")
-            elbow_ok = True
-            if set_f is not None and i >= set_f and not oks["set_point_elbow"]:
-                elbow_ok = False
-            if i >= release - 2 and not (oks["set_point_elbow"] and oks["release_elbow"]
-                                        and oks.get("release_arm_angle", True)):
-                elbow_ok = False
-            knee_judge = dip_f if dip_f is not None else release
-            knee_ok = not (i >= knee_judge and not oks["knee_bend"])
-            if e is not None:
-                draw_arc(img, px(S["shoulder"]), px(S["elbow"]), px(S["wrist"]), e, elbow_ok, scale)
-            if k is not None:
-                draw_arc(img, px(S["hip"]), px(S["knee"]), px(S["ankle"]), k, knee_ok, scale)
-
-            if ph:
-                color = WHITE
-                if ph == "SET POINT":
-                    color = GREEN if oks["set_point_elbow"] else RED
-                elif ph == "DIP":
-                    color = GREEN if oks["knee_bend"] else RED
-                elif ph == "RELEASE":
-                    color = GREEN if oks["release_elbow"] else RED
-                elif ph == "FOLLOW-THROUGH":
-                    color = GREEN if oks["follow_through_s"] else RED
-                text(img, ph, (int(40 * scale), int(130 * scale)), 1.5 * scale, color, max(2, int(3 * scale)))
-
-        text(img, "BUCKETS  |  Jump shot", (int(40 * scale), int(50 * scale)), 0.8 * scale, WHITE, max(1, int(2 * scale)))
-
+        text(img, f"BUCKETS  |  {spec.get('title', spec['name'])}", (int(40 * scale), int(50 * scale)),
+             0.8 * scale, WHITE, max(1, int(2 * scale)))
         out.write(img)
         if slow_lo <= i <= slow_hi:
             out.write(img)
-            out.write(img)  # 3x slow-mo around release
+            out.write(img)  # 3x slow-mo around the main moment
         if i in freeze:
             for _ in range(int(0.8 * fps)):
                 out.write(img)
@@ -172,33 +175,33 @@ def render(path, frames, fps, result, out_path):
         i += 1
     cap.release()
 
-    # scorecard
     if last is not None:
-        card = last.copy()
-        overlay = card.copy()
-        cv2.rectangle(overlay, (0, 0), (w, h), DARK, -1)
-        cv2.addWeighted(overlay, 0.75, card, 0.25, 0, card)
-        y = int(h * 0.25)
-        verdict = "PASSED" if result["passed"] else "KEEP WORKING"
-        text(card, verdict, (int(60 * scale), y), 2.0 * scale, GREEN if result["passed"] else RED, max(2, int(4 * scale)), bg=False)
-        y += int(90 * scale)
-        labels = {"knee_bend": "Knee bend", "set_point_elbow": "Set point elbow",
-                  "release_elbow": "Release extension", "release_arm_angle": "Release direction", "follow_through_s": "Follow-through"}
-        for m in result["metrics"]:
-            v = "-" if m["value"] is None else (f"{m['value']:.2f} s" if m["name"] == "follow_through_s" else f"{m['value']:.0f} deg")
-            mark = "OK " if m["ok"] else "FIX"
-            text(card, f"{mark}  {labels.get(m['name'], m['name'])}: {v}", (int(60 * scale), y),
-                 1.0 * scale, GREEN if m["ok"] else RED, max(1, int(2 * scale)), bg=False)
-            y += int(60 * scale)
-        y += int(30 * scale)
-        for tip in result["feedback"][:3]:
-            for line in wrap(tip, 34):
-                text(card, line, (int(60 * scale), y), 0.85 * scale, WHITE, max(1, int(2 * scale)), bg=False)
-                y += int(45 * scale)
-            y += int(15 * scale)
-        for _ in range(int(3 * fps)):
-            out.write(card)
+        write_scorecard(out, last, w, h, scale, fps, result)
     out.release()
+
+
+def write_scorecard(out, last, w, h, scale, fps, result):
+    card = last.copy()
+    overlay = card.copy()
+    cv2.rectangle(overlay, (0, 0), (w, h), DARK, -1)
+    cv2.addWeighted(overlay, 0.75, card, 0.25, 0, card)
+    y = int(h * 0.25)
+    verdict = "PASSED" if result["passed"] else "KEEP WORKING"
+    text(card, verdict, (int(60 * scale), y), 2.0 * scale, GREEN if result["passed"] else RED, max(2, int(4 * scale)), bg=False)
+    y += int(90 * scale)
+    for m in result["metrics"]:
+        mark = "OK " if m["ok"] else "FIX"
+        text(card, f"{mark}  {m['label']}: {format_value(m)}", (int(60 * scale), y),
+             1.0 * scale, GREEN if m["ok"] else RED, max(1, int(2 * scale)), bg=False)
+        y += int(60 * scale)
+    y += int(30 * scale)
+    for tip in result["feedback"][:3]:
+        for line in wrap(tip, 34):
+            text(card, line, (int(60 * scale), y), 0.85 * scale, WHITE, max(1, int(2 * scale)), bg=False)
+            y += int(45 * scale)
+        y += int(15 * scale)
+    for _ in range(int(3 * fps)):
+        out.write(card)
 
 
 def wrap(s, n):
@@ -214,11 +217,19 @@ def wrap(s, n):
     return lines
 
 
-if __name__ == "__main__":
-    path = sys.argv[1]
-    hand = sys.argv[2] if len(sys.argv) > 2 else "auto"
-    frames, fps = extract(path)
-    result = jump_shot.analyze(frames, fps=fps, hand=hand)
-    out_path = os.path.splitext(path)[0] + "_debug.mp4"
-    render(path, frames, fps, result, out_path)
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("path")
+    ap.add_argument("hand", nargs="?", default="auto", choices=["auto", "left", "right"])
+    ap.add_argument("--spec", default="shoot_form")
+    args = ap.parse_args()
+    spec = engine.load_spec(args.spec)
+    frames, fps = extract(args.path)
+    result = engine.analyze(spec, frames, fps=fps, hand=args.hand)
+    out_path = f"{os.path.splitext(args.path)[0]}_{args.spec}_debug.mp4"
+    render(args.path, frames, fps, spec, result, args.hand, out_path)
     print(f"Wrote {out_path}")
+
+
+if __name__ == "__main__":
+    main()

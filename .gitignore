@@ -19,3 +19,4 @@ vision/.venv/
 vision/models/
 vision/clips/
 __pycache__/
+.pytest_cache/
