@@ -1,0 +1,36 @@
+name: Deploy Buckets proxy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "proxy/**"
+      - "app/src/lib/buckets-prompt.ts"
+      - "app/src/lib/hooptree/**"
+      - ".github/workflows/deploy-buckets-proxy.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proxy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: proxy
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Uploads GEMINI_API_KEY from GitHub secrets as a Cloudflare Worker secret.
+          secrets: |
+            GEMINI_API_KEY
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

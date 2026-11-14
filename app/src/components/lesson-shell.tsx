@@ -13,10 +13,15 @@ export function LessonShell({
   children,
   title,
   close = false,
-}: PropsWithChildren<{ title: string; close?: boolean }>) {
+  reserveBottom = false,
+}: PropsWithChildren<{
+  title: string;
+  close?: boolean;
+  reserveBottom?: boolean;
+}>) {
   const router = useRouter();
   return (
-    <FlowScreen>
+    <FlowScreen reserveBottom={reserveBottom}>
       <View style={[ui.row, { marginBottom: 24 }]}>
         <Pressable
           accessibilityRole="button"

@@ -5,7 +5,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors, MaxContentWidth, Spacing } from "@/constants/theme";
 
-export function FlowScreen({ children }: PropsWithChildren) {
+export function FlowScreen({
+  children,
+  reserveBottom = false,
+}: PropsWithChildren<{
+  /** Extra bottom space so floating UI (e.g. the Buckets coach) never covers content. */
+  reserveBottom?: boolean;
+}>) {
   const focused = useIsFocused();
   return (
     <SafeAreaView
@@ -17,7 +23,9 @@ export function FlowScreen({ children }: PropsWithChildren) {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.content}>{children}</View>
+        <View style={[styles.content, reserveBottom && { paddingBottom: 112 }]}>
+          {children}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
