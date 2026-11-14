@@ -9,8 +9,8 @@ from mediapipe.tasks.python import vision as mp_vision
 MODEL_PATH = "models/pose_landmarker_full.task"
 
 # MediaPipe landmark indices
-L = {"shoulder": 11, "elbow": 13, "wrist": 15, "hip": 23, "knee": 25, "ankle": 27}
-R = {"shoulder": 12, "elbow": 14, "wrist": 16, "hip": 24, "knee": 26, "ankle": 28}
+L = {"nose": 0, "shoulder": 11, "elbow": 13, "wrist": 15, "hip": 23, "knee": 25, "ankle": 27}
+R = {"nose": 0, "shoulder": 12, "elbow": 14, "wrist": 16, "hip": 24, "knee": 26, "ankle": 28}
 
 
 def extract(video_path, model_path=MODEL_PATH):

@@ -1,0 +1,41 @@
+{
+  "title": "Shot fake",
+  "description": "Ball up to the forehead, quick, knees bent, feet never leave the floor. Filmed from the shooting-hand side.",
+  "success": "Great fake: quick, grounded and low. The defender is in the air.",
+  "moments": [
+    { "name": "top", "type": "highest", "point": "wrist" },
+    { "name": "ball_up", "type": "first_when", "condition": "wrist_above_nose" }
+  ],
+  "rules": [
+    {
+      "name": "ball_up", "label": "Ball to forehead",
+      "measure": { "type": "happened", "moment": "ball_up" },
+      "target": [1, 1],
+      "feedback": { "fail": "Sell it: bring the ball up to your forehead." }
+    },
+    {
+      "name": "air_time_s", "label": "Feet on the floor",
+      "measure": { "type": "air_time", "window": "all" },
+      "target": [0, 0.05],
+      "feedback": { "fail": "You left your feet. A fake only works if you stay grounded." }
+    },
+    {
+      "name": "knee_at_top", "label": "Knees at the top",
+      "measure": { "type": "joint_angle", "joint": "knee", "pick": "at", "at": "top" },
+      "target": [90, 155],
+      "feedback": {
+        "fail_high": "Stay low on the fake so you can explode after.",
+        "fail_low": "Don't sink so deep on the fake. Stay in your shooting stance, ready to go."
+      }
+    },
+    {
+      "name": "fake_length_s", "label": "Fake speed",
+      "measure": { "type": "duration", "condition": "wrist_above_nose", "from": "top", "direction": "around" },
+      "target": [0.15, 1.0],
+      "feedback": {
+        "fail_high": "Make it quicker: a long fake lets the defender recover.",
+        "fail_low": "Hold it a split second longer so the defender bites."
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Jump shot",
+  "description": "Jump shot form, filmed from the shooting-hand side. Exact port of jump_shot.py.",
+  "success": "Clean shot: good dip, set point, extension and follow-through.",
+  "moments": [
+    { "name": "release", "type": "highest", "point": "wrist" }
+  ],
+  "rules": [
+    {
+      "name": "knee_bend", "label": "Knee bend", "debug_frame": "dip_frame",
+      "measure": { "type": "joint_angle", "joint": "knee", "pick": "min",
+                   "window": { "moment": "release", "offset_s": [-0.6, 0] } },
+      "target": [90, 140],
+      "feedback": {
+        "fail_high": "Bend your knees more before you shoot. Your power comes from your legs.",
+        "fail_low": "You're sinking too low. A smaller dip keeps the shot quick."
+      }
+    },
+    {
+      "name": "set_point_elbow", "label": "Set point elbow", "debug_frame": "set_frame",
+      "measure": { "type": "joint_angle", "joint": "elbow", "pick": "min", "only_when": "wrist_above_shoulder",
+                   "window": { "moment": "release", "offset_s": [-0.6, 0] } },
+      "target": [60, 110],
+      "feedback": {
+        "fail_high": "Your elbow is too open at the set point. Bring the ball back so your elbow is near 90°.",
+        "fail_low": "Your elbow is too tight at the set point. Let it open toward 90°.",
+        "fail_missing": "No set point found: bring the ball up above your shoulder before you shoot, don't push it from your chest."
+      }
+    },
+    {
+      "name": "release_elbow", "label": "Release extension",
+      "measure": { "type": "joint_angle", "joint": "elbow", "pick": "max",
+                   "window": { "moment": "release", "offset_s": [-0.1, 0.1] } },
+      "target": [150, 180],
+      "feedback": { "fail": "Fully extend your arm at release, reach up toward the rim." }
+    },
+    {
+      "name": "release_arm_angle", "label": "Release direction",
+      "measure": { "type": "arm_direction", "at": "release" },
+      "target": [55, 95],
+      "feedback": {
+        "fail_low": "You're pushing the ball forward. Shoot up at the rim: your arm should finish pointing high.",
+        "fail_high": "Your arm is going straight up. Aim slightly forward toward the rim."
+      }
+    },
+    {
+      "name": "follow_through_s", "label": "Follow-through", "debug_frame": "follow_end_frame",
+      "measure": { "type": "duration", "condition": "wrist_above_shoulder", "from": "release", "direction": "forward" },
+      "target": [0.3, 99],
+      "feedback": { "fail": "Hold your follow-through: keep your wrist up after the ball leaves your hand." }
+    }
+  ]
+}
