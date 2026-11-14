@@ -14,6 +14,7 @@ import { LessonVisual } from "@/components/lesson-visual";
 import { LessonPhotos, licensedPhotos } from "@/components/lesson-photos";
 import { LessonVideo } from "@/components/lesson-video";
 import { DemoAssessment } from "@/components/demo-assessment";
+import { BucketsCoach } from "@/components/buckets-coach";
 import { Reveal } from "@/components/motion";
 import { ButtonRoot } from "@/components/ui/beui/button";
 import { usePlayer } from "@/lib/player-store";
@@ -54,7 +55,10 @@ export default function Lesson() {
   const visual = lessonSections(node).find((s) => s.type === "visual")!;
   const quiz = isQuiz(node.id);
   return (
-    <LessonShell title="THE LAB / YOUR LESSON">
+    <LessonShell
+      title="THE LAB / YOUR LESSON"
+      overlay={<BucketsCoach key={source.id} skill={source} />}
+    >
       <View style={styles.intro}>
         <View style={[ui.row, { justifyContent: "space-between" }]}>
           <View style={ui.row}>

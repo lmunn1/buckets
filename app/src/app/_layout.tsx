@@ -81,9 +81,9 @@ function Navigator() {
           contentStyle: { backgroundColor: Colors.dark.background },
         }}
       >
-        <Stack.Protected guard={!player.profile}>
-          <Stack.Screen name="index" />
-        </Stack.Protected>
+        {/* Always reachable: "/" is where the app opens. Returning players are
+            redirected to their home tab from inside the screen. */}
+        <Stack.Screen name="index" />
         <Stack.Screen name="setup" />
         <Stack.Protected guard={!!player.profile}>
           <Stack.Screen name="(main)" />

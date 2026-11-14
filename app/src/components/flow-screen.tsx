@@ -1,11 +1,14 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { useIsFocused } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors, MaxContentWidth, Spacing } from "@/constants/theme";
 
-export function FlowScreen({ children }: PropsWithChildren) {
+export function FlowScreen({
+  children,
+  overlay,
+}: PropsWithChildren<{ overlay?: ReactNode }>) {
   const focused = useIsFocused();
   return (
     <SafeAreaView
@@ -17,8 +20,11 @@ export function FlowScreen({ children }: PropsWithChildren) {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.content}>{children}</View>
+        <View style={[styles.content, overlay ? { paddingBottom: 112 } : null]}>
+          {children}
+        </View>
       </ScrollView>
+      {overlay}
     </SafeAreaView>
   );
 }

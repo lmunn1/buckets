@@ -1,10 +1,13 @@
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { View } from "react-native";
 import { FlowScreen } from "@/components/flow-screen";
 import { Action, Brand, Copy, palette, Tag } from "@/components/hoop-ui";
 import { BasketballArt } from "@/components/basketball-art";
+import { usePlayer } from "@/lib/player-store";
 export default function Welcome() {
   const router = useRouter();
+  const { player } = usePlayer();
+  if (player.profile) return <Redirect href="/(main)/home" />;
   return (
     <FlowScreen>
       <Brand />
