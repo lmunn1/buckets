@@ -101,6 +101,7 @@ async function request(
     return await res.json();
   } catch (e) {
     if (e instanceof VisionError) throw e;
+    console.log(`[vision] ${init.method ?? "GET"} ${BASE}${path} failed:`, e);
     if (timedOut)
       throw new VisionError("timeout", "The vision server took too long to answer.");
     if (signal?.aborted) throw new VisionError("cancelled", "Analysis was cancelled.");
@@ -149,23 +150,104 @@ export async function analyzeSkill(
   options: AnalyzeOptions = {},
 ): Promise<VisionReport> {
   const { mimeType, fileName, file, hand = "auto", signal } = options;
+  if (!BASE)
+    throw new VisionError(
+      "not_configured",
+      "The vision server address isn't set (EXPO_PUBLIC_VISION_URL).",
+    );
   const type = mimeType ?? "video/quicktime";
-  const name = fileName ?? (type.includes("mp4") ? "clip.mp4" : type.includes("webm") ? "clip.webm" : "clip.mov");
+  const name =
+    fileName ??
+    uri.split(/[/?#]/).filter(Boolean).pop()?.match(/^[\w.-]+\.\w+$/)?.[0] ??
+    (type.includes("mp4") ? "clip.mp4" : type.includes("webm") ? "clip.webm" : "clip.mov");
+  const url = `${BASE}/analyze`;
+  console.log(
+    `[vision] POST ${url} skill=${skillId} uri=${uri.slice(0, 120)} type=${type} name=${name}`,
+  );
   const form = new FormData();
   if (Platform.OS === "web") {
     form.append("video", file ?? (await (await fetch(uri)).blob()), name);
   } else {
-    // React Native's FormData takes a { uri, name, type } object for files.
+    // React Native's FormData file part: XHR streams the file from disk.
     form.append("video", { uri, name, type } as unknown as Blob);
   }
   form.append("skill_id", skillId);
   form.append("hand", hand);
-  return (await request(
-    "/analyze",
-    { method: "POST", body: form },
-    ANALYZE_TIMEOUT_MS,
-    signal,
-  )) as VisionReport;
+  return (await upload(url, form, ANALYZE_TIMEOUT_MS, signal)) as VisionReport;
+}
+
+/**
+ * POST multipart form data with XMLHttpRequest.
+ *
+ * Not fetch: Expo SDK 58 replaces global fetch with expo/fetch, which builds the
+ * multipart body itself and throws "Unsupported FormDataPart implementation"
+ * for React Native { uri, name, type } file parts, so nothing is ever sent.
+ * React Native's XHR uploads those parts natively.
+ */
+function upload(url: string, form: FormData, timeoutMs: number, signal?: AbortSignal) {
+  return new Promise<unknown>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    const started = Date.now();
+    const fail = (kind: VisionErrorKind, message: string, cause?: unknown) => {
+      console.log(
+        `[vision] upload failed after ${((Date.now() - started) / 1000).toFixed(1)}s: ${kind} (status ${xhr.status})`,
+        cause ?? "",
+      );
+      reject(new VisionError(kind, message));
+    };
+    const onAbort = () => xhr.abort();
+    signal?.addEventListener("abort", onAbort);
+    const done = () => signal?.removeEventListener("abort", onAbort);
+    xhr.open("POST", url);
+    xhr.timeout = timeoutMs;
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onload = () => {
+      done();
+      let body: { detail?: unknown } | null = null;
+      try {
+        body = JSON.parse(xhr.responseText);
+      } catch (e) {
+        if (xhr.status >= 200 && xhr.status < 300)
+          return fail("server", "The vision server sent an unreadable answer.", e);
+      }
+      if (xhr.status >= 200 && xhr.status < 300) {
+        console.log(`[vision] analyzed in ${((Date.now() - started) / 1000).toFixed(1)}s`);
+        return resolve(body);
+      }
+      const detail = typeof body?.detail === "string" ? body.detail : "";
+      fail(
+        xhr.status === 400 ? "bad_video" : "server",
+        detail || `The vision server returned an error (${xhr.status}).`,
+        xhr.responseText.slice(0, 300),
+      );
+    };
+    xhr.onerror = () => {
+      done();
+      fail(
+        "offline",
+        "Can't reach the vision server. Check that it's running and on the same Wi-Fi.",
+        "network error",
+      );
+    };
+    xhr.ontimeout = () => {
+      done();
+      fail("timeout", "The vision server took too long to answer.");
+    };
+    xhr.onabort = () => {
+      done();
+      fail("cancelled", "Analysis was cancelled.");
+    };
+    if (signal?.aborted) {
+      done();
+      return fail("cancelled", "Analysis was cancelled.");
+    }
+    try {
+      xhr.send(form);
+    } catch (e) {
+      done();
+      fail("offline", `The video could not be sent: ${String(e)}`, e);
+    }
+  });
 }
 
 /**

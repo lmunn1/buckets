@@ -216,6 +216,7 @@ export function PracticeRecorder({
       }
       // Persist verified completion only after the teammate's result validation is connected.
     } catch (e) {
+      console.log("[vision] Check my technique failed:", e);
       if (!controller.signal.aborted)
         setError(
           e instanceof VisionError
