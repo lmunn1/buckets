@@ -210,13 +210,13 @@ const constrained = cameraMath.constrainMap(
 assert.equal(constrained.x, viewport.width - 60);
 assert.equal(constrained.y, 60 - 1400);
 assert.equal(vision.POSITION_COUNTDOWN_SECONDS, 10);
-assert.equal(vision.RECORDING_LIMIT_SECONDS, 6, "One-shot clips auto-stop at 6 s");
+assert.equal(vision.RECORDING_LIMIT_SECONDS, 5, "One-shot clips auto-stop at 5 s");
 assert.equal(vision.countdownRemaining(10000, 0), 10);
 assert.equal(vision.countdownRemaining(10000, 9001), 1);
 assert.equal(vision.countdownRemaining(10000, 12000), 0);
 vision.visionService.assess({}, new AbortController().signal).then((result) => {
   assert.equal(result.status, "unavailable");
   console.log(
-    "PASS: experience placement, honest mastery, available recommendations, 500 anchor-preserving zoom cycles, overview fit, camera bounds, 10-second countdown, 6-second auto-stop, unavailable vision adapter.",
+    "PASS: experience placement, honest mastery, available recommendations, 500 anchor-preserving zoom cycles, overview fit, camera bounds, 10-second countdown, 5-second auto-stop, unavailable vision adapter.",
   );
 });
