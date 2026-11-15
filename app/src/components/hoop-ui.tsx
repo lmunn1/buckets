@@ -1,4 +1,5 @@
 import {
+  Image,
   StyleSheet,
   Text,
   View,
@@ -237,21 +238,27 @@ export function Panel({
     </View>
   );
 }
-export function Brand() {
+const LOGO = require("@/assets/images/hoopquest-logo.png");
+const LOGO_ASPECT = 1759 / 341;
+/** The HoopQuest wordmark. small: screen headers; large: centered hero (welcome). */
+export function Brand({ size = "small" }: { size?: "small" | "large" }) {
+  const large = size === "large";
   return (
-    <View style={ui.brand}>
-      <Icon name="ball" color={palette.accent} size={30} />
-      <Copy
-        kind="heading"
-        style={{
-          fontSize: 28,
-          lineHeight: 34,
-          letterSpacing: -1.2,
-          fontWeight: "700",
-        }}
-      >
-        hoop
-      </Copy>
+    <View
+      accessible
+      accessibilityRole="header"
+      accessibilityLabel="HoopQuest"
+      style={[ui.brand, large && { justifyContent: "center", marginBottom: 32 }]}
+    >
+      <Image
+        source={LOGO}
+        resizeMode="contain"
+        style={
+          large
+            ? { width: "100%", maxWidth: 360, aspectRatio: LOGO_ASPECT }
+            : { height: 30, aspectRatio: LOGO_ASPECT }
+        }
+      />
     </View>
   );
 }

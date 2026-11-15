@@ -10,7 +10,7 @@ export default function Welcome() {
   if (player.profile) return <Redirect href="/(main)/home" />;
   return (
     <FlowScreen>
-      <Brand />
+      <Brand size="large" />
       <Tag>BASKETBALL, FROM THE BASICS</Tag>
       <View style={{ marginTop: 18, gap: 14 }}>
         <Copy kind="display">
