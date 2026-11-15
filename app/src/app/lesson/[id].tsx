@@ -25,9 +25,8 @@ export default function Lesson() {
   const node = useSkill();
   const router = useRouter();
   const { player, saveStep, busy, error } = usePlayer();
-  const [part, setPart] = useState(() =>
-    Math.min(2, node ? (player.progress.lessonSteps[node.id] ?? 0) : 0),
-  );
+  // Always open on the first part, so the lesson starts with content showing.
+  const [part, setPart] = useState(0);
   const [mistakesOpen, setMistakesOpen] = useState(false);
   if (!node) return <MissingSkill />;
   if (skillState(node, player.progress) === "locked")
@@ -216,7 +215,8 @@ export default function Lesson() {
               {!quiz && (
                 <Copy kind="caption" muted>
                   Press Start when the camera is ready. You will have 10 seconds
-                  to step back before a 20-second video records automatically.
+                  to get into position, then an 8-second video records
+                  automatically. Take ONE shot, then hold still until it stops.
                 </Copy>
               )}
             </View>
