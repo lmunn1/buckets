@@ -85,7 +85,8 @@ import { VisionAssessment } from "@/components/vision-assessment";
 ```
 It uploads on mount (and again whenever `videoUri` changes), shows "Analyzing…", then the checks with ✓/✗, the feedback and the time taken. It uses only `hoop-ui` parts and doesn't record, save or navigate. Use it, restyle it, or ignore it and render the response yourself.
 
-## 5. The progress change you'll need: saving "vision" completions
+## 5. Saving "vision" completions (implemented on vision/replay-overlay)
+Done: `isValidCompletion` in `curriculum.ts`, `completeVision` in `player-store.tsx`, and "Complete skill" after a passed check in the practice recorder. `verify-frontend.cjs` checks that a vision completion survives a save and relaunch. The original notes follow.
 **Bug to avoid:** the saved-progress load check in `player-store.tsx` rejects any completion whose `source` isn't `"demo"`. If a vision completion is saved as-is, the **next launch shows "Your saved progress could not be loaded"** and the user is stuck. These are the exact changes I tested (then removed from this branch):
 
 `src/lib/curriculum.ts`:

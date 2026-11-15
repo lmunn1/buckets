@@ -326,7 +326,8 @@ const base = process.env.HOOP_PREVIEW_URL || "http://127.0.0.1:8085";
     await button("Allow camera").click();
     await button("Start").click();
     await button("Finish recording").waitFor({ timeout: 13000 });
-    await page.getByLabel("Your recorded practice").waitFor({ timeout: 24000 });
+    // 5 s auto-stop plus margin; would time out under the old 20 s limit.
+    await page.getByLabel("Your recorded practice").waitFor({ timeout: 9000 });
     assert.ok(
       await page
         .getByLabel("Your recorded practice")

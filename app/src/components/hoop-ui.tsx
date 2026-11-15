@@ -1,7 +1,11 @@
 import {
+  Image,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
+  type StyleProp,
+  type ViewStyle,
   ActivityIndicator,
   type TextProps,
   type ViewProps,
@@ -237,21 +241,37 @@ export function Panel({
     </View>
   );
 }
-export function Brand() {
+const LOGO = require("@/assets/images/hoopquest-logo.png");
+const LOGO_HEIGHT_PER_WIDTH = 341 / 1759; // the PNG is 1759 x 341
+/** Logo width (pt) per placement. */
+const BRAND_WIDTH = { header: 140, profile: 210, hero: 260 } as const;
+/**
+ * The HoopQuest wordmark, at an explicit width and height so it never takes
+ * the PNG's intrinsic size. header: top-left of a screen (in a row with other
+ * controls); profile / hero: centered. Never wider than the screen minus the
+ * page gutters. Callers add any margin with `style`.
+ */
+export function Brand({
+  size = "header",
+  style,
+}: {
+  size?: keyof typeof BRAND_WIDTH;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const { width: screenWidth } = useWindowDimensions();
+  const width = Math.min(BRAND_WIDTH[size], screenWidth - 48);
+  const height = Math.round(width * LOGO_HEIGHT_PER_WIDTH);
   return (
-    <View style={ui.brand}>
-      <Icon name="ball" color={palette.accent} size={30} />
-      <Copy
-        kind="heading"
-        style={{
-          fontSize: 28,
-          lineHeight: 34,
-          letterSpacing: -1.2,
-          fontWeight: "700",
-        }}
-      >
-        hoop
-      </Copy>
+    <View
+      accessible
+      accessibilityRole="header"
+      accessibilityLabel="HoopQuest"
+      style={[
+        { width, height, alignSelf: size === "header" ? "flex-start" : "center" },
+        style,
+      ]}
+    >
+      <Image source={LOGO} resizeMode="contain" style={{ width, height }} />
     </View>
   );
 }
@@ -296,12 +316,6 @@ export function Section({ title, detail }: { title: string; detail?: string }) {
   );
 }
 export const ui = StyleSheet.create({
-  brand: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 28,
-  },
   panel: {
     borderWidth: 1,
     borderColor: palette.border,

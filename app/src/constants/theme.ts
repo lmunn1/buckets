@@ -16,6 +16,8 @@ export const Colors = {
     accentSoft: "#302116",
     border: "#2B2E33",
     success: "#99D85A",
+    // Orange of the "Quest" in the HoopQuest logo (sampled). Not used by the UI kit.
+    brandOrange: "#FC6800",
   },
   dark: {
     text: "#F4F5F7",
@@ -27,6 +29,8 @@ export const Colors = {
     accentSoft: "#302116",
     border: "#2B2E33",
     success: "#99D85A",
+    // Orange of the "Quest" in the HoopQuest logo (sampled). Not used by the UI kit.
+    brandOrange: "#FC6800",
   },
 } as const;
 

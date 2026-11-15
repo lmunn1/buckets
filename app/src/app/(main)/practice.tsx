@@ -4,7 +4,7 @@ import { Warmup } from "@/components/warmup";
 export default function PracticeTab() {
   return (
     <FlowScreen>
-      <Brand />
+      <Brand style={{ marginBottom: 24 }} />
       <Warmup />
     </FlowScreen>
   );

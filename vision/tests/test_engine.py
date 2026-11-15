@@ -130,3 +130,42 @@ def test_missing_spec_file():
 def test_all_shipped_specs_are_valid():
     for name in engine.spec_names():
         engine.load_spec(name)
+
+
+# --- full-body filter (walking in/out, reaching for the phone) -------------
+
+def walk_up_and_reach(frame, k=1.6):
+    """The same pose seen bigger (closer to the camera), wrist reaching high for the phone."""
+    from types import SimpleNamespace
+    out = [SimpleNamespace(x=0.5 + (p.x - 0.5) * k, y=0.5 + (p.y - 0.5) * k, visibility=p.visibility)
+           for p in frame]
+    out[16] = SimpleNamespace(x=out[16].x, y=-0.05, visibility=0.99)  # wrist up at the phone, top edge
+    return out
+
+
+def test_reaching_for_the_phone_is_not_the_release(shoot_form):
+    frames = synthetic.jump_shot() + [walk_up_and_reach(synthetic.frame()) for _ in range(20)]
+    off = engine.analyze(shoot_form, frames, FPS, full_body_only=False)
+    on = engine.analyze(shoot_form, frames, FPS)
+    assert off["debug"]["release_frame"] >= 60   # without the filter the reach wins
+    assert on["debug"]["release_frame"] == 30    # with it, the real shot is the release
+    assert on["debug"]["usable_frames"] == 60
+    assert on["passed"], on["feedback"]
+
+
+def test_frames_with_feet_out_of_shot_are_ignored(shoot_form):
+    frames = synthetic.jump_shot()
+    for i in range(40, 60):  # walked forward: ankles out of the bottom of the frame
+        frames[i][28].visibility = 0.1
+    r = engine.analyze(shoot_form, frames, FPS)
+    assert r["debug"]["usable_frames"] == 40
+
+
+def test_too_little_usable_video_is_a_clear_fail(shoot_form):
+    frames = synthetic.jump_shot()
+    for f in frames[20:]:  # only 20 usable frames = 0.67 s at 30 fps
+        f[0].visibility = 0.1
+    r = engine.analyze(shoot_form, frames, FPS)
+    assert not r["passed"] and r["metrics"] == []
+    assert r["feedback"] == [engine.DEFAULT_TOO_FEW]
+    assert "Couldn't see a full shot" in r["feedback"][0]

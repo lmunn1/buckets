@@ -19,6 +19,21 @@ export default function Complete() {
   const { player } = usePlayer();
   if (!node) return <MissingSkill />;
   const completed = !!player.progress.completed[node.id];
+  const verified = player.progress.completed[node.id]?.source === "vision";
+  // Go forward: clear the lesson flow off the stack first, so neither these
+  // buttons nor Back lead into the lesson again.
+  const toTree = () => {
+    if (router.canDismiss()) router.dismissAll();
+    router.navigate("/(main)/tree");
+  };
+  const toHome = () => {
+    if (router.canDismiss()) router.dismissAll();
+    router.navigate("/(main)/home");
+  };
+  const toSkill = (id: string) => {
+    toTree();
+    router.push({ pathname: "/skill/[id]", params: { id } });
+  };
   const unlocked = completed
     ? catalog.nodes.filter(
         (n) =>
@@ -27,7 +42,7 @@ export default function Complete() {
       )
     : [];
   return (
-    <LessonShell title="DEMO PROGRESSION">
+    <LessonShell title={verified ? "SKILL CHECK" : "DEMO PROGRESSION"}>
       <Reveal style={{ alignItems: "center", paddingVertical: 32, gap: 20 }}>
         <View
           style={{
@@ -51,7 +66,11 @@ export default function Complete() {
           </View>
         </View>
         <Tag color={palette.success}>
-          {completed ? "DEMO SKILL COMPLETE" : "NOT COMPLETED"}
+          {verified
+            ? "VERIFIED BY CAMERA CHECK"
+            : completed
+              ? "DEMO SKILL COMPLETE"
+              : "NOT COMPLETED"}
         </Tag>
         <Copy kind="title" style={{ textAlign: "center" }}>
           {completed ? "Your path just grew." : "This skill is still waiting."}
@@ -62,8 +81,9 @@ export default function Complete() {
       </Reveal>
       <Panel>
         <Copy>
-          This demonstrates completion and prerequisite unlocks. It is saved as
-          demo progress, not verified basketball mastery.
+          {verified
+            ? "Your shot passed every form check, so this skill is complete and saved as verified."
+            : "This demonstrates completion and prerequisite unlocks. It is saved as demo progress, not verified basketball mastery."}
         </Copy>
       </Panel>
       <Section
@@ -83,21 +103,19 @@ export default function Complete() {
           <Action
             label={n.name}
             variant="secondary"
-            onPress={() =>
-              router.replace({ pathname: "/skill/[id]", params: { id: n.id } })
-            }
+            onPress={() => toSkill(n.id)}
           />
         </View>
       ))}
       <View style={{ marginTop: 24, gap: 12 }}>
         <Action
           label="See my skill tree"
-          onPress={() => router.dismissTo("/(main)/tree")}
+          onPress={toTree}
         />
         <Action
           label="Back to my court"
           variant="quiet"
-          onPress={() => router.dismissTo("/(main)/home")}
+          onPress={toHome}
         />
       </View>
     </LessonShell>

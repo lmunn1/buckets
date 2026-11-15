@@ -20,6 +20,7 @@ import {
 import { applyPlacement, type TrackId } from "./hooptree/skillTree";
 export {
   blankProgress,
+  isValidCompletion,
   validateCatalog,
   adaptCatalog,
   layoutBranch,

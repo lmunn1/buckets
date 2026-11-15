@@ -23,6 +23,10 @@ import {
   type VisionService,
 } from "@/lib/vision-service";
 import { sourceNodeFor, type SkillNode } from "@/lib/learning-service";
+import { usePlayer } from "@/lib/player-store";
+
+const ONE_SHOT_INSTRUCTION =
+  "Get in position. Take ONE shot. Then hold still until the recording stops.";
 
 type Phase = "prepare" | "countdown" | "recording" | "review";
 function release(clip: PracticeRecording | null) {
@@ -58,6 +62,7 @@ export function PracticeRecorder({
   const [replayFailed, setReplayFailed] = useState(false);
   const onReplayError = useCallback(() => setReplayFailed(true), []);
   const router = useRouter();
+  const { completeVision, busy: saving, error: saveError } = usePlayer();
   const { height: screenHeight } = useWindowDimensions();
   const session = useRef(0);
   const clock = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
@@ -216,6 +221,7 @@ export function PracticeRecorder({
       }
       // Persist verified completion only after the teammate's result validation is connected.
     } catch (e) {
+      console.log("[vision] Check my technique failed:", e);
       if (!controller.signal.aborted)
         setError(
           e instanceof VisionError
@@ -247,8 +253,27 @@ export function PracticeRecorder({
           ? showingReplay
             ? "Your annotated replay: green checks passed, red ones need work."
             : "Replay your attempt or record another. Technique analysis will connect here."
-          : "Prop your phone up so your whole body and the ball are in frame. Press Start, then take 10 seconds to get into position."}
+          : `Prop your phone up so your whole body and the ball are in frame, then press Start. You get ${POSITION_COUNTDOWN_SECONDS} seconds to get into position; recording stops by itself after ${RECORDING_LIMIT_SECONDS} seconds.`}
       </Copy>
+      {phase !== "review" && (
+        <View
+          style={[
+            ui.row,
+            {
+              alignItems: "flex-start",
+              padding: 14,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: palette.accent,
+            },
+          ]}
+        >
+          <Icon name="target" color={palette.accent} size={20} />
+          <Copy style={{ flex: 1, fontWeight: "600" }}>
+            {ONE_SHOT_INSTRUCTION}
+          </Copy>
+        </View>
+      )}
       <View
         style={
           reviewing
@@ -360,26 +385,74 @@ export function PracticeRecorder({
               {remaining}
             </Copy>
             <Copy>Recording starts automatically</Copy>
+            <Copy style={{ fontWeight: "700", textAlign: "center" }}>
+              Take ONE shot, then hold still.
+            </Copy>
           </View>
         )}
         {phase === "recording" && (
-          <View
-            style={{
-              position: "absolute",
-              top: 16,
-              left: 16,
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: "#000B",
-            }}
-          >
-            <Copy
-              accessibilityLiveRegion="polite"
-              style={{ color: palette.accent, fontWeight: "700" }}
+          <>
+            <View
+              style={{
+                position: "absolute",
+                top: 16,
+                left: 16,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: "#000B",
+              }}
             >
-              ● REC {elapsed}s / {RECORDING_LIMIT_SECONDS}s
-            </Copy>
-          </View>
+              <Copy style={{ color: palette.accent, fontWeight: "700" }}>
+                ● REC {elapsed}s / {RECORDING_LIMIT_SECONDS}s
+              </Copy>
+            </View>
+            {/* Readable from a distance: the user is across the room. */}
+            <View
+              pointerEvents="none"
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                padding: 16,
+                gap: 10,
+                backgroundColor: "#000B",
+              }}
+            >
+              <View style={[ui.row, { justifyContent: "space-between" }]}>
+                <Copy style={{ fontWeight: "700", flex: 1 }}>
+                  Take ONE shot, then hold still
+                </Copy>
+                <Copy
+                  accessibilityLiveRegion="polite"
+                  style={{
+                    fontSize: 34,
+                    lineHeight: 40,
+                    fontWeight: "700",
+                    color: palette.accent,
+                  }}
+                >
+                  {Math.max(0, RECORDING_LIMIT_SECONDS - elapsed)}s
+                </Copy>
+              </View>
+              <View
+                style={{
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: "#FFFFFF33",
+                  overflow: "hidden",
+                }}
+              >
+                <View
+                  style={{
+                    height: "100%",
+                    width: `${Math.min(100, (elapsed / RECORDING_LIMIT_SECONDS) * 100)}%`,
+                    backgroundColor: palette.accent,
+                  }}
+                />
+              </View>
+            </View>
+          </>
         )}
       </View>
       <ErrorNotice message={error} />
@@ -416,8 +489,12 @@ export function PracticeRecorder({
       )}
       {phase === "recording" && (
         <>
+          <Copy kind="caption" muted style={{ textAlign: "center" }}>
+            No need to touch the phone: recording stops by itself.
+          </Copy>
           <Action
             label="Finish recording"
+            variant="secondary"
             onPress={() => camera.current?.stop()}
           />
           <Action label="Discard recording" variant="quiet" onPress={cancel} />
@@ -426,12 +503,38 @@ export function PracticeRecorder({
       {phase === "review" && report && (
         <>
           {report.passed && (
-            <Action label="Continue" icon="check" onPress={() => router.back()} />
+            <>
+              <ErrorNotice message={saveError} />
+              {/* One passed form check completes the skill, saved as verified. */}
+              <Action
+                label="Complete skill"
+                icon="check"
+                busy={saving}
+                onPress={() => {
+                  void completeVision(node.id, {
+                    attemptId: report.attempt_id,
+                    spec: report.spec ?? "",
+                    completedAt: report.analyzed_at,
+                  }).then((ok) => {
+                    if (!ok) return;
+                    // Drop the lesson and practice screens: the complete
+                    // screen moves forward to the tree, never back to the lesson.
+                    if (router.canDismiss()) router.dismissAll();
+                    router.push({
+                      pathname: "/complete/[id]",
+                      params: { id: node.id },
+                    });
+                  });
+                }}
+              />
+            </>
           )}
+          {/* A failed check saves nothing: try again is the only way forward. */}
           <Action
             label="Try again"
             icon="refresh"
             variant={report.passed ? "secondary" : "primary"}
+            disabled={saving}
             onPress={retake}
           />
         </>
