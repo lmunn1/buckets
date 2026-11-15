@@ -21,6 +21,9 @@ MIN_VIS = 0.5        # ignore landmarks the model isn't confident about
 SMOOTH_K = 5         # median filter width (frames) for joint angles and ankles
 NEAREST_FRAMES = 2   # pick "at": use the nearest measured frame within this many
 GROUND_MARGIN = 0.03 # feet_on_ground: margin as a fraction of body height
+FULL_BODY = ("nose", "shoulder", "hip", "knee", "ankle")  # must all be visible in a usable frame
+BODY_SIZE_TOLERANCE = 0.2  # usable frames: nose-to-ankle size within 20% of the clip's median
+MIN_USABLE_S = 1.0         # fewer usable seconds than this -> "couldn't see a full shot"
 
 POINTS = ("nose", "shoulder", "elbow", "wrist", "hip", "knee", "ankle")
 JOINTS = {"elbow": ("shoulder", "elbow", "wrist"), "knee": ("hip", "knee", "ankle")}
@@ -30,7 +33,8 @@ MEASUREMENTS = ("joint_angle", "arm_direction", "duration", "air_time", "happene
 UNITS = {"joint_angle": "deg", "arm_direction": "deg", "duration": "s",
          "air_time": "s", "happened": "bool"}
 
-DEFAULT_TOO_FEW = "Couldn't see your body clearly. Film from the side with your whole body in frame."
+DEFAULT_TOO_FEW = ("Couldn't see a full shot. Stand where your whole body is in frame, "
+                   "take one shot, and hold still.")
 DEFAULT_MISSING = "Couldn't measure {label}. Film from your shooting-hand side so that arm faces the camera."
 
 
@@ -233,12 +237,43 @@ def joint_series(frames, S, joint):
 # Clip: everything a spec can ask about one video
 # --------------------------------------------------------------------------
 
+def body_size(f, S):
+    """Nose-to-ankle distance on the shooting side (normalized units)."""
+    return math.hypot(f[S["ankle"]].x - f[S["nose"]].x, f[S["ankle"]].y - f[S["nose"]].y)
+
+
+def usable_frames(frames, S):
+    """Frames where the whole body is visible at its usual size.
+
+    Drops frames where someone is walking in or out of shot, reaching for the
+    phone up close, or partly out of frame, so they can't become a "release".
+    """
+    seen = [i for i, f in enumerate(frames)
+            if f is not None and visible(f, *(S[p] for p in FULL_BODY))]
+    if not seen:
+        return []
+    sizes = {i: body_size(frames[i], S) for i in seen}
+    typical = median(sizes.values())
+    if typical <= 0:
+        return []
+    return [i for i in seen if abs(sizes[i] - typical) <= BODY_SIZE_TOLERANCE * typical]
+
+
 class Clip:
-    def __init__(self, frames, fps, hand="auto"):
-        self.frames = frames
+    """One graded video. frames/valid only include usable frames (see usable_frames);
+    raw_frames keeps everything MediaPipe returned."""
+
+    def __init__(self, frames, fps, hand="auto", full_body_only=True):
+        self.raw_frames = frames
         self.fps = fps
-        self.valid = [i for i, f in enumerate(frames) if f is not None]
-        self.S = pick_side(hand, frames) if self.valid else R
+        detected = any(f is not None for f in frames)
+        self.S = pick_side(hand, frames) if detected else R
+        if full_body_only:
+            keep = set(usable_frames(frames, self.S))
+            self.frames = [f if i in keep else None for i, f in enumerate(frames)]
+        else:
+            self.frames = frames
+        self.valid = [i for i, f in enumerate(self.frames) if f is not None]
         self._joints = {}
         self._ground = None
 
@@ -444,12 +479,16 @@ def display_value(value, unit):
     return round(value, 2) if unit == "s" else round(value, 1)
 
 
-def analyze(spec, frames, fps=30, hand="auto"):
-    clip = Clip(frames, fps, hand)
+def analyze(spec, frames, fps=30, hand="auto", full_body_only=True):
+    clip = Clip(frames, fps, hand, full_body_only)
     debug = {"side": "left" if clip.S is L else "right", "fps": round(fps),
-             "spec": spec["name"], "moments": {}, "picked_frames": {}}
+             "spec": spec["name"], "moments": {}, "picked_frames": {},
+             "usable_frames": len(clip.valid),
+             "detected_frames": sum(f is not None for f in frames)}
 
-    if len(clip.valid) < spec.get("min_frames", 10):
+    min_frames = max(spec.get("min_frames", 10),
+                     math.ceil(spec.get("min_usable_s", MIN_USABLE_S) * fps) if full_body_only else 0)
+    if len(clip.valid) < min_frames:
         return {"passed": False, "score": 0.0, "metrics": [],
                 "feedback": [spec.get("too_few_frames", DEFAULT_TOO_FEW)], "debug": debug}
 

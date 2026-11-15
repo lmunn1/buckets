@@ -4,6 +4,8 @@ python regression.py          exit code 1 if anything differs
 Values must match within TOL; pass/fail, side and key frames must match exactly.
 This tests the engine's logic, not calibration: the spec is run with
 jump_shot.TARGETS, so later range changes in shoot_form.json don't count as diffs.
+The engine runs with full_body_only=False here (jump_shot.py had no such filter);
+the end of the output lists what the full-body filter changes on each clip.
 """
 import copy
 import sys
@@ -19,7 +21,7 @@ DEBUG_KEYS = ("release_frame", "set_frame", "dip_frame", "follow_end_frame", "si
 def compare(path, spec):
     frames, fps = clip_cache.load(path)
     old = jump_shot.analyze(frames, fps=fps)
-    new = engine.analyze(spec, frames, fps)
+    new = engine.analyze(spec, frames, fps, full_body_only=False)
     rows, ok = [], True
     for o, n in zip(old["metrics"], new["metrics"]):
         same_val = (o["value"] is None and n["value"] is None) or (
@@ -62,7 +64,27 @@ def main():
             else:
                 print(f"  {name:20} {str(a):>8}       | {str(b):>8} {'' if a == b else '  <-- differs'}")
     print("\nALL MATCH" if all_ok else "\nMISMATCHES FOUND")
+    filter_changes()
     return 0 if all_ok else 1
+
+
+def filter_changes():
+    """What the full-body filter changes, with the real specs (current ranges)."""
+    for name in ("shoot_form", "shot_fake"):
+        spec = engine.load_spec(name)
+        print(f"\n== full-body filter, {name}: off -> on (changed values only)")
+        for path in clip_cache.clip_paths():
+            frames, fps = clip_cache.load(path)
+            a = engine.analyze(spec, frames, fps, full_body_only=False)
+            b = engine.analyze(spec, frames, fps, full_body_only=True)
+            diffs = [f"{x['name']} {x['value']}->{y['value']}"
+                     + ("" if x["ok"] == y["ok"] else f" (ok {x['ok']}->{y['ok']})")
+                     for x, y in zip(a["metrics"], b["metrics"])
+                     if x["value"] != y["value"] or x["ok"] != y["ok"]]
+            moved = [k for k in b["debug"]["moments"] if a["debug"]["moments"].get(k) != b["debug"]["moments"][k]]
+            print(f"  {path.split('/')[-1]:15} usable {b['debug']['usable_frames']}/{b['debug']['detected_frames']}"
+                  f"  pass {a['passed']}->{b['passed']}  {'; '.join(diffs) or 'no change'}"
+                  + (f"  moments moved: {moved}" if moved else ""))
 
 
 if __name__ == "__main__":

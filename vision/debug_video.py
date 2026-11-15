@@ -145,7 +145,8 @@ def render(path, frames, fps, spec, result, hand, out_path):
             break
         if img.shape[1] != w or img.shape[0] != h:
             img = cv2.resize(img, (w, h), interpolation=cv2.INTER_AREA)
-        f = frames[i] if i < len(frames) else None
+        # Only usable frames get a skeleton: excluded ones (walking in/out) show bare video.
+        f = clip.frames[i] if i < len(clip.frames) else None
         if f is not None:
             px = lambda idx: (int(f[idx].x / aspect * w), int(f[idx].y * h))
             for a, b in BONES:  # faded off-side and torso
