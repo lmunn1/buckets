@@ -24,6 +24,9 @@ import {
 } from "@/lib/vision-service";
 import { sourceNodeFor, type SkillNode } from "@/lib/learning-service";
 
+const ONE_SHOT_INSTRUCTION =
+  "Get in position. Take ONE shot. Then hold still until the recording stops.";
+
 type Phase = "prepare" | "countdown" | "recording" | "review";
 function release(clip: PracticeRecording | null) {
   if (clip?.platform === "web") URL.revokeObjectURL(clip.uri);
@@ -248,8 +251,27 @@ export function PracticeRecorder({
           ? showingReplay
             ? "Your annotated replay: green checks passed, red ones need work."
             : "Replay your attempt or record another. Technique analysis will connect here."
-          : "Prop your phone up so your whole body and the ball are in frame. Press Start, then take 10 seconds to get into position."}
+          : `Prop your phone up so your whole body and the ball are in frame, then press Start. You get ${POSITION_COUNTDOWN_SECONDS} seconds to get into position; recording stops by itself after ${RECORDING_LIMIT_SECONDS} seconds.`}
       </Copy>
+      {phase !== "review" && (
+        <View
+          style={[
+            ui.row,
+            {
+              alignItems: "flex-start",
+              padding: 14,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: palette.accent,
+            },
+          ]}
+        >
+          <Icon name="target" color={palette.accent} size={20} />
+          <Copy style={{ flex: 1, fontWeight: "600" }}>
+            {ONE_SHOT_INSTRUCTION}
+          </Copy>
+        </View>
+      )}
       <View
         style={
           reviewing
@@ -361,26 +383,74 @@ export function PracticeRecorder({
               {remaining}
             </Copy>
             <Copy>Recording starts automatically</Copy>
+            <Copy style={{ fontWeight: "700", textAlign: "center" }}>
+              Take ONE shot, then hold still.
+            </Copy>
           </View>
         )}
         {phase === "recording" && (
-          <View
-            style={{
-              position: "absolute",
-              top: 16,
-              left: 16,
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: "#000B",
-            }}
-          >
-            <Copy
-              accessibilityLiveRegion="polite"
-              style={{ color: palette.accent, fontWeight: "700" }}
+          <>
+            <View
+              style={{
+                position: "absolute",
+                top: 16,
+                left: 16,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: "#000B",
+              }}
             >
-              ● REC {elapsed}s / {RECORDING_LIMIT_SECONDS}s
-            </Copy>
-          </View>
+              <Copy style={{ color: palette.accent, fontWeight: "700" }}>
+                ● REC {elapsed}s / {RECORDING_LIMIT_SECONDS}s
+              </Copy>
+            </View>
+            {/* Readable from a distance: the user is across the room. */}
+            <View
+              pointerEvents="none"
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                padding: 16,
+                gap: 10,
+                backgroundColor: "#000B",
+              }}
+            >
+              <View style={[ui.row, { justifyContent: "space-between" }]}>
+                <Copy style={{ fontWeight: "700", flex: 1 }}>
+                  Take ONE shot, then hold still
+                </Copy>
+                <Copy
+                  accessibilityLiveRegion="polite"
+                  style={{
+                    fontSize: 34,
+                    lineHeight: 40,
+                    fontWeight: "700",
+                    color: palette.accent,
+                  }}
+                >
+                  {Math.max(0, RECORDING_LIMIT_SECONDS - elapsed)}s
+                </Copy>
+              </View>
+              <View
+                style={{
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: "#FFFFFF33",
+                  overflow: "hidden",
+                }}
+              >
+                <View
+                  style={{
+                    height: "100%",
+                    width: `${Math.min(100, (elapsed / RECORDING_LIMIT_SECONDS) * 100)}%`,
+                    backgroundColor: palette.accent,
+                  }}
+                />
+              </View>
+            </View>
+          </>
         )}
       </View>
       <ErrorNotice message={error} />
@@ -417,8 +487,12 @@ export function PracticeRecorder({
       )}
       {phase === "recording" && (
         <>
+          <Copy kind="caption" muted style={{ textAlign: "center" }}>
+            No need to touch the phone: recording stops by itself.
+          </Copy>
           <Action
             label="Finish recording"
+            variant="secondary"
             onPress={() => camera.current?.stop()}
           />
           <Action label="Discard recording" variant="quiet" onPress={cancel} />
