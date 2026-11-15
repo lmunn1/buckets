@@ -23,6 +23,7 @@ import {
   type VisionService,
 } from "@/lib/vision-service";
 import { sourceNodeFor, type SkillNode } from "@/lib/learning-service";
+import { usePlayer } from "@/lib/player-store";
 
 const ONE_SHOT_INSTRUCTION =
   "Get in position. Take ONE shot. Then hold still until the recording stops.";
@@ -61,6 +62,7 @@ export function PracticeRecorder({
   const [replayFailed, setReplayFailed] = useState(false);
   const onReplayError = useCallback(() => setReplayFailed(true), []);
   const router = useRouter();
+  const { completeVision, busy: saving, error: saveError } = usePlayer();
   const { height: screenHeight } = useWindowDimensions();
   const session = useRef(0);
   const clock = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
@@ -501,12 +503,38 @@ export function PracticeRecorder({
       {phase === "review" && report && (
         <>
           {report.passed && (
-            <Action label="Continue" icon="check" onPress={() => router.back()} />
+            <>
+              <ErrorNotice message={saveError} />
+              {/* One passed form check completes the skill, saved as verified. */}
+              <Action
+                label="Complete skill"
+                icon="check"
+                busy={saving}
+                onPress={() => {
+                  void completeVision(node.id, {
+                    attemptId: report.attempt_id,
+                    spec: report.spec ?? "",
+                    completedAt: report.analyzed_at,
+                  }).then((ok) => {
+                    if (!ok) return;
+                    // Drop the lesson and practice screens: the complete
+                    // screen moves forward to the tree, never back to the lesson.
+                    if (router.canDismiss()) router.dismissAll();
+                    router.push({
+                      pathname: "/complete/[id]",
+                      params: { id: node.id },
+                    });
+                  });
+                }}
+              />
+            </>
           )}
+          {/* A failed check saves nothing: try again is the only way forward. */}
           <Action
             label="Try again"
             icon="refresh"
             variant={report.passed ? "secondary" : "primary"}
+            disabled={saving}
             onPress={retake}
           />
         </>

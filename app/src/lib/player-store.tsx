@@ -13,6 +13,7 @@ import {
   completeSkillDemo,
   catalog,
   categories,
+  isValidCompletion,
   placementFor,
   type Profile,
   type Progress,
@@ -35,6 +36,11 @@ type Store = {
   setDraft: (p: Profile) => void;
   saveProfile: (p: Profile) => Promise<boolean>;
   completeDemo: (id: string) => Promise<boolean>;
+  /** Complete a skill from a passed vision check (same unlock rules as completeDemo). */
+  completeVision: (
+    id: string,
+    attempt: { attemptId: string; spec: string; completedAt: string },
+  ) => Promise<boolean>;
   saveStep: (id: string, step: number) => Promise<boolean>;
   logPractice: () => Promise<boolean>;
   reset: () => Promise<boolean>;
@@ -75,10 +81,7 @@ export function PlayerProvider({ children }: PropsWithChildren) {
           !Object.values(data.progress.lessonSteps).every(
             (s) => Number.isInteger(s) && s >= 0 && s <= 3,
           ) ||
-          !Object.values(data.progress.completed).every(
-            (c) =>
-              c && c.source === "demo" && typeof c.completedAt === "string",
-          )
+          !Object.values(data.progress.completed).every(isValidCompletion)
         )
           throw new Error("Invalid saved player");
         if (
@@ -186,6 +189,30 @@ export function PlayerProvider({ children }: PropsWithChildren) {
                 current.current.progress,
                 id,
               ),
+            });
+          } catch {
+            setError(
+              "This skill still has prerequisites. Return to the tree to review them.",
+            );
+            return Promise.resolve(false);
+          }
+        },
+        completeVision: (id, attempt) => {
+          try {
+            // Same guards as completeDemo (unknown, locked, quiz), then record
+            // the verified provenance instead of "demo".
+            const progress = current.current.progress;
+            const next = completeSkillDemo(catalog, progress, id);
+            if (next === progress) return Promise.resolve(true); // already complete
+            return commit({
+              ...current.current,
+              progress: {
+                ...next,
+                completed: {
+                  ...next.completed,
+                  [id]: { source: "vision", ...attempt },
+                },
+              },
             });
           } catch {
             setError(

@@ -78,11 +78,13 @@ export function DemoAssessment({ node }: { node: SkillNode }) {
             busy={busy}
             onPress={() => {
               void completeDemo(node.id).then((ok) => {
-                if (ok)
-                  router.replace({
-                    pathname: "/complete/[id]",
-                    params: { id: node.id },
-                  });
+                if (!ok) return;
+                // Same as the camera check: leave the lesson flow behind.
+                if (router.canDismiss()) router.dismissAll();
+                router.push({
+                  pathname: "/complete/[id]",
+                  params: { id: node.id },
+                });
               });
             }}
           />

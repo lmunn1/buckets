@@ -64,6 +64,40 @@ assert.equal(
   0,
   "Demo completion must not mutate initial state",
 );
+// Verified completions (a passed camera check), as player-store's completeVision
+// saves them: same unlock rules, survive a save + relaunch, pass the load check.
+const { isValidCompletion } = loaded.exports;
+let verified = completeSkillDemo(demoCatalog, blankProgress(), "ball-control");
+verified = {
+  ...verified,
+  completed: {
+    ...verified.completed,
+    "ball-control": {
+      source: "vision",
+      completedAt: "2026-11-14T22:00:00+00:00",
+      attemptId: "ab".repeat(16),
+      spec: "shoot_form",
+    },
+  },
+};
+const relaunched = JSON.parse(JSON.stringify(verified));
+assert.ok(
+  Object.values(relaunched.completed).every(isValidCompletion),
+  "Vision completions pass the saved-progress check on relaunch",
+);
+assert.equal(skillState(node("ball-control"), relaunched), "completed");
+assert.equal(
+  skillState(node("low-dribble"), relaunched),
+  "available",
+  "A verified completion unlocks dependent skills",
+);
+assert.ok(isValidCompletion({ source: "demo", completedAt: "x" }));
+assert.ok(
+  !isValidCompletion({ source: "vision", completedAt: "x" }),
+  "Vision completions need attemptId and spec",
+);
+assert.ok(!isValidCompletion({ source: "unknown", completedAt: "x" }));
+assert.ok(!isValidCompletion(null));
 const profile = blankProfile();
 profile.goal = "shooting";
 assert.equal(
@@ -125,5 +159,5 @@ assert.throws(
 );
 validateCatalog({ sport: "basketball", nodes: [] });
 console.log(
-  "Passed: prerequisite joins, cross-category unlocks, demo provenance, idempotency, recommendation, serialization, data-driven layout, catalog validation and adapter.",
+  "Passed: prerequisite joins, cross-category unlocks, demo provenance, verified (vision) completions survive relaunch, idempotency, recommendation, serialization, data-driven layout, catalog validation and adapter.",
 );

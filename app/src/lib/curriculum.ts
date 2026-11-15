@@ -83,7 +83,22 @@ export type SkillNode = {
   };
 };
 export type Catalog = { sport: string; nodes: SkillNode[] };
-export type Completion = { source: "demo"; completedAt: string };
+export type Completion =
+  | { source: "demo"; completedAt: string }
+  // Verified by the vision server: attemptId/spec identify the graded upload.
+  | { source: "vision"; completedAt: string; attemptId: string; spec: string };
+/** Saved-progress check: a completion is valid demo or vision provenance. */
+export function isValidCompletion(c: unknown): c is Completion {
+  if (!c || typeof c !== "object") return false;
+  const v = c as Record<string, unknown>;
+  if (typeof v.completedAt !== "string") return false;
+  if (v.source === "demo") return true;
+  return (
+    v.source === "vision" &&
+    typeof v.attemptId === "string" &&
+    typeof v.spec === "string"
+  );
+}
 export type Progress = {
   completed: Record<string, Completion>;
   placedOut?: Record<string, true>;
