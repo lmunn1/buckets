@@ -2,7 +2,10 @@ import {
   Image,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
+  type StyleProp,
+  type ViewStyle,
   ActivityIndicator,
   type TextProps,
   type ViewProps,
@@ -239,26 +242,36 @@ export function Panel({
   );
 }
 const LOGO = require("@/assets/images/hoopquest-logo.png");
-const LOGO_ASPECT = 1759 / 341;
-/** The HoopQuest wordmark. small: screen headers; large: centered hero (welcome). */
-export function Brand({ size = "small" }: { size?: "small" | "large" }) {
-  const large = size === "large";
+const LOGO_HEIGHT_PER_WIDTH = 341 / 1759; // the PNG is 1759 x 341
+/** Logo width (pt) per placement. */
+const BRAND_WIDTH = { header: 140, profile: 210, hero: 260 } as const;
+/**
+ * The HoopQuest wordmark, at an explicit width and height so it never takes
+ * the PNG's intrinsic size. header: top-left of a screen (in a row with other
+ * controls); profile / hero: centered. Never wider than the screen minus the
+ * page gutters. Callers add any margin with `style`.
+ */
+export function Brand({
+  size = "header",
+  style,
+}: {
+  size?: keyof typeof BRAND_WIDTH;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const { width: screenWidth } = useWindowDimensions();
+  const width = Math.min(BRAND_WIDTH[size], screenWidth - 48);
+  const height = Math.round(width * LOGO_HEIGHT_PER_WIDTH);
   return (
     <View
       accessible
       accessibilityRole="header"
       accessibilityLabel="HoopQuest"
-      style={[ui.brand, large && { justifyContent: "center", marginBottom: 32 }]}
+      style={[
+        { width, height, alignSelf: size === "header" ? "flex-start" : "center" },
+        style,
+      ]}
     >
-      <Image
-        source={LOGO}
-        resizeMode="contain"
-        style={
-          large
-            ? { width: "100%", maxWidth: 360, aspectRatio: LOGO_ASPECT }
-            : { height: 30, aspectRatio: LOGO_ASPECT }
-        }
-      />
+      <Image source={LOGO} resizeMode="contain" style={{ width, height }} />
     </View>
   );
 }
@@ -303,12 +316,6 @@ export function Section({ title, detail }: { title: string; detail?: string }) {
   );
 }
 export const ui = StyleSheet.create({
-  brand: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 28,
-  },
   panel: {
     borderWidth: 1,
     borderColor: palette.border,

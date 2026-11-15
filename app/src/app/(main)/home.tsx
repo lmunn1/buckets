@@ -42,9 +42,7 @@ export default function Home() {
       <View
         style={[ui.row, { justifyContent: "space-between", marginBottom: 24 }]}
       >
-        <View style={{ height: 36 }}>
-          <Brand />
-        </View>
+        <Brand />
         <View style={styles.courtBadge}>
           <View style={styles.dot} />
           <Copy kind="eyebrow" style={{ fontSize: 10 }}>

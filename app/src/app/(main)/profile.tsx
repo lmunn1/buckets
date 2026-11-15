@@ -28,7 +28,7 @@ export default function Profile() {
     .slice(0, 3);
   return (
     <FlowScreen>
-      <Brand />
+      <Brand size="profile" style={{ marginBottom: 24 }} />
       <Copy kind="title">Your game is growing.</Copy>
       <Copy muted style={{ marginVertical: 14 }}>
         Small steps. Real practice. Your own pace.

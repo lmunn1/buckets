@@ -38,7 +38,7 @@ export default function Setup() {
   };
   return (
     <FlowScreen>
-      <Brand />
+      <Brand style={{ marginBottom: 24 }} />
       <View style={[ui.row, { marginBottom: 28 }]}>
         <Pressable
           accessibilityRole="button"
