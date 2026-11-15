@@ -40,7 +40,7 @@ export const visionService: VisionService = {
 };
 export const POSITION_COUNTDOWN_SECONDS = 10;
 // One shot for the form check; auto-stops so nobody walks to the phone mid-clip.
-export const RECORDING_LIMIT_SECONDS = 8;
+export const RECORDING_LIMIT_SECONDS = 6;
 export function countdownRemaining(deadline: number, now: number): number {
   return Math.max(0, Math.ceil((deadline - now) / 1000));
 }

@@ -15,6 +15,10 @@ import { BucketsCoach } from "@/components/buckets-coach";
 import { Reveal } from "@/components/motion";
 import { usePlayer } from "@/lib/player-store";
 import {
+  POSITION_COUNTDOWN_SECONDS,
+  RECORDING_LIMIT_SECONDS,
+} from "@/lib/vision-service";
+import {
   categoryFor,
   isQuiz,
   skillState,
@@ -214,9 +218,7 @@ export default function Lesson() {
               </Copy>
               {!quiz && (
                 <Copy kind="caption" muted>
-                  Press Start when the camera is ready. You will have 10 seconds
-                  to get into position, then an 8-second video records
-                  automatically. Take ONE shot, then hold still until it stops.
+                  {`Press Start when the camera is ready. You will have ${POSITION_COUNTDOWN_SECONDS} seconds to get into position, then a ${RECORDING_LIMIT_SECONDS}-second video records automatically. Take ONE shot, then hold still until it stops.`}
                 </Copy>
               )}
             </View>
