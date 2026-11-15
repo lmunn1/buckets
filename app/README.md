@@ -1,16 +1,25 @@
-# Hoop app - frontend preview
+# HoopQuest app
 
-The Hoop mobile app uses Expo SDK 58, React Native, TypeScript, and Expo Router.
+The HoopQuest mobile app (the Buckets project) uses Expo SDK 58, React Native, TypeScript and Expo Router.
 
-The frontend includes a short experience/focus/time onboarding, a persistent connected 107-skill graph, three-part video-focused lessons, local camera recording with a 10-second positioning countdown, timed warmups, and Profile. Experience sets prerequisite-respecting placement; camera capture is real, but vision analysis is not connected. See the [build report](FRONTEND_BUILD_REPORT.md), [curriculum guide](design/CURRICULUM_INTEGRATION.md), and [camera/placement teammate handoff](design/CAMERA_AND_PLACEMENT_HANDOFF.md).
+It has:
+- a short onboarding (experience, focus and practice time) whose experience answer places the player past foundations they already know
+- a connected 107-skill tree
+- three-part lessons with an in-lesson AI coach (Buckets)
+- timed warmups and a Profile screen
+- a practice camera: 10 s countdown, 5 s one-shot clip, then grading by the vision server with an annotated replay and per-check feedback
+
+A passed check completes the skill as verified. Skills without a camera check use a labelled demo completion. See [docs/app-vision-integration.md](../docs/app-vision-integration.md), the [build report](FRONTEND_BUILD_REPORT.md), the [curriculum guide](design/CURRICULUM_INTEGRATION.md) and the [camera/placement handoff](design/CAMERA_AND_PLACEMENT_HANDOFF.md).
 
 ## Run it
 
 ```bash
 cd app
-npm install
+npm ci
 npx expo start            # scan with Expo Go or press w for web
 ```
+
+Optional `app/.env` (see `.env.example`): `EXPO_PUBLIC_VISION_URL=http://<laptop LAN IP>:8000` for camera grading, and `EXPO_PUBLIC_BUCKETS_API_URL` for a local AI-coach proxy (the deployed one is the default). Restart with `npx expo start -c` after changing it.
 
 Use `npx expo install <package>` to add packages so versions match the Expo SDK.
 
@@ -20,8 +29,10 @@ Use `npx expo install <package>` to add packages so versions match the Expo SDK.
 - `src/components/`, `src/hooks/`, `src/constants/`: shared code.
 - `src/lib/learning-service.ts`: shared catalog boundary and typed curriculum authoring adapter.
 - `src/lib/hooptree/`: unchanged supplied curriculum/helper; `hooptree-adapter.ts` connects it to the UI.
-- `src/lib/curriculum.ts`: inactive legacy fixture and guarded demo progression types/selectors.
-- `data/skills.json`: older sample data; do not use for progression until its format is reconciled with the curriculum team.
+- `src/lib/curriculum.ts`: progression types (including demo and vision completions) and an inactive legacy fixture.
+- `src/lib/vision.ts`, `src/lib/vision-service.ts`: vision server client and the recorder's assessment interface.
+- `src/lib/buckets-ai.ts`, `src/lib/buckets-prompt.ts`, `src/components/buckets-coach.tsx`: the AI coach (talks to `proxy/`).
+- `data/skills.json`: skill tests (grading spec, setup tips, quizzes) used by the vision server; not read by the app.
 - `design/`: wireframes and mockups (`wireframe.html` is the pre-pivot hobby-era wireframe).
 - `AGENTS.md` / `CLAUDE.md`: Expo's notes for AI coding assistants.
 
@@ -37,7 +48,7 @@ node scripts/smoke-curriculum.cjs
 npx expo export --platform all --output-dir dist-frontend-all
 ```
 
-The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script, phone-size screenshots, free-tool licenses, and native testing limits. Web uses client rendering with local player state. Lessons have Understand it, See the technique (video), and Your turn parts. Images and movement guides are removed from the lesson flow. Practice records temporary local video and can replay/retake it; analysis and verified completion remain teammate integration points.
+The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script, phone-size screenshots, free-tool licenses, and native testing limits. Web uses client rendering with local player state.
 
 ## First-time setup (each person)
 1. Make a free Expo account and accept the Buckets org invite (check your email).
@@ -48,7 +59,5 @@ The [build report](FRONTEND_BUILD_REPORT.md) documents the browser smoke script,
 3. `npm install && npx expo start`, scan the QR with Expo Go.
    Won't connect? `npx expo start --tunnel`
 
-## Ownership
-- UI: everything in app/ except app/data/
-- Lessons: app/data/skills.json (format in docs/contracts.md)
-- Vision: vision/ and app/src/lib/vision.ts
+## Formats
+Skill and vision API formats are in [docs/contracts.md](../docs/contracts.md).

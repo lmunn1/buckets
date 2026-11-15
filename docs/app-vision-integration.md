@@ -1,142 +1,56 @@
-# Vision handoff for the app
+# App ↔ vision integration
 
-## Update: practice camera is connected (branch vision/replay-overlay)
-The practice recorder now grades with the vision server and shows the annotated replay.
+How the HoopQuest app uses the vision server. The API itself is in [`contracts.md`](contracts.md).
 
-| File | Change |
+## Flow
+1. **Lesson → practice:** the lesson's *Your turn* part opens `src/app/practice/[id].tsx`, which renders `PracticeRecorder` with `service={serverVisionService}`.
+2. **Recording** (`practice-recorder.tsx`, `capture-surface.tsx`):
+   - expo-camera records 720p video after a 10 s countdown.
+   - The clip auto-stops after `RECORDING_LIMIT_SECONDS` (5 s), set in `src/lib/vision-service.ts`.
+   - The screen tells the player to take ONE shot and hold still.
+3. **Check my technique:** `serverVisionService.assess` (`src/lib/vision.ts`) decides what happens.
+   - **No server configured** (`EXPO_PUBLIC_VISION_URL` unset) or **skill not in `GET /skills`:** returns `"unavailable"` and the old review UI is shown ("Analysis not connected").
+   - **Otherwise:** uploads the clip with `analyzeSkill` and returns the full report.
+4. **Review:**
+   - The player fills most of the screen, with an "Analyzing your shot…" overlay while waiting.
+   - It then plays the annotated replay (`replayUri(report)`), falling back to the original clip if the replay fails to load.
+   - `VisionReportView` (`src/components/vision-assessment.tsx`) shows the verdict, each check (value, target, ✓/✗) and the tips.
+5. **Pass → Complete skill:**
+   - `completeVision` (`src/lib/player-store.tsx`) saves `{ source: "vision", attemptId, spec, completedAt }` with the same guards as the demo completion.
+   - The lesson and practice screens are dismissed, and `complete/[id]` shows "VERIFIED BY CAMERA CHECK" with what it unlocked.
+   - **Fail → Try again:** nothing is saved.
+
+Saved progress accepts both `"demo"` and `"vision"` completions (`isValidCompletion` in `src/lib/curriculum.ts`). `scripts/verify-frontend.cjs` checks that a vision completion survives a save and relaunch.
+
+## Client API (`src/lib/vision.ts`)
+
+| Export | Use |
 |---|---|
-| `src/app/practice/[id].tsx` | Passes `service={serverVisionService}` to `PracticeRecorder` (your existing seam). |
-| `src/components/practice-recorder.tsx` | **Review phase only; recording is unchanged.** The player is edge to edge and about 70% of the screen height. While analyzing, an "Analyzing your shot…" overlay sits over the video. With a server report the player switches to the annotated replay (autoplay, loop, falling back to the clip if the replay fails), then shows `VisionReportView` with **Continue** (passed, goes back) and **Try again** (retake). Without a report (no server, or skill not gradable) the UI is exactly as before, with "Analysis not connected" and "Record again". The footer says clips are uploaded only when the server is in use. |
-| `src/components/recording-review.tsx` + `.web.tsx` | Fill their parent instead of 350 px. New optional `autoPlay`, `loop`, `onError` and `label` props. |
-| `src/lib/vision-service.ts` | Type only: optional `report?: VisionReport` on the `assessed` result. The default `visionService` is unchanged (still "unavailable"). |
-| `src/lib/vision.ts` | `serverVisionService` (implements `VisionService`), `replayUri`, `formatTarget`, abort support, web uploads. |
-| `src/components/vision-assessment.tsx` | `VisionReportView` (verdict, one row per check with value / target / ✓✗, coaching tips). |
+| `analyzeSkill(skillId, uri, { mimeType, hand, signal })` | Upload a local video and return the `VisionReport`. Throws `VisionError` with `kind` `not_configured`, `offline`, `timeout`, `cancelled`, `bad_video` or `server`. |
+| `getGradableSkills()`, `useGradableSkill(id)` | Which skills have a camera check (cached per session). |
+| `serverVisionService` | The `VisionService` adapter used by the practice recorder. |
+| `replayUri(report)`, `formatMetric(m)`, `formatTarget(m)` | Display helpers. |
 
-**Nothing is saved:** passing does not complete the skill yet; see section 5 for the change needed to save "vision" completions.
+**Upload uses `XMLHttpRequest`, not `fetch`.** Expo SDK 58 replaces global `fetch` with `expo/fetch`, which throws `Unsupported FormDataPart implementation` for React Native `{ uri, name, type }` file parts, so the upload would never leave the phone. `[vision]` lines in the Expo terminal log the URL, file, timing and any error.
 
-**Server:** `/analyze` now also returns `replay_url` (`/replays/<attempt_id>.mp4`, H.264, 960 px, about 1 MB for a 5 s clip), or `null` if the replay couldn't be rendered. A 5 s 720p clip takes about 8.5 s in total (5.7 s grading + 2.8 s replay).
-
-The vision server can grade 4 skills now. This branch adds **two new files and changes nothing else in app/**. Wiring them into screens, recording, and saving progress are yours to decide; below is everything you need.
-
-| File | What it is |
-|---|---|
-| `app/src/lib/vision.ts` | Client for the vision server. No UI. |
-| `app/src/components/vision-assessment.tsx` | Optional results UI (`VisionAssessment`). Not imported anywhere. |
-
-## 1. Point the app at the server
-In `app/.env` (gitignored; `.env.example` already has the key), use the laptop's LAN IP, not localhost:
+## Setup
 ```
+# app/.env (gitignored); use the laptop's LAN IP, not localhost
 EXPO_PUBLIC_VISION_URL=http://192.168.x.x:8000
 ```
-Restart Expo with `npx expo start -c` after changing it. The server runs from `vision/`: `uvicorn main:app --host 0.0.0.0 --port 8000`.
+Restart Expo with `npx expo start -c` after changing it.
 
-## 2. Which skills have a camera check
-```ts
-import { getGradableSkills, useGradableSkill } from "@/lib/vision";
+## Grading rules vs the curriculum's camera notes
+The curriculum file's `cvActivity.checks` describe the original idea for each camera test. **Actual grading uses `vision/specs/`.** Where they differ:
 
-const all = await getGradableSkills();   // { "sh-beef": {...}, "sh-onehand": ..., "sh-guide": ..., "sh-fake": ... }
-const state = useGradableSkill(node.id); // { status: "loading" | "gradable" (with .skill) | "not_gradable" | "unavailable" (with .error) }
-```
-Each entry has `{ spec, name, setup: { stand, camera, camera_tip }, criteria, mistakes }` from `app/data/skills.json`. `setup.camera_tip` is the filming instruction to show before recording. Keys are the app's ids (the ones in `hooptree/curriculum.json`). Any skill not in the list keeps the demo flow.
+| Skill | `cvActivity.checks` says | Spec does | Notes |
+|---|---|---|---|
+| BEEF / one-hand / guide-hand form | Set-point elbow 70–110° | `set_point_elbow` 50–110° | Provisional, calibrated on one clip |
+| BEEF form | Follow-through held 1 s or more | `follow_through_s` at least 0.3 s | |
+| BEEF form | Elbow under the wrist, wrist above the head | Not checked | Spec checks release extension and direction instead |
+| One-hand / guide-hand form | Guide-hand position, make detection | Not checked | Same `shoot_form` spec as BEEF |
+| All form skills | Form score 80%+ over 10–20 shots | One passed shot completes the skill | Decided for the app flow |
+| Shot fake | Knee under 150° | `knee_at_top` 90–155° | |
+| Shot fake | Wrist above eye level, back down within 0.6 s | Wrist above nose for 0.15–1.0 s; feet stay down; arms bent | |
 
-## 3. Grade a video: `analyzeSkill(skillId, uri)`
-```ts
-import { analyzeSkill, VisionError } from "@/lib/vision";
-
-try {
-  const report = await analyzeSkill(node.id, uri);                 // iPhone .mov
-  // await analyzeSkill(node.id, uri, { mimeType: "video/mp4" });  // other formats
-} catch (e) {
-  if (e instanceof VisionError) e.kind; // "not_configured" | "offline" | "timeout" | "bad_video" | "server"
-}
-```
-- `uri` is a local video file uri, e.g. `assets[0].uri` from `expo-image-picker` (`launchCameraAsync` / `launchImageLibraryAsync` with `mediaTypes: ["videos"]`). Neither is installed yet; `expo-image-picker` is included in Expo Go.
-- Please record at 720p and keep clips short (one rep, ≤15 s). On iOS that's `videoQuality: UIImagePickerControllerQualityType.IFrame1280x720` and `videoExportPreset: VideoExportPreset.H264_1280x720`. A 5 s 720p clip is about 1.2 MB and takes about 5 s to grade on a laptop; 4K clips take 13 s or more.
-- Nothing is ever faked: if the server can't be reached, `analyzeSkill` throws. If you fall back to the demo completion, keep it labeled as demo.
-
-### Response
-```ts
-{
-  graded: boolean,            // false = this skill has no vision check (metrics empty)
-  passed: boolean,            // every check ok
-  score: number,              // 0-1, fraction of checks ok
-  spec: string | null,        // grader used, e.g. "shoot_form"
-  skill_id: string,           // what you sent
-  attempt_id: string,         // unique per upload; store it with the completion
-  analyzed_at: string,        // ISO 8601 UTC
-  metrics: [{ name, label, value: number | null, unit: "deg" | "s" | "bool", target: [lo, hi], ok }],
-  feedback: string[],         // coaching lines, one per failed check (or one success line)
-  replay_url: string | null,  // "/replays/<attempt_id>.mp4"; full URL via replayUri(report)
-  debug: {...}                // for the vision side; ignore it
-}
-```
-`formatMetric(m)` gives display text ("92°", "0.38 s", "yes"); `m.label` is the user-facing name ("Knee bend").
-
-## 4. Optional UI: `VisionAssessment`
-```tsx
-import { VisionAssessment } from "@/components/vision-assessment";
-
-<VisionAssessment
-  skillId={node.id}
-  videoUri={uri}
-  onPassed={(result) => { /* save the completion, then navigate */ }}
-  onRetry={() => setUri(null)}  // back to your record step
-/>
-```
-It uploads on mount (and again whenever `videoUri` changes), shows "Analyzing…", then the checks with ✓/✗, the feedback and the time taken. It uses only `hoop-ui` parts and doesn't record, save or navigate. Use it, restyle it, or ignore it and render the response yourself.
-
-## 5. Saving "vision" completions (implemented on vision/replay-overlay)
-Done: `isValidCompletion` in `curriculum.ts`, `completeVision` in `player-store.tsx`, and "Complete skill" after a passed check in the practice recorder. `verify-frontend.cjs` checks that a vision completion survives a save and relaunch. The original notes follow.
-**Bug to avoid:** the saved-progress load check in `player-store.tsx` rejects any completion whose `source` isn't `"demo"`. If a vision completion is saved as-is, the **next launch shows "Your saved progress could not be loaded"** and the user is stuck. These are the exact changes I tested (then removed from this branch):
-
-`src/lib/curriculum.ts`:
-```ts
-export type Completion =
-  | { source: "demo"; completedAt: string }
-  // Verified by the vision server: attemptId/spec identify the graded upload.
-  | { source: "vision"; completedAt: string; attemptId: string; spec: string };
-```
-
-`src/lib/player-store.tsx`, in the load check:
-```ts
-!Object.values(data.progress.completed).every(
-  (c) =>
-    c &&
-    typeof c.completedAt === "string" &&
-    (c.source === "demo" ||
-      (c.source === "vision" &&
-        typeof c.attemptId === "string" &&
-        typeof c.spec === "string")),
-)
-```
-
-`src/lib/player-store.tsx`, a new store action next to `completeDemo` (also add it to the `Store` type). It reuses `completeSkillDemo`'s guards (unknown, locked, quiz, already done) and then records the vision provenance:
-```ts
-completeVision: (id, attempt: { attemptId: string; spec: string; completedAt: string }) => {
-  try {
-    const progress = current.current.progress;
-    const next = completeSkillDemo(catalog, progress, id);
-    if (next === progress) return Promise.resolve(true); // already completed
-    return commit({
-      ...current.current,
-      progress: {
-        ...next,
-        completed: { ...next.completed, [id]: { source: "vision", ...attempt } },
-      },
-    });
-  } catch {
-    setError("This skill still has prerequisites. Return to the tree to review them.");
-    return Promise.resolve(false);
-  }
-},
-```
-Call it as `completeVision(node.id, { attemptId: result.attempt_id, spec: result.spec!, completedAt: result.analyzed_at })`. With these changes `tsc`, `expo lint`, `verify-frontend.cjs` and `verify-learning.cjs` passed, and demo completions still saved as `"demo"`. You may also want `complete/[id].tsx` to say "verified" instead of "DEMO SKILL COMPLETE" when `source === "vision"`.
-
-## 6. Unrelated bug found while testing: "Unmatched route" on launch
-After onboarding (a saved profile), launching the app shows **Unmatched route**. In `src/app/_layout.tsx` the `index` screen is inside `<Stack.Protected guard={!player.profile}>` with no `redirectTo`. expo-router then falls back to the first allowed route, the `(main)` group, which also maps to `/` but has no index screen. A one-prop fix that worked:
-```tsx
-<Stack.Protected guard={!player.profile} redirectTo="/home">
-```
-
-## 7. Grading conflicts to settle as a team
-Thresholds come from `vision/specs/*.json`, not from `cvActivity.checks` in `hooptree/curriculum.json`. Where they differ (for example BEEF follow-through 1 s in hooptree vs 0.3 s in the spec), see the conflicts table in `docs/` once it's added.
+Decide as a team whether to change the specs or the curriculum text so they agree.
