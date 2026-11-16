@@ -2,8 +2,6 @@
 
 A mobile app that teaches basketball beginners through an unlockable skill tree, checks their form with the phone camera, and gives them an AI coach inside every lesson. Built at **HackUMass 14** by a team of three.
 
-**Names:** **HoopQuest** is the app and the repo (it was called *Buckets* early on). **Buckets** is the AI chatbot inside the app: a cartoon-basketball coach you can ask about the lesson you're on.
-
 ## What the app does
 
 HoopQuest works like a language-learning app for basketball: short lessons, a map of skills that opens up as you go, and a check before you can move on. The difference is that the check is real. You film yourself doing the skill, and a computer-vision model grades your form.
