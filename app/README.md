@@ -1,11 +1,11 @@
 # HoopQuest app
 
-The HoopQuest mobile app (the Buckets project) uses Expo SDK 58, React Native, TypeScript and Expo Router.
+The HoopQuest mobile app uses Expo SDK 58, React Native, TypeScript and Expo Router.
 
 It has:
 - a short onboarding (experience, focus and practice time) whose experience answer places the player past foundations they already know
 - a connected 107-skill tree
-- three-part lessons with an in-lesson AI coach (Buckets)
+- three-part lessons with Buckets, the in-lesson AI chatbot coach
 - timed warmups and a Profile screen
 - a practice camera: 10 s countdown, 5 s one-shot clip, then grading by the vision server with an annotated replay and per-check feedback
 
